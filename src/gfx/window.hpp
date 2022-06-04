@@ -10,5 +10,7 @@ class Window {
         Window(int width, int height);
         static Window* create(int width, int height);
         void terminate();
-        void loop();
+        void update();
+        void clear();
+        bool shouldClose();
 };

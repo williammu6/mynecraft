@@ -5,10 +5,8 @@ CC = g++
 CFLAGS = -std=c++17 -g -Wall
 CFLAGS += -Wno-pointer-arith -Wno-newline-eof -Wno-unused-parameter -Wno-gnu-statement-expression
 CFLAGS += -Wno-gnu-compound-literal-initializer -Wno-gnu-zero-variadic-macro-arguments
-CFLAGS += -Ilib/glfw/include
-# CFLAGS += -Ilib/cglm/include -Ilib/glfw/include -Ilib/glad/include -Ilib -fbracket-depth=1024
-# LDFLAGS = lib/glad/src/glad.o lib/cglm/libcglm.a lib/glfw/src/libglfw3.a -lm
-LDFLAGS = lib/glfw/src/libglfw3.a -lm
+CFLAGS += -Ilib/cglm/include -Ilib/glfw/include -Ilib/glad/include -Ilib -fbracket-depth=1024
+LDFLAGS = lib/glad/src/glad.o lib/cglm/libcglm.a lib/glfw/src/libglfw3.a -lm
 
 ifeq ($(UNAME_S), Darwin)
 	LDFLAGS += -framework OpenGL -framework IOKit -framework CoreVideo -framework Cocoa
@@ -25,6 +23,8 @@ BIN = bin
 all: dirs libs game
 
 libs:
+	cd lib/cglm && cmake . -DCGLM_STATIC=ON && make
+	cd lib/glad && $(CC) -o src/glad.o -Iinclude -c src/glad.c
 	cd lib/glfw && cmake . && make
 
 dirs:
