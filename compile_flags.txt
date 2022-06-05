@@ -1,2 +1,3 @@
 -Ilib/glfw/include
 -Ilib/glad/include
+-Ilib/glm

@@ -8,6 +8,7 @@
 #include <assert.h>
 
 #include "gfx.hpp"
+#include <glm/glm.hpp>
 
 struct VertexAttributes {
     GLint size;
@@ -24,6 +25,8 @@ class Shader {
     Shader(std::string vertex_path, std::string fragment_path);
     void use();
     void destroy();
+    void setMat3(const std::string &name, const glm::mat3 &mat) const;
+    void setMat4(const std::string &name, const glm::mat4 &mat) const;
 };
 
 #endif

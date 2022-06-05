@@ -25,7 +25,6 @@ Window::Window(int width, int height) {
     }
 
     glViewport(0, 0, width, height);
-
     glfwSwapInterval(1);
 }
 
@@ -36,7 +35,7 @@ void Window::update() {
 }
 
 void Window::clear() {
-    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
+    glClearColor(0.4f, 0.9f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
