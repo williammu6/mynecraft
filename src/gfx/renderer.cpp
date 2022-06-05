@@ -3,6 +3,11 @@
 Renderer::Renderer(int width, int height) {
     windowWidth = width;
     windowHeight = height;
+
+    // projection = glm::mat4(1.0f);
+    model = glm::rotate(glm::mat4(1.0f), glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    view  = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+    projection = glm::perspective(glm::radians(45.0f), (float)windowWidth/ (float)windowHeight, 0.1f, 100.0f);
 }
 
 void Renderer::drawBlock() {
@@ -55,12 +60,6 @@ void Renderer::drawBlock() {
     shaders["block"]->use();
 
     // create transformations
-    glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-    glm::mat4 view          = glm::mat4(1.0f);
-    glm::mat4 projection    = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    projection = glm::perspective(glm::radians(45.0f), (float)windowWidth/ (float)windowHeight, 0.1f, 100.0f);
     // retrieve the matrix uniform locations
     unsigned int modelLoc = glGetUniformLocation(shader->program, "model");
     unsigned int viewLoc  = glGetUniformLocation(shader->program, "view");

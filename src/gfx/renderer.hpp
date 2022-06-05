@@ -11,6 +11,8 @@ class Renderer {
         unsigned int vao, vbo, ebo, texture;
         int windowWidth, windowHeight;
         std::map<std::string, Shader*> shaders;
+
+        glm::mat4 model, view, projection;
     public:
         Renderer(int width, int height);
         void drawBlock();
