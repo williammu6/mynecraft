@@ -7,8 +7,8 @@ Application::Application() {
     shouldStop = false;
 
     windowProps = {
-        .width = 640,
-        .height = 430,
+        .width = 1280,
+        .height = 960,
     };
 
     m_Window = Window::create(windowProps);
@@ -35,6 +35,8 @@ void Application::run() {
     Renderer renderer(windowProps.width, windowProps.height);
 
     renderer.attachShader("block", &shader2d);
+
+    glEnable(GL_DEPTH_TEST);  
 
     while (!window->shouldClose()) {
         window->clear();

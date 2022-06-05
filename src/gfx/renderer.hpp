@@ -2,16 +2,15 @@
 
 #include "gfx.hpp"
 #include "shader.hpp"
+#include "block.hpp"
 #include "texture.hpp"
 #include <map>
 #include <string>
 
 class Renderer {
     private:
-        unsigned int vao, vbo, ebo, texture;
         int windowWidth, windowHeight;
         std::map<std::string, Shader*> shaders;
-
         glm::mat4 model, view, projection;
     public:
         Renderer(int width, int height);
