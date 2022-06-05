@@ -10,7 +10,6 @@ struct WindowProps {
 
 class Window {
     private:
-        void* inputHandler;
         GLFWwindow* window;
     public:
         Window(int width, int height);
@@ -19,4 +18,5 @@ class Window {
         void processInput(GLFWwindow* window);
         void update();
         void clear();
+        int shouldClose();
 };

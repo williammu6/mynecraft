@@ -36,14 +36,18 @@ void Window::update() {
 }
 
 void Window::clear() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Window::processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        terminate();
+        glfwSetWindowShouldClose(window, true);
     }
+}
+
+int Window::shouldClose() {
+    return glfwWindowShouldClose(window) == 1;
 }
 
 Window* Window::create(const WindowProps& props) {
@@ -51,7 +55,6 @@ Window* Window::create(const WindowProps& props) {
 }
 
 void Window::terminate() {
-    glfwSetWindowShouldClose(window, true);
     glfwDestroyWindow(window);
     glfwTerminate();
 }

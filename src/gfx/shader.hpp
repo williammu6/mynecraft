@@ -18,11 +18,12 @@ class Shader {
   private:
     GLuint vertex_shader, fragment_shader;
     GLuint compile(std::string, GLenum);
-    const char* read_file(std::string path);
+    std::string read_file(std::string path);
   public:
     GLuint program;
     Shader(std::string vertex_path, std::string fragment_path);
     void use();
+    void destroy();
 };
 
 #endif

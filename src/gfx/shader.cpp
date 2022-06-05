@@ -1,6 +1,8 @@
 #include "shader.hpp"
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) {
+    char infoLog[512];
+
     vertex_shader = compile(vertex_path, GL_VERTEX_SHADER);
     fragment_shader = compile(fragment_path, GL_FRAGMENT_SHADER);
 
@@ -8,36 +10,44 @@ Shader::Shader(std::string vertex_path, std::string fragment_path) {
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
 
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+
     glLinkProgram(program);
     
     GLint linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
 
     if (!linked) {
-        std::cout << "error linking program" << std::endl;
+        std::cout << "Error linking program" << std::endl;
+        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        std::cout << infoLog << std::endl;
+        glDeleteProgram(program);
         exit(EXIT_FAILURE);
     }
 }
 
 GLuint Shader::compile(std::string path, GLenum shader_type) {
-    const char* shader_code = read_file(path);
+    std::string shader_code = read_file(path);
+    const char* shader_codec = shader_code.c_str();
 
     GLuint shader = glCreateShader(shader_type);
-    glShaderSource(shader, 1, &shader_code, NULL);
+    glShaderSource(shader, 1, &shader_codec, NULL);
     glCompileShader(shader);
 
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 
     if (!status) {
-        std::cout << "error compiling shader" << std::endl;
+        std::cout << "Error compiling shader" << std::endl;
+        glDeleteShader(shader);
         exit(EXIT_FAILURE);
     }
 
     return shader;
 }
 
-const char* Shader::read_file(std::string path) {
+std::string Shader::read_file(std::string path) {
     std::string code;
     std::ifstream shader_file;
 
@@ -51,16 +61,17 @@ const char* Shader::read_file(std::string path) {
         shader_file.close();
 
         code = shader_stream.str();		
-    }
-    catch(std::ifstream::failure e) {
+    } catch(std::ifstream::failure e) {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
     }
 
-    const char* codec = code.c_str();
-
-    return codec;
+    return code;
 }
 
 void Shader::use() {
     glUseProgram(program);
+}
+
+void Shader::destroy() {
+    glDeleteProgram(program);
 }
