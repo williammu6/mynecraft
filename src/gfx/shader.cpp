@@ -33,7 +33,7 @@ GLuint Shader::compile(std::string path, GLenum shader_type) {
         std::cout << "error compiling shader" << std::endl;
         char buffer[512];
         glGetShaderInfoLog(shader, 512, NULL, buffer);
-        std::cout << buffer << std::endl;
+        std::cout << "Buffer error " << buffer << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -65,6 +65,5 @@ const char* Shader::read_file(std::string path) {
 }
 
 void Shader::use() {
-    std::cout << "using shader" << std::endl;
     glUseProgram(program);
 }

@@ -6,10 +6,12 @@
 class Application {
     private:
         Window* m_Window;
-        unsigned int m_VertexBuffer, m_VertexArray, m_IndexBuffer;
+        bool shouldStop;
+        unsigned int m_VertexBuffer, m_VertexArray, m_IndexBuffer, texture;
     public:
         Application();
         ~Application();
         Window* getWindow();
         void run();
+        void stop();
 };

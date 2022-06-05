@@ -1,10 +1,6 @@
 #include "window.hpp"
 #include <iostream>
 
-void callback_name(int error_code, const char* description) {
-    std::cout << description << std::endl;
-}
-
 Window::Window(int width, int height) {
     if (!glfwInit()) {
         exit(EXIT_FAILURE);
@@ -22,27 +18,35 @@ Window::Window(int width, int height) {
         exit(0);
     }
 
+    glViewport(0, 0, width, height);
+
     glfwSwapInterval(1);
 }
 
 void Window::update() {
+    processInput(window);
     glfwSwapBuffers(window);
     glfwPollEvents();
 }
 
 void Window::clear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-Window* Window::create(int width, int height) {
-    return new Window(width, height);
+void Window::processInput(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        terminate();
+    }
 }
 
-bool Window::shouldClose() {
-    return glfwWindowShouldClose(window);
+Window* Window::create(const WindowProps& props) {
+    return new Window(props.width, props.height);
 }
 
 void Window::terminate() {
+    glfwSetWindowShouldClose(window, true);
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 
