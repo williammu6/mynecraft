@@ -2,16 +2,18 @@
 
 #include "gfx/window.hpp"
 #include "gfx/shader.hpp"
+#include "gfx/renderer.hpp"
 
 class Application {
     private:
         Window* m_Window;
-        bool shouldStop;
+        Renderer* m_Renderer;
         struct WindowProps windowProps;
     public:
         Application();
         ~Application();
         Window* getWindow();
+        Renderer* getRenderer();
         void run();
-        void stop();
+        void inputHandler(GLFWwindow* window);
 };

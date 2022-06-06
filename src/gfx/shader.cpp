@@ -76,9 +76,22 @@ void Shader::destroy() {
     glDeleteProgram(program);
 }
 
+void Shader::prepare3d(glm::mat4 model, glm::mat4 view, glm::mat4 projection, glm::vec3 position) {
+    unsigned int modelLocation = glGetUniformLocation(program, "model");
+    unsigned int viewLocation  = glGetUniformLocation(program, "view");
+
+    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
+    setMat4("projection", projection);
+
+    model = glm::translate(glm::mat4(1.0f), position);
+    setMat4("model", model);
+}
+
 void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const {
     glUniformMatrix3fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
+
 void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const {
     glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

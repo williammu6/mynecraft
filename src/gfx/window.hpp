@@ -19,4 +19,5 @@ class Window {
         void update();
         void clear();
         int shouldClose();
+        GLFWwindow* p_getWindow();
 };
