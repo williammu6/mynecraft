@@ -12,9 +12,10 @@ struct State
 {
     int windowWidth, windowHeight;
     Window *window;
-    Renderer::Renderer2D renderer2d;
+    Renderer2D renderer2d;
     Camera camera;
-    std::map<const char*, Element> elements {
+    bool wireframe_mode = false;
+    std::map<const char*, Grass> elements {
         { "grass", Grass() }
     };
     bool running;

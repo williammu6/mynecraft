@@ -9,7 +9,6 @@ Window::Window()
         exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 #ifdef __APPLE__
@@ -26,7 +25,6 @@ Window::Window()
         exit(0);
     }
 
-    glEnable(GL_DEPTH_TEST);  
     glfwSwapInterval(1);
 }
 
@@ -40,6 +38,8 @@ void Window::clear()
 {
     glClearColor(0.4f, 0.9f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
+    glEnable(GL_DEPTH_TEST);
 }
 
 Window *Window::create()

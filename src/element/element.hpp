@@ -6,15 +6,15 @@
 enum Face
 {
     TOP = 0,
-    BOTTOM,
-    LEFT_RIGHT,
-    FRONT_BACK
+    BOTTOM = 1,
+    LEFT_RIGHT = 2,
+    FRONT_BACK = 3
 };
 
 struct Element {
     std::string name;
 
-    glm::vec2 texture_offset(enum Face face);
+    glm::vec2 texture_offset(Face face);
 
     Element() { }
 };

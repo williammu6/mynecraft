@@ -4,10 +4,14 @@
 
 struct Camera {
     glm::mat4 view;
-    glm::vec3 cameraPos = glm::vec3(0.0f, 40.0f, 20.0f);  
+    float speed = 0.05f;
+    glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, 20.0f);  
     glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
     glm::mat4 model = glm::mat4(1.0f);
+
+    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
 
     glm::mat4 projection;
 
@@ -27,5 +31,9 @@ struct Camera {
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
+    }
+
+    void update() {
+        this->view = glm::lookAt(this->cameraPos, this->cameraPos + this->cameraFront, this->cameraUp);
     }
 };
