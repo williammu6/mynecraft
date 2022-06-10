@@ -2,7 +2,6 @@
 
 #include "gfx/window.hpp"
 #include "gfx/shader.hpp"
-#include "gfx/renderer.hpp"
 #include "gfx/camera.hpp"
 #include "gfx/texture.hpp"
 #include "common.hpp"
@@ -10,7 +9,9 @@
 
 class Application
 {
-public:
+    public: 
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
     Application();
     ~Application();
     void run();

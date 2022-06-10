@@ -2,10 +2,8 @@
 #include "../state.hpp"
 #include <iostream>
 
-Window::Window()
-{
-    if (!glfwInit())
-    {
+Window::Window() {
+    if (!glfwInit()) {
         exit(EXIT_FAILURE);
     }
 
@@ -19,8 +17,7 @@ Window::Window()
 
     glfwMakeContextCurrent(window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Error initializing OpenGL" << std::endl;
         exit(0);
     }
@@ -28,32 +25,31 @@ Window::Window()
     glfwSwapInterval(1);
 }
 
-void Window::update()
-{
+void Window::update() {
     glfwSwapBuffers(window);
     glfwPollEvents();
 }
 
-void Window::clear()
-{
+void Window::clear() {
     glClearColor(0.4f, 0.9f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
+
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 
-Window *Window::create()
-{
+Window *Window::create() {
     return new Window();
 }
 
-void Window::terminate()
-{
+void Window::terminate() {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
-GLFWwindow *Window::p_getWindow()
-{
+GLFWwindow *Window::p_getWindow() {
     return window;
 }

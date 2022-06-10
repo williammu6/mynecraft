@@ -1,6 +1,5 @@
 #pragma once
 
-#include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
 #include "gfx/camera.hpp"
 #include "element/element.hpp"
@@ -12,7 +11,6 @@ struct State
 {
     int windowWidth, windowHeight;
     Window *window;
-    Renderer2D renderer2d;
     Camera camera;
     bool wireframe_mode = false;
     std::map<const char*, Grass> elements {
