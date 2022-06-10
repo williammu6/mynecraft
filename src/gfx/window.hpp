@@ -4,20 +4,23 @@
 #include "functional"
 #include <stdlib.h>
 
-struct WindowProps {
+struct WindowProps
+{
     int width, height;
 };
 
-class Window {
-    private:
-        GLFWwindow* window;
-    public:
-        Window(int width, int height);
-        static Window* create(const WindowProps& props);
-        void terminate();
-        void processInput(GLFWwindow* window);
-        void update();
-        void clear();
-        int shouldClose();
-        GLFWwindow* p_getWindow();
+class Window
+{
+private:
+    GLFWwindow *window;
+
+public:
+    Window();
+    static Window *create();
+    void terminate();
+    void processInput();
+    void update();
+    void clear();
+    int shouldClose();
+    GLFWwindow *p_getWindow();
 };
