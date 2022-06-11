@@ -68,20 +68,31 @@ static const CubeFace CUBE_FACES[] = {
 struct Block {
     // Grass element;
     int isBlock;
+    glm::vec3 normalPosition;
     glm::vec3 position;
 };
 
 struct Chunk {
-    int size;
+    glm::vec3 dimentions;
     Shader *shader;
     TextureAtlas textureAtlas;
+    glm::vec3 position;
 
+    int seaLevel = 64;
     unsigned int vao, vbo, ebo;
     std::vector<std::vector<std::vector<Block>>> blocks;
 
+    Chunk(Shader *shader, TextureAtlas texture_atlas, glm::vec3 position) {
+        this->dimentions = glm::vec3(16, 256, 16);
+        this->shader = shader;
+        this->position = position;
+        this->textureAtlas = texture_atlas;
+
+        this->init();
+    };
     void init();
     void render();
     void prepare_face(CubeFace cf, Grass element, int idx);
-    void render_face(Grass element, CubeFace cf, glm::vec3 position, int idx);
-    void render_block(Grass element, glm::vec3 position);
+    void render_face(Grass element, CubeFace cf, Block& block, int idx);
+    void render_block(Grass element, Block& block);
 };

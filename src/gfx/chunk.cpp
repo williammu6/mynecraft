@@ -29,7 +29,6 @@ void Chunk::prepare_face(CubeFace cf,
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(QUAD_FACE_INDICES[idx]), QUAD_FACE_INDICES[idx], GL_STATIC_DRAW);
 
     glBindVertexArray(this->vao);
-
     // POSITION
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -39,61 +38,54 @@ void Chunk::prepare_face(CubeFace cf,
 }
 
 const glm::vec3 DIRECTIONS[] = {
-    glm::vec3(0, 1, 0),
+    glm::vec3(0, -1, 0),
     glm::vec3(0, 0, 1),
     glm::vec3(1, 0, 0),
     glm::vec3(-1, 0, 0),
     glm::vec3(0, 0, -1),
-    glm::vec3(0, -1, 0)
+    glm::vec3(0, 1, 0)
 };
 
-void Chunk::render_face(Grass element, CubeFace cube_face, glm::vec3 position, int idx) {
-    /*
-    for (const auto& d : DIRECTIONS) {
-        // if (!this->blocks[position.x+d.x][position.y+d.y][position.z+d.z]) {
-        if (!(position.x + d.x < 0 && position.x + d.x <= this->size &&
-                position.y + d.y < 0 && position.y + d.y <= this->size &&
-                position.z + d.z < 0 && position.z + d.z <= this->size
-             )) {
-            return;
-        }
-    }
-    */
-
+void Chunk::render_face(Grass element, CubeFace cube_face, Block& block, int idx) {
     auto d = DIRECTIONS[idx];
 
-    if (position.x + d.x >= 0 && position.x + d.x < this->size && 
-            position.y + d.y >= 0 && position.y + d.y < this->size && 
-            position.z + d.z >= 0 && position.z + d.z < this->size && 
-            this->blocks[position.x + d.x][position.y + d.y][position.z + d.z].isBlock == 1 ) {
+    int nx = block.normalPosition.x + d.x;
+    int ny = block.normalPosition.y + d.y;
+    int nz = block.normalPosition.z + d.z;
+
+    if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->dimentions.x && ny < this->dimentions.y && nz < this->dimentions.z &&
+            this->blocks[nx][ny][nz].isBlock == 1) {
         return;
     }
-
-    this->shader->use();
-
-    this->shader->setMat4("projection", state.camera.projection);
-    this->shader->setMat4("view", state.camera.view);
 
     this->prepare_face(cube_face, element, idx);
 
     glBindVertexArray(this->vao);
 
+    // printf("%f %f %f\n", block.position.x, block.position.y, block.position.z);
+
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(state.camera.model, position);
+    model = glm::translate(state.camera.model, block.position);
     shader->setMat4("model", model);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Chunk::render_block(Grass element, glm::vec3 position) {
-    this->shader->use();
-
-    this->shader->setMat4("projection", state.camera.projection);
-    this->shader->setMat4("view", state.camera.view);
-
+void Chunk::render_block(Grass element, Block& block) {
     int i=0;
     for (const auto& cube_face : CUBE_FACES) {
-        this->render_face(element, cube_face, position, i++);
+        this->render_face(element, cube_face, block, i++);
+    }
+}
+
+void Chunk::render() {
+    this->shader->setMat4("view", state.camera.view);
+    for (int x = 0; x < this->dimentions.x; x++) {
+        for (int y = 0; y < this->dimentions.y; y++) {
+            for (int z = 0; z < this->dimentions.z; z++) {
+                this->render_block(Grass(), this->blocks[x][y][z]);
+            }
+        }
     }
 }
 
@@ -102,26 +94,17 @@ void Chunk::init() {
     glGenBuffers(1, &this->ebo);
     glGenVertexArrays(1, &this->vao);  
 
-    blocks.resize(this->size);
-    for (int i = 0; i < this->size; i++)
-        blocks[i].resize(this->size);
+    blocks.resize(this->dimentions.y);
+    for (int i = 0; i < this->dimentions.y; i++)
+        blocks[i].resize(this->dimentions.y);
 
-    for (int x = 0; x < this->size; x++) {
-        for (int y = 0; y < this->size; y++) {
-            for (int z = 0; z < this->size; z++) {
-                this->blocks[x][y].push_back({ 1, glm::vec3(x, y, z) });
+    for (int x = 0; x < this->dimentions.x; x++) {
+        for (int y = 0; y < this->dimentions.y; y++) {
+            for (int z = 0; z < this->dimentions.z; z++) {
+                this->blocks[x][y].push_back({ 1, glm::vec3(x, y, z), glm::vec3(x, this->seaLevel - y , z) + this->position  });
             }
         }
     }
-}
-
-void Chunk::render() {
-    for (int x = 0; x < this->size; x++) {
-        for (int y = 0; y < this->size; y++) {
-            for (int z = 0; z < this->size; z++) {
-                this->render_block(Grass(), 
-                        this->blocks[x][y][z].position);
-            }
-        }
-    }
+    this->shader->use();
+    this->shader->setMat4("projection", state.camera.projection);
 }

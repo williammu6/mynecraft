@@ -6,8 +6,8 @@ struct State global_state;
 State &state = global_state;
 
 Application::Application() {
-    state.windowWidth = 1280;
-    state.windowHeight = 720;
+    state.windowWidth = 860;
+    state.windowHeight = 640;
 
     state.window = Window::create();
 }
@@ -18,12 +18,15 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 void Application::run() {
     state.running = true;
-    std::string path = "res/grass.png";
+    std::string path = "res/textures.png";
     state.camera = Camera(state.windowWidth, state.windowHeight);
 
     Shader basicTexture("res/shaders/basicTexture.vert", "res/shaders/basicTexture.frag");
-    struct Chunk chunk { 5, &basicTexture, TextureAtlas(path) };
-    chunk.init();
+
+    Chunk chunk = Chunk(&basicTexture, TextureAtlas(path), glm::vec3(0, 0, 0));
+
+    double previousTime = glfwGetTime();
+    int frameCount = 0;
 
     glfwSetInputMode(state.window->p_getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(state.window->p_getWindow(), mouse_callback);  
@@ -31,15 +34,24 @@ void Application::run() {
     while (state.running) {
         float currentFrame = glfwGetTime();
         this->deltaTime = currentFrame - this->lastFrame;
+        frameCount++;
+
         state.window->clear();
 
-        inputHandler(state.window->p_getWindow());
-
         chunk.render();
+
         state.camera.update();
         state.window->update();
 
-        this->lastFrame = currentFrame;  
+        this->lastFrame = currentFrame;
+        if (currentFrame - previousTime >= 1.0 ) {
+            printf("FPS: %d\n", frameCount);
+            printf("X: %.2f | Y: %.2f | Z: %.2f\n", state.camera.cameraPos.x, state.camera.cameraPos.y, state.camera.cameraPos.z);
+            frameCount = 0;
+            previousTime = currentFrame;
+        }
+
+        inputHandler(state.window->p_getWindow());
     }
 
     state.window->terminate();

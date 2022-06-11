@@ -6,7 +6,7 @@ struct Camera {
     int width, height;
     glm::mat4 view;
     float speed = 0.005f;
-    glm::vec3 cameraPos = glm::vec3(0.0f, 5.0f, 20.0f);  
+    glm::vec3 cameraPos = glm::vec3(0.0f, 70.0f, 20.0f);  
     glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
     glm::mat4 model = glm::mat4(1.0f);
