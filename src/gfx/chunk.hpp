@@ -39,6 +39,7 @@ static const unsigned int QUAD_FACE_INDICES[6][6] = {
 }; 
 
 struct CubeFace {
+    int ID;
     enum Face face;
     glm::vec3 position;
 
@@ -57,12 +58,21 @@ struct CubeFace {
 };
 
 static const CubeFace CUBE_FACES[] = {
-    { TOP, glm::vec3(1, 1, 1) },   
-    { FRONT_BACK,  glm::vec3(1, 1, 1) },   
-    { LEFT_RIGHT,  glm::vec3(-1, 1, 1) },   
-    { LEFT_RIGHT,  glm::vec3(1, 1, 1) },   
-    { FRONT_BACK,  glm::vec3(1, 1, -1) },   
-    { BOTTOM, glm::vec3(1, -1, 1) },
+    { 0, TOP, glm::vec3(1, 1, 1) },   
+    { 1, FRONT_BACK,  glm::vec3(1, 1, 1) },   
+    { 2, LEFT_RIGHT,  glm::vec3(-1, 1, 1) },   
+    { 3, LEFT_RIGHT,  glm::vec3(1, 1, 1) },   
+    { 4, FRONT_BACK,  glm::vec3(1, 1, -1) },   
+    { 5, BOTTOM, glm::vec3(1, -1, 1) },
+};
+
+const glm::vec3 DIRECTIONS[] = {
+    glm::vec3(0, -1, 0),
+    glm::vec3(0, 0, 1),
+    glm::vec3(1, 0, 0),
+    glm::vec3(-1, 0, 0),
+    glm::vec3(0, 0, -1),
+    glm::vec3(0, 1, 0)
 };
 
 struct Block {
@@ -83,7 +93,7 @@ struct Chunk {
     std::vector<std::vector<std::vector<Block>>> blocks;
 
     Chunk(Shader *shader, TextureAtlas texture_atlas, glm::vec3 position) {
-        this->dimentions = glm::vec3(16, 256, 16);
+        this->dimentions = glm::vec3(128, 32, 128);
         this->shader = shader;
         this->position = position;
         this->textureAtlas = texture_atlas;
@@ -92,7 +102,7 @@ struct Chunk {
     };
     void init();
     void render();
-    void prepare_face(CubeFace cf, Grass element, int idx);
-    void render_face(Grass element, CubeFace cf, Block& block, int idx);
-    void render_block(Grass element, Block& block);
+    void prepare_face(CubeFace cf, Grass element);
+    int render_face(Grass element, CubeFace cf, Block& block);
+    int render_block(Grass element, Block& block);
 };

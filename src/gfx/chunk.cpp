@@ -2,8 +2,7 @@
 #include "../state.hpp"
 
 void Chunk::prepare_face(CubeFace cf, 
-                         Grass element, 
-                         int idx) {
+                         Grass element) {
 
     auto texture_offset = element.texture_offset(cf.face);
 
@@ -26,7 +25,7 @@ void Chunk::prepare_face(CubeFace cf,
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(QUAD_FACE_INDICES[idx]), QUAD_FACE_INDICES[idx], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(QUAD_FACE_INDICES[cf.ID]), QUAD_FACE_INDICES[cf.ID], GL_STATIC_DRAW);
 
     glBindVertexArray(this->vao);
     // POSITION
@@ -37,53 +36,54 @@ void Chunk::prepare_face(CubeFace cf,
     glEnableVertexAttribArray(1);
 }
 
-const glm::vec3 DIRECTIONS[] = {
-    glm::vec3(0, -1, 0),
-    glm::vec3(0, 0, 1),
-    glm::vec3(1, 0, 0),
-    glm::vec3(-1, 0, 0),
-    glm::vec3(0, 0, -1),
-    glm::vec3(0, 1, 0)
-};
 
-void Chunk::render_face(Grass element, CubeFace cube_face, Block& block, int idx) {
-    auto d = DIRECTIONS[idx];
+int Chunk::render_face(Grass element, CubeFace cube_face, Block& block) {
+    auto face_direction = DIRECTIONS[cube_face.ID];
 
-    int nx = block.normalPosition.x + d.x;
-    int ny = block.normalPosition.y + d.y;
-    int nz = block.normalPosition.z + d.z;
+    int nx = block.normalPosition.x + face_direction.x;
+    int ny = block.normalPosition.y + face_direction.y;
+    int nz = block.normalPosition.z + face_direction.z;
 
     if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->dimentions.x && ny < this->dimentions.y && nz < this->dimentions.z &&
             this->blocks[nx][ny][nz].isBlock == 1) {
-        return;
+        return 0;
     }
 
-    this->prepare_face(cube_face, element, idx);
+    this->prepare_face(cube_face, element);
 
     glBindVertexArray(this->vao);
-
-    // printf("%f %f %f\n", block.position.x, block.position.y, block.position.z);
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(state.camera.model, block.position);
     shader->setMat4("model", model);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    return 1;
 }
 
-void Chunk::render_block(Grass element, Block& block) {
-    int i=0;
-    for (const auto& cube_face : CUBE_FACES) {
-        this->render_face(element, cube_face, block, i++);
+int Chunk::render_block(Grass element, Block& block) {
+    int rendered = 0;
+    for (int i = 0; i < 6; i++) {
+        auto cube_face = CUBE_FACES[i];
+        rendered |= this->render_face(element, cube_face, block);
     }
+    return rendered;
 }
 
 void Chunk::render() {
     this->shader->setMat4("view", state.camera.view);
     for (int x = 0; x < this->dimentions.x; x++) {
-        for (int y = 0; y < this->dimentions.y; y++) {
-            for (int z = 0; z < this->dimentions.z; z++) {
-                this->render_block(Grass(), this->blocks[x][y][z]);
+        for (int z = 0; z < this->dimentions.z; z++) {
+            for (int y = 0; y < this->dimentions.y; y++) {
+                auto& block = this->blocks[x][y][z];
+                if (((state.camera.cameraFront.x < 0 && block.position.x - 10 < state.camera.cameraPos.x) ||
+                        (state.camera.cameraFront.x > 0 && block.position.x + 10 > state.camera.cameraPos.x)) &&
+                        ((state.camera.cameraFront.z < 0 && block.position.z - 10 < state.camera.cameraPos.z) ||
+                        (state.camera.cameraFront.z > 0 && block.position.z + 10 > state.camera.cameraPos.z))) {
+                    int rendered = this->render_block(Grass(), block);
+                    if (!rendered) break;
+                }
             }
         }
     }
@@ -94,13 +94,14 @@ void Chunk::init() {
     glGenBuffers(1, &this->ebo);
     glGenVertexArrays(1, &this->vao);  
 
-    blocks.resize(this->dimentions.y);
-    for (int i = 0; i < this->dimentions.y; i++)
-        blocks[i].resize(this->dimentions.y);
+    this->blocks.resize(this->dimentions.x);
+    for (int i = 0; i < this->dimentions.x; i++)
+        this->blocks[i].resize(this->dimentions.x);
 
     for (int x = 0; x < this->dimentions.x; x++) {
         for (int y = 0; y < this->dimentions.y; y++) {
             for (int z = 0; z < this->dimentions.z; z++) {
+                printf("%d %d %d\n", x, y, z);
                 this->blocks[x][y].push_back({ 1, glm::vec3(x, y, z), glm::vec3(x, this->seaLevel - y , z) + this->position  });
             }
         }

@@ -6,7 +6,7 @@ struct Camera {
     int width, height;
     glm::mat4 view;
     float speed = 0.005f;
-    glm::vec3 cameraPos = glm::vec3(0.0f, 70.0f, 20.0f);  
+    glm::vec3 cameraPos = glm::vec3(20.0f, 70.0f, 40.0f);  
     glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
     glm::mat4 model = glm::mat4(1.0f);
@@ -34,7 +34,7 @@ struct Camera {
         this->height = height;
         lastX = (float)this->width / 2, lastY = (float)this->height / 2;
 
-        direction.x = cos(glm::radians(yaw)); // Note that we convert the angle to radians first
+        direction.x = cos(glm::radians(yaw));
         direction.z = sin(glm::radians(yaw));
 
         glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
@@ -50,7 +50,7 @@ struct Camera {
 
     void lookAt(double xpos, double ypos) {
         float xoffset = xpos - this->lastX;
-        float yoffset = this->lastY - ypos; // reversed since y-coordinates range from bottom to top
+        float yoffset = this->lastY - ypos;
         this->lastX = xpos;
         this->lastY = ypos;
 
