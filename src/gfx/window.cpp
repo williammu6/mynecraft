@@ -13,7 +13,7 @@ Window::Window() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    window = glfwCreateWindow(state.windowWidth, state.windowHeight, "Title", NULL, NULL);
+    window = glfwCreateWindow(state.windowWidth, state.windowHeight, "Mynecraft", NULL, NULL);
 
     glfwMakeContextCurrent(window);
 
@@ -36,9 +36,9 @@ void Window::clear() {
     glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    // glDepthFunc(GL_LESS);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
 }
 
 Window *Window::create() {
