@@ -36,9 +36,9 @@ void Window::clear() {
     glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
 
     glEnable(GL_DEPTH_TEST);
-    // glDepthFunc(GL_LESS);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 
 Window *Window::create() {

@@ -7,8 +7,8 @@ struct State global_state;
 State &state = global_state;
 
 Application::Application() {
-    state.windowWidth = 860;
-    state.windowHeight = 640;
+    state.windowWidth = 1280;
+    state.windowHeight = 720;
 
     state.window = Window::create();
 }
@@ -25,7 +25,8 @@ void Application::run() {
     Shader basicTexture("res/shaders/basicTexture.vert",
                         "res/shaders/basicTexture.frag");
 
-    Chunk chunk = Chunk(&basicTexture, TextureAtlas(path), glm::vec3(1, 0, 1));
+    Chunk chunk = Chunk(&basicTexture, TextureAtlas(path), glm::vec3(0, 0, 0));
+    Chunk chunk2 = Chunk(&basicTexture, TextureAtlas(path), glm::vec3(1, 0, 0));
 
     double previousTime = glfwGetTime();
     int frameCount = 0;
@@ -42,6 +43,7 @@ void Application::run() {
         state.window->clear();
 
         chunk.render();
+        chunk2.render();
 
         state.camera.update();
         state.window->update();
@@ -63,7 +65,7 @@ void Application::inputHandler(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         state.running = false;
 
-    float cameraSpeed = 2.5f * this->deltaTime;
+    float cameraSpeed = 5.5f * this->deltaTime;
     if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
         state.wireframe_mode = !state.wireframe_mode;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -80,6 +82,10 @@ void Application::inputHandler(GLFWwindow *window) {
             glm::normalize(
                 glm::cross(state.camera.cameraFront, state.camera.cameraUp)) *
             cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        state.camera.cameraPos -= glm::vec3(0, 1, 0) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        state.camera.cameraPos += glm::vec3(0, 1, 0) * cameraSpeed;
 }
 
 Application::~Application() { state.window->terminate(); }
