@@ -1,22 +1,20 @@
 #pragma once
 
-#include "vendor/stb_image.h"
 #include "gfx.hpp"
+#include "vendor/stb_image.h"
 #include <iostream>
 
-unsigned int createTextureFromPath(std::string& path);
+unsigned int texture_from_path(const char *path);
 
 struct TextureAtlas {
-    unsigned int texture;
+  unsigned int texture;
 
-    int tW = 128;
-    int tH = 128;
+  int tW = 64;
+  int tH = 64;
 
-    int atlasW = 1024;
-    int atlasH = 1024;
+  int atlasW = 512;
+  int atlasH = 512;
 
-    TextureAtlas() = default;
-    TextureAtlas(std::string& path) {
-        this->texture = createTextureFromPath(path);
-    }
+  TextureAtlas() = default;
+  TextureAtlas(const char *path) { this->texture = texture_from_path(path); }
 };

@@ -1,19 +1,21 @@
 #pragma once
 
-#include "gfx/window.hpp"
-#include "gfx/shader.hpp"
-#include "gfx/camera.hpp"
-#include "gfx/texture.hpp"
 #include "common.hpp"
+#include "gfx/camera.hpp"
+#include "gfx/shader.hpp"
+#include "gfx/texture.hpp"
+#include "gfx/window.hpp"
+#include "gfx/world/world.hpp"
+#include "input.hpp"
 #include "state.hpp"
 
-class Application
-{
-    public: 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
-    Application();
-    ~Application();
-    void run();
-    void inputHandler(GLFWwindow *window);
+class Application {
+public:
+  World *world;
+  double delta_time, last_frame;
+  Application();
+  ~Application();
+  void run();
+  void update();
+  void input_handler(GLFWwindow *window);
 };

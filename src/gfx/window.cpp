@@ -3,53 +3,51 @@
 #include <iostream>
 
 Window::Window() {
-    if (!glfwInit()) {
-        exit(EXIT_FAILURE);
-    }
+  if (!glfwInit()) {
+    exit(EXIT_FAILURE);
+  }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 #ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    window = glfwCreateWindow(state.windowWidth, state.windowHeight, "Mynecraft", NULL, NULL);
+  window = glfwCreateWindow(state.windowWidth, state.windowHeight, "Mynecraft",
+                            NULL, NULL);
 
-    glfwMakeContextCurrent(window);
+  glfwMakeContextCurrent(window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Error initializing OpenGL" << std::endl;
-        exit(0);
-    }
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    std::cout << "Error initializing OpenGL" << std::endl;
+    exit(0);
+  }
 
-    glfwSwapInterval(1);
+  glfwSwapInterval(1);
 }
 
 void Window::update() {
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+  glfwSwapBuffers(window);
+  glfwPollEvents();
 }
 
 void Window::clear() {
-    glClearColor(0.4f, 0.9f, 0.9f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
+  glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_CLAMP);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
 }
 
-Window *Window::create() {
-    return new Window();
-}
+Window *Window::create() { return new Window(); }
 
 void Window::terminate() {
-    glfwDestroyWindow(window);
-    glfwTerminate();
+  glfwDestroyWindow(window);
+  glfwTerminate();
 }
 
-GLFWwindow *Window::p_getWindow() {
-    return window;
-}
+GLFWwindow *Window::p_getWindow() { return window; }
