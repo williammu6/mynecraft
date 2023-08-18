@@ -1,3 +1,14 @@
 .DS_STORE
 bin/**
 *psd
+
+CMakeCache.txt
+CMakeDoxyfile.in
+CPackSourceConfig.cmake
+CMakeCacheDoxyfile.in
+cmake_install.cmake
+CMakeFiles
+CMakeDoxygenDefaults.cmake
+CPackConfig.cmake
+Shitcraft
+_deps

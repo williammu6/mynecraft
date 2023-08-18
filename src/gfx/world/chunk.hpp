@@ -62,7 +62,7 @@ struct Chunk {
   TextureAtlas *texture_atlas;
   glm::vec3 position;
 
-  int size = 3;
+  int size = 24;
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
 
@@ -86,6 +86,8 @@ struct Chunk {
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Grass element);
   void add_face_to_mesh(CubeFace cf, Block &block);
+  bool should_draw_block(int x, int y, int z);
+  Block* get_block(int x, int y, int z);
 
   void render();
 };

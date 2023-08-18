@@ -1,3 +1,4 @@
 -Ilib/glfw/include
 -Ilib/glad/include
 -Ilib/glm
+-Ilib/PerlinNoise/include

@@ -11,6 +11,7 @@ struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
+  int n_chunks = 16;
 
   World(size_t chunk_size) {
     this->chunk_size = chunk_size;
@@ -27,5 +28,5 @@ struct World {
   void init();
   void render();
   bool chunk_too_far(Chunk &chunk);
-  Chunk *new_chunk(glm::vec3 position);
+  Chunk *create_chunk(glm::vec3 position);
 };
