@@ -23,13 +23,6 @@ void Application::run() {
 
   int frames = 0;
 
-  for(int i = 0; i < 30; i++){
-    glPushMatrix();
-    glTranslate2f(pointPosition[i].x, pointPosition[i].y);
-    glCallList(crossCL);
-    glPopMatrix();
-  }
-
   while (state.running) {
     float current_time = glfwGetTime();
     this->delta_time = current_time - this->last_frame;

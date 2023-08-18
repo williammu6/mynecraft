@@ -54,8 +54,7 @@ void gen(Chunk *chunk, int chunkX, int chunkZ) {
         chunk->blocks[x][z].push_back({block_type, glm::vec3(x, y, z)});
       }
 
-      std::cout << (float)(rand() / RAND_MAX) << std::endl;
-      if ((float)(rand() / RAND_MAX) < 0.047 && block_type->name == "sand") {
+      if (x % 7 == 0 && z % 41 == 0 && block_type->name == "sand") {
         int cactusHeight = 3;
         for (int cactusY = height; cactusY < height + cactusHeight; cactusY++)
           chunk->blocks[x][z].push_back({new Cactus(), glm::vec3(x, cactusY, z)});
