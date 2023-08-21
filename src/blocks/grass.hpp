@@ -13,9 +13,11 @@ struct Grass : BlockType {
       return glm::vec2(0, 0);
     case TOP:
       return glm::vec2(1, 1);
-    case LEFT_RIGHT:
+    case LEFT:
+    case RIGHT:
       return glm::vec2(1, 0);
-    case FRONT_BACK:
+    case FRONT:
+    case BACK:
       return glm::vec2(0, 1);
     }
   }

@@ -8,11 +8,15 @@ struct Wood : BlockType {
     solid = true;
   }
   glm::vec2 texture_offset(Face face) {
-    if (face == TOP || face == BOTTOM) {
+    switch (face) {
+    case TOP:
+    case BOTTOM:
       return glm::vec2(4, 0);
-    } else if (face == LEFT_RIGHT) {
+    case LEFT:
+    case RIGHT:
       return glm::vec2(3, 2);
+    default:
+      return glm::vec2(3, 1);
     }
-    return glm::vec2(3, 1);
   }
 };

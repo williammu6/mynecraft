@@ -9,8 +9,10 @@ struct Snow : BlockType {
   }
   glm::vec2 texture_offset(Face face) {
     switch (face) {
-    case LEFT_RIGHT:
-    case FRONT_BACK:
+    case LEFT:
+    case RIGHT:
+    case FRONT:
+    case BACK:
       return glm::vec2(6, 1);
     case TOP:
       return glm::vec2(5, 1);

@@ -1,8 +1,6 @@
 #include "chunk.hpp"
+#include "world.hpp"
 #include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <utility>
 
 void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   TextureAtlas *texture_atlas = state.renderer->texture_atlas;
@@ -14,8 +12,8 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   int ny = block.position.y + face_direction.y;
   int nz = block.position.z + face_direction.z;
 
-  if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->size &&
-      ny < this->blocks[nx][nz].size() && nz < this->size &&
+  if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->SIZE &&
+      ny < this->blocks[nx][nz].size() && nz < this->SIZE &&
       this->blocks[nx][nz][ny].type->solid) {
     return;
   }
@@ -48,23 +46,25 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   this->indices.push_back(QUAD_FACE_INDICES[cf.ID]);
 }
 
-void Chunk::prepare_block(Block &block) {
-  for (const auto &cube_face : CUBE_FACES) {
-    this->add_face_to_mesh(cube_face, block);
-  }
-}
+void Chunk::prepare_block(Block &block) {}
 
-void Chunk::render() { this->mesh->draw(this->position * (float)this->size); }
+void Chunk::render() { this->mesh->draw(this->position * (float)this->SIZE); }
 
 void Chunk::init() {
-  this->blocks.resize(this->size);
-  for (int i = 0; i < this->size; i++)
-    this->blocks[i].resize(this->size);
+  this->blocks.resize(this->SIZE);
+  for (int i = 0; i < this->SIZE; i++)
+    this->blocks[i].resize(this->SIZE);
 }
 
 void Chunk::prepare_render() {
-  for (int x = 0; x < this->size; x++) {
-    for (int z = 0; z < this->size; z++) {
+  std::map<Face, Chunk *> neighbor_chunks{
+      {LEFT, this->world->get_chunk_at(position.x + 1, position.z)},
+      {RIGHT, this->world->get_chunk_at(position.x - 1, position.z)},
+      {FRONT, this->world->get_chunk_at(position.x, position.z + 1)},
+      {BACK, this->world->get_chunk_at(position.x, position.z - 1)}};
+
+  for (int x = 0; x < this->SIZE; x++) {
+    for (int z = 0; z < this->SIZE; z++) {
       int height = this->blocks[x][z].size();
       for (int y = height - 1; y >= 0; y--) {
         Block block = this->blocks[x][z][y];
@@ -73,7 +73,42 @@ void Chunk::prepare_render() {
           continue;
         }
 
-        this->prepare_block(this->blocks[x][z][y]);
+        if (block.type->name == "cactus") {
+          printf("LULULUL %f %f\n", block.position.x, block.position.z);
+        }
+
+        Block *neighbor_block_left =
+            x == SIZE - 1 ? neighbor_chunks[LEFT] != nullptr
+                                ? neighbor_chunks[LEFT]->get_block(0, y, z)
+                                : NULL
+                          : this->get_block(x + 1, y, z);
+
+        if (neighbor_block_left == NULL ||
+            neighbor_block_left != nullptr &&
+                !neighbor_block_left->type->solid) {
+          this->add_face_to_mesh(CUBE_FACES[LEFT], block);
+        }
+
+        Block *neighbor_block_right =
+            x == 0 ? neighbor_chunks[RIGHT] != nullptr
+                         ? neighbor_chunks[RIGHT]->get_block(SIZE - 1, y, z)
+                         : NULL
+                   : this->get_block(x - 1, y, z);
+
+        if (neighbor_block_right == NULL ||
+            neighbor_block_right != nullptr &&
+                !neighbor_block_right->type->solid) {
+          this->add_face_to_mesh(CUBE_FACES[3], block);
+        }
+
+        for (const auto &cube_face : CUBE_FACES) {
+          if (cube_face.face == LEFT)
+            continue;
+          if (cube_face.face == RIGHT)
+            continue;
+
+          this->add_face_to_mesh(cube_face, block);
+        }
       }
     }
   }
@@ -82,8 +117,7 @@ void Chunk::prepare_render() {
 }
 
 Block *Chunk::get_block(int x, int y, int z) {
-  if (x >= 0 && y >= 0 && z >= 0 && x < this->size && z < this->size &&
-      y < this->blocks[x][z].size()) {
+  if (in_bounds({x, y, z})) {
     return &this->blocks[x][z][y];
   }
 
@@ -92,42 +126,74 @@ Block *Chunk::get_block(int x, int y, int z) {
 
 bool Chunk::should_draw_block(int x, int y, int z) {
   Block *block = get_block(x, y, z);
+
   return block->type->solid;
-  bool render = false;
-  const std::vector<std::vector<int>> coordinate_directions = {
-      {-1, 0},
-      {1, 0},
-      {0, -1},
-      {0, 1},
-  };
-
-  Block *block_above = get_block(x, y + 1, z);
-  if (block_above == nullptr)
-    return true;
-
-  for (auto dir : coordinate_directions) {
-    int newX = x + dir[0];
-    int newZ = z + dir[1];
-
-    Block *neighbor_block = get_block(newX, y, newZ);
-
-    if (neighbor_block == nullptr) {
-      render = true;
-    }
-  }
-
-  return render;
 }
 
 bool Chunk::in_bounds(glm::vec3 position) {
-  float x = position.x;
-  float y = position.y;
-  float z = position.z;
-  return x >= 0 && y >= 0 && z >= 0 && x < size && z < size &&
-         y < blocks[x][z].size();
+  float x = this->position.x;
+  float y = this->position.y;
+  float z = this->position.z;
+  return x >= 0 && y >= 0 && z >= 0 && x < this->SIZE && z < this->SIZE &&
+         y < this->blocks[x][z].size();
 }
 
 void Chunk::set(glm::vec3 position, Block block) {
   if (in_bounds(position))
     blocks[position.x][position.z][position.y] = block;
+}
+
+void Chunk::generate() {
+  BlockType *block_type = nullptr;
+
+  const siv::PerlinNoise::seed_type seed = 2u;
+  const siv::PerlinNoise perlin{seed};
+
+  for (int x = 0; x < this->SIZE; x++) {
+    int nX = (x + 1) + position.x * this->SIZE;
+    for (int z = 0; z < this->SIZE; z++) {
+      int nZ = (z + 1) + position.z * this->SIZE;
+      const double noise = perlin.octave2D_01(nX * 0.01, nZ * 0.01, 4);
+      int height = glm::max(1, (int)(noise * 64));
+
+      if (height < 10) {
+        block_type = new Water();
+      } else if (height < 14) {
+        block_type = new Sand();
+      } else if (height < 96) {
+        block_type = new Grass();
+      } else {
+        block_type = new Snow();
+      }
+
+      height = x + 10;
+
+      for (int y = 0; y < height; y++) {
+        blocks[x][z].push_back({block_type, glm::vec3(x, y, z)});
+      }
+
+      for (int y = height; y < 256; y++) {
+        blocks[x][z].push_back({new Air(), glm::vec3(x, y, z)});
+      }
+
+      if (RANDCHANCE(0.02) && strcmp(block_type->name, "sand") == 0) {
+        for (int cY = height; cY < height + RAND(3, 5); cY++) {
+          glm::vec3 cactus_position = {x, cY, z};
+          this->set(cactus_position, {new Cactus(), cactus_position});
+        }
+      }
+
+      if (RANDCHANCE(0.01) && strcmp(block_type->name, "grass") == 0) {
+        // create_tree({x, height, z}, this);
+      }
+    }
+  }
+
+  this->prepare_render();
+}
+
+Chunk *create_chunk(glm::vec3 position, struct World *world) {
+  Chunk *chunk = new Chunk(position, world);
+  chunk->generate();
+  return chunk;
 }

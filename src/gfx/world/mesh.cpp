@@ -5,10 +5,10 @@ Mesh::Mesh(std::vector<std::vector<Vertex>> vertices,
   this->vertices = vertices;
   this->indices = indices;
 
-  setupMesh();
+  setup();
 }
 
-void Mesh::setupMesh() {
+void Mesh::setup() {
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
   glGenBuffers(1, &EBO);

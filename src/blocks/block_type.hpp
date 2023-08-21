@@ -3,7 +3,7 @@
 #include "../common.hpp"
 #include "../gfx/gfx.hpp"
 
-enum Face { TOP = 0, BOTTOM = 1, LEFT_RIGHT = 2, FRONT_BACK = 3 };
+enum Face { TOP = 0, FRONT, LEFT, RIGHT, BACK, BOTTOM };
 
 struct BlockType {
   const char *name;

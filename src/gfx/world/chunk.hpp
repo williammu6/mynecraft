@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../blocks/blocks.hpp"
 #include "../../common.hpp"
 #include "../../state.hpp"
-#include "../shader.hpp"
-#include "../texture.hpp"
+#include "../../utils/math.hpp"
+#include "perlin_noise.hpp"
 #include "mesh.hpp"
 
 static glm::vec3 CUBE_F_B_VERTICES[] = {
@@ -32,9 +33,11 @@ struct CubeFace {
     switch (face) {
     case TOP:
       return CUBE_T_B_VERTICES;
-    case FRONT_BACK:
+    case FRONT:
+    case BACK:
       return CUBE_F_B_VERTICES;
-    case LEFT_RIGHT:
+    case LEFT:
+    case RIGHT:
       return CUBE_L_R_VERTICES;
     case BOTTOM:
       return CUBE_T_B_VERTICES;
@@ -47,9 +50,9 @@ const glm::vec3 DIRECTIONS[] = {glm::vec3(0, 1, 0),  glm::vec3(0, 0, 1),
                                 glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)};
 
 static const std::vector<CubeFace> CUBE_FACES{
-    {0, TOP, glm::vec3(1, 1, 1)},         {1, FRONT_BACK, glm::vec3(1, 1, 1)},
-    {2, LEFT_RIGHT, glm::vec3(-1, 1, 1)}, {3, LEFT_RIGHT, glm::vec3(1, 1, 1)},
-    {4, FRONT_BACK, glm::vec3(1, 1, -1)}, {5, BOTTOM, glm::vec3(1, -1, 1)},
+    {0, TOP, glm::vec3(1, 1, 1)},         {1, FRONT, glm::vec3(1, 1, 1)},
+    {2, LEFT, glm::vec3(-1, 1, 1)}, {3, RIGHT, glm::vec3(1, 1, 1)},
+    {4, BACK, glm::vec3(1, 1, -1)}, {5, BOTTOM, glm::vec3(1, -1, 1)},
 };
 
 struct Block {
@@ -58,9 +61,11 @@ struct Block {
 };
 
 struct Chunk {
+  struct World *world;
+
   glm::vec3 position;
 
-  int size = 24;
+  int SIZE = 4;
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
 
@@ -70,8 +75,9 @@ struct Chunk {
   unsigned int vao, vbo, ebo;
   std::vector<std::vector<std::vector<Block>>> blocks;
 
-  Chunk(glm::vec3 position) {
+  Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
+    this->world = world;
 
     this->init();
   };
@@ -86,6 +92,8 @@ struct Chunk {
   Block *get_block(int x, int y, int z);
   bool in_bounds(glm::vec3 position);
   void set(glm::vec3 position, Block block);
-
+  void generate();
   void render();
 };
+
+Chunk *create_chunk(glm::vec3 position, struct World *world);

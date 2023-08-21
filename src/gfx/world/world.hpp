@@ -11,7 +11,7 @@ struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
-  int n_chunks = 12;
+  int n_chunks = 4;
   int seed;
   int MAX_HEIGHT = 256;
 
@@ -24,9 +24,8 @@ struct World {
   }
 
   std::vector<Chunk *> chunks;
-  void generate();
   void init();
   void render();
   bool chunk_too_far(Chunk &chunk);
-  Chunk *create_chunk(glm::vec3 position);
+  Chunk *get_chunk_at(int x, int z);
 };
