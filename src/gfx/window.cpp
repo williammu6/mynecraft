@@ -35,7 +35,6 @@ void Window::clear() {
   glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
-
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   glEnable(GL_DEPTH_CLAMP);

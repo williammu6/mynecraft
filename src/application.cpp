@@ -44,7 +44,7 @@ void Application::run() {
     this->last_frame = current_time;
     if (current_time - previous_time >= 1.0) {
       previous_time = current_time;
-      std::cout << frames << std::endl;
+      // std::cout << frames << std::endl;
       frames = 0;
     }
 
