@@ -12,8 +12,8 @@ struct TextureAtlas {
   int tW = 64;
   int tH = 64;
 
-  int atlasW = 512;
-  int atlasH = 512;
+  int atlas_width = 512;
+  int atlas_height = 512;
 
   TextureAtlas() = default;
   TextureAtlas(const char *path) { this->texture = texture_from_path(path); }

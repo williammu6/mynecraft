@@ -11,14 +11,14 @@ struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
-  int n_chunks = 16;
+  int n_chunks = 12;
+  int seed;
+  int MAX_HEIGHT = 256;
 
-  World(size_t chunk_size) {
+  World(size_t chunk_size, int seed) {
+    srand(seed);
+
     this->chunk_size = chunk_size;
-    this->shader = new Shader("res/shaders/basicTexture.vert",
-                              "res/shaders/basicTexture.frag");
-
-    this->texture_atlas = new TextureAtlas("res/textures.png");
 
     this->init();
   }

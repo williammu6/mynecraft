@@ -332,6 +332,30 @@ src/gfx/shader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/shader.cpp.s
 .PHONY : src/gfx/shader.cpp.s
 
+src/gfx/sun.o: src/gfx/sun.cpp.o
+.PHONY : src/gfx/sun.o
+
+# target to build an object file
+src/gfx/sun.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.o
+.PHONY : src/gfx/sun.cpp.o
+
+src/gfx/sun.i: src/gfx/sun.cpp.i
+.PHONY : src/gfx/sun.i
+
+# target to preprocess a source file
+src/gfx/sun.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.i
+.PHONY : src/gfx/sun.cpp.i
+
+src/gfx/sun.s: src/gfx/sun.cpp.s
+.PHONY : src/gfx/sun.s
+
+# target to generate assembly for a file
+src/gfx/sun.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.s
+.PHONY : src/gfx/sun.cpp.s
+
 src/gfx/texture.o: src/gfx/texture.cpp.o
 .PHONY : src/gfx/texture.o
 
@@ -404,6 +428,30 @@ src/gfx/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/window.cpp.s
 .PHONY : src/gfx/window.cpp.s
 
+src/gfx/world/biome.o: src/gfx/world/biome.cpp.o
+.PHONY : src/gfx/world/biome.o
+
+# target to build an object file
+src/gfx/world/biome.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.o
+.PHONY : src/gfx/world/biome.cpp.o
+
+src/gfx/world/biome.i: src/gfx/world/biome.cpp.i
+.PHONY : src/gfx/world/biome.i
+
+# target to preprocess a source file
+src/gfx/world/biome.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.i
+.PHONY : src/gfx/world/biome.cpp.i
+
+src/gfx/world/biome.s: src/gfx/world/biome.cpp.s
+.PHONY : src/gfx/world/biome.s
+
+# target to generate assembly for a file
+src/gfx/world/biome.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.s
+.PHONY : src/gfx/world/biome.cpp.s
+
 src/gfx/world/chunk.o: src/gfx/world/chunk.cpp.o
 .PHONY : src/gfx/world/chunk.o
 
@@ -451,6 +499,30 @@ src/gfx/world/mesh.s: src/gfx/world/mesh.cpp.s
 src/gfx/world/mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/mesh.cpp.s
 .PHONY : src/gfx/world/mesh.cpp.s
+
+src/gfx/world/tree.o: src/gfx/world/tree.cpp.o
+.PHONY : src/gfx/world/tree.o
+
+# target to build an object file
+src/gfx/world/tree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.o
+.PHONY : src/gfx/world/tree.cpp.o
+
+src/gfx/world/tree.i: src/gfx/world/tree.cpp.i
+.PHONY : src/gfx/world/tree.i
+
+# target to preprocess a source file
+src/gfx/world/tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.i
+.PHONY : src/gfx/world/tree.cpp.i
+
+src/gfx/world/tree.s: src/gfx/world/tree.cpp.s
+.PHONY : src/gfx/world/tree.s
+
+# target to generate assembly for a file
+src/gfx/world/tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.s
+.PHONY : src/gfx/world/tree.cpp.s
 
 src/gfx/world/world.o: src/gfx/world/world.cpp.o
 .PHONY : src/gfx/world/world.o
@@ -553,6 +625,9 @@ help:
 	@echo "... src/gfx/shader.o"
 	@echo "... src/gfx/shader.i"
 	@echo "... src/gfx/shader.s"
+	@echo "... src/gfx/sun.o"
+	@echo "... src/gfx/sun.i"
+	@echo "... src/gfx/sun.s"
 	@echo "... src/gfx/texture.o"
 	@echo "... src/gfx/texture.i"
 	@echo "... src/gfx/texture.s"
@@ -562,12 +637,18 @@ help:
 	@echo "... src/gfx/window.o"
 	@echo "... src/gfx/window.i"
 	@echo "... src/gfx/window.s"
+	@echo "... src/gfx/world/biome.o"
+	@echo "... src/gfx/world/biome.i"
+	@echo "... src/gfx/world/biome.s"
 	@echo "... src/gfx/world/chunk.o"
 	@echo "... src/gfx/world/chunk.i"
 	@echo "... src/gfx/world/chunk.s"
 	@echo "... src/gfx/world/mesh.o"
 	@echo "... src/gfx/world/mesh.i"
 	@echo "... src/gfx/world/mesh.s"
+	@echo "... src/gfx/world/tree.o"
+	@echo "... src/gfx/world/tree.i"
+	@echo "... src/gfx/world/tree.s"
 	@echo "... src/gfx/world/world.o"
 	@echo "... src/gfx/world/world.i"
 	@echo "... src/gfx/world/world.s"

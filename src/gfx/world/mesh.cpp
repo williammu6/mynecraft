@@ -15,27 +15,25 @@ void Mesh::setupMesh() {
 
   glBindVertexArray(VAO);
 
-  std::vector<Vertex> allVertices;
-  std::vector<unsigned int> allIndices;
+  std::vector<Vertex> all_vertices;
+  std::vector<unsigned int> all_indices;
 
   for (auto vertex : vertices)
-    allVertices.insert(allVertices.end(), vertex.begin(), vertex.end());
+    all_vertices.insert(all_vertices.end(), vertex.begin(), vertex.end());
 
-  int i = 0;
-  for (auto ind : indices) {
-    for (auto in : ind) {
-      allIndices.push_back(in + i * 4);
+  for (int index = 0; index < indices.size(); index++) {
+    for (auto in : indices[index]) {
+      all_indices.push_back(in + index * 4);
     }
-    i++;
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, 4 * vertices.size() * sizeof(Vertex),
-               &allVertices[0], GL_STATIC_DRAW);
+               &all_vertices[0], GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               allIndices.size() * sizeof(unsigned int), &allIndices[0],
+               all_indices.size() * sizeof(unsigned int), &all_indices[0],
                GL_STATIC_DRAW);
 
   // Position
@@ -55,7 +53,8 @@ void Mesh::setupMesh() {
   glBindVertexArray(0);
 }
 
-void Mesh::draw(Shader *shader, glm::vec3 position) {
+void Mesh::draw(glm::vec3 position) {
+  Shader *shader = state.renderer->shader;
   shader->use();
 
   shader->setInt("material.diffuse", 0);
@@ -69,12 +68,22 @@ void Mesh::draw(Shader *shader, glm::vec3 position) {
   shader->setVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
   shader->setVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
+  /*
+  shader->>setVec3("lightPos", state.sun_position);
+  shader->>setVec3("viewPos", state.sun_position);
+  shader->>setVec3("lightColor", glm::vec3(255, 100, 100));
+  */
+
+  // shader->>setVec3("view", state.sun_position);
+
   glBindVertexArray(VAO);
 
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(state.camera.model, position);
 
   shader->setMat4("model", model);
+  shader->setMat4("view", state.camera.view);
+  shader->setMat4("projection", state.camera.projection);
 
   glDrawElements(GL_TRIANGLES, indices.size() * 6, GL_UNSIGNED_INT, (void *)0);
 }

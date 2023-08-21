@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "gfx/camera.hpp"
+#include "gfx/renderer.hpp"
 #include "gfx/shader.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/window.hpp"

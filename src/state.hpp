@@ -1,19 +1,18 @@
 #pragma once
 
-#include "block_type/block_type.hpp"
-#include "block_type/grass.hpp"
+#include "blocks/block_type.hpp"
 #include "gfx/camera.hpp"
+#include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
-
-#include <map>
 
 struct State {
   int windowWidth, windowHeight;
   Window *window;
   Camera camera;
   bool wireframe_mode = false;
-  std::map<const char *, Grass> elements{{"grass", Grass()}};
   bool running;
+  glm::vec3 sun_position;
+  Renderer *renderer;
 };
 
 extern State &state;

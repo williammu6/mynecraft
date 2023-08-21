@@ -58,8 +58,6 @@ struct Block {
 };
 
 struct Chunk {
-  Shader *shader;
-  TextureAtlas *texture_atlas;
   glm::vec3 position;
 
   int size = 24;
@@ -72,10 +70,8 @@ struct Chunk {
   unsigned int vao, vbo, ebo;
   std::vector<std::vector<std::vector<Block>>> blocks;
 
-  Chunk(Shader *shader, TextureAtlas *texture_atlas, glm::vec3 position) {
-    this->shader = shader;
+  Chunk(glm::vec3 position) {
     this->position = position;
-    this->texture_atlas = texture_atlas;
 
     this->init();
   };
@@ -84,10 +80,12 @@ struct Chunk {
 
   void prepare_render();
   void prepare_block(Block &block);
-  void prepare_face(CubeFace cf, Grass element);
+  void prepare_face(CubeFace cf, Block element);
   void add_face_to_mesh(CubeFace cf, Block &block);
   bool should_draw_block(int x, int y, int z);
-  Block* get_block(int x, int y, int z);
+  Block *get_block(int x, int y, int z);
+  bool in_bounds(glm::vec3 position);
+  void set(glm::vec3 position, Block block);
 
   void render();
 };

@@ -1,7 +1,7 @@
 #include "application.hpp"
 
 int main() {
-    Application application;
-    application.run();
-    return 0;
+  Application application;
+  application.run();
+  return 0;
 }

@@ -8,11 +8,11 @@ struct Camera {
 
   Window *window;
 
-  glm::vec3 cameraPos = glm::vec3(0, 2, 10);
-  glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-  glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-  glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-  glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::vec3 position = glm::vec3(0, 2, 10);
+  glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 cameraDirection = glm::normalize(position - target);
+  glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::vec3 direction;
   glm::mat4 projection;
   glm::mat4 model = glm::mat4(1.0f);
@@ -30,6 +30,6 @@ struct Camera {
   void look_at(double xpos, double ypos);
   void update() {
     this->view = glm::lookAt(
-        this->cameraPos, this->cameraPos + this->cameraFront, this->cameraUp);
+        this->position, this->position + this->front, this->up);
   }
 };

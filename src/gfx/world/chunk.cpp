@@ -5,6 +5,7 @@
 #include <utility>
 
 void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
+  TextureAtlas *texture_atlas = state.renderer->texture_atlas;
   auto texture_offset = block.type->texture_offset(cf.face);
 
   auto face_direction = DIRECTIONS[cf.ID];
@@ -13,22 +14,23 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   int ny = block.position.y + face_direction.y;
   int nz = block.position.z + face_direction.z;
 
-  if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->size && ny < this->blocks[nx][nz].size() &&
-      nz < this->size && this->blocks[nx][nz][ny].type->solid) {
+  if (nx >= 0 && ny >= 0 && nz >= 0 && nx < this->size &&
+      ny < this->blocks[nx][nz].size() && nz < this->size &&
+      this->blocks[nx][nz][ny].type->solid) {
     return;
   }
 
   float minTX =
-      this->texture_atlas->tW * texture_offset.x / this->texture_atlas->atlasW;
+      texture_atlas->tW * texture_offset.x / texture_atlas->atlas_width;
 
-  float maxTX = this->texture_atlas->tW * (texture_offset.x + 1) /
-                this->texture_atlas->atlasW;
+  float maxTX =
+      texture_atlas->tW * (texture_offset.x + 1) / texture_atlas->atlas_width;
 
   float minTY =
-      this->texture_atlas->tH * texture_offset.y / this->texture_atlas->atlasH;
+      texture_atlas->tH * texture_offset.y / texture_atlas->atlas_height;
 
-  float maxTY = this->texture_atlas->tH * (texture_offset.y + 1) /
-                this->texture_atlas->atlasH;
+  float maxTY =
+      texture_atlas->tH * (texture_offset.y + 1) / texture_atlas->atlas_height;
 
   glm::vec3 *V = cf.vertices();
 
@@ -52,9 +54,7 @@ void Chunk::prepare_block(Block &block) {
   }
 }
 
-void Chunk::render() {
-  this->mesh->draw(this->shader, this->position * (float)this->size);
-}
+void Chunk::render() { this->mesh->draw(this->position * (float)this->size); }
 
 void Chunk::init() {
   this->blocks.resize(this->size);
@@ -81,8 +81,9 @@ void Chunk::prepare_render() {
   this->mesh = new Mesh(this->vertices, this->indices);
 }
 
-Block* Chunk::get_block(int x, int y, int z) {
-  if (x >= 0 && y >= 0 && z >= 0 && x < this->size && z < this->size && y < this->blocks[x][z].size()) {
+Block *Chunk::get_block(int x, int y, int z) {
+  if (x >= 0 && y >= 0 && z >= 0 && x < this->size && z < this->size &&
+      y < this->blocks[x][z].size()) {
     return &this->blocks[x][z][y];
   }
 
@@ -90,24 +91,25 @@ Block* Chunk::get_block(int x, int y, int z) {
 }
 
 bool Chunk::should_draw_block(int x, int y, int z) {
-  Block* block = get_block(x, y, z);
+  Block *block = get_block(x, y, z);
   return block->type->solid;
   bool render = false;
   const std::vector<std::vector<int>> coordinate_directions = {
-    {-1, 0 },
-    { 1, 0 },
-    { 0, -1 },
-    { 0, 1 },
+      {-1, 0},
+      {1, 0},
+      {0, -1},
+      {0, 1},
   };
-  
-  Block* block_above = get_block(x, y + 1, z);
-  if (block_above == nullptr) return true;
+
+  Block *block_above = get_block(x, y + 1, z);
+  if (block_above == nullptr)
+    return true;
 
   for (auto dir : coordinate_directions) {
     int newX = x + dir[0];
     int newZ = z + dir[1];
 
-    Block* neighbor_block = get_block(newX, y, newZ);
+    Block *neighbor_block = get_block(newX, y, newZ);
 
     if (neighbor_block == nullptr) {
       render = true;
@@ -115,4 +117,17 @@ bool Chunk::should_draw_block(int x, int y, int z) {
   }
 
   return render;
+}
+
+bool Chunk::in_bounds(glm::vec3 position) {
+  float x = position.x;
+  float y = position.y;
+  float z = position.z;
+  return x >= 0 && y >= 0 && z >= 0 && x < size && z < size &&
+         y < blocks[x][z].size();
+}
+
+void Chunk::set(glm::vec3 position, Block block) {
+  if (in_bounds(position))
+    blocks[position.x][position.z][position.y] = block;
 }

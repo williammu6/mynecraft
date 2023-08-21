@@ -1,26 +1,24 @@
 #pragma once
 
-#include "gfx.hpp"
 #include "functional"
+#include "gfx.hpp"
 #include <stdlib.h>
 
-struct WindowProps
-{
-    int width, height;
+struct WindowProps {
+  int width, height;
 };
 
-class Window
-{
+class Window {
 private:
-    GLFWwindow *window;
+  GLFWwindow *window;
 
 public:
-    Window();
-    static Window *create();
-    void terminate();
-    void processInput();
-    void update();
-    void clear();
-    int shouldClose();
-    GLFWwindow *p_getWindow();
+  Window();
+  static Window *create();
+  void terminate();
+  void processInput();
+  void update();
+  void clear();
+  int shouldClose();
+  GLFWwindow *p_getWindow();
 };

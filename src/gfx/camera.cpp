@@ -41,5 +41,5 @@ void Camera::look_at(double xpos, double ypos) {
   direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
   direction.y = sin(glm::radians(pitch));
   direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-  this->cameraFront = glm::normalize(direction);
+  this->front = glm::normalize(direction);
 }
