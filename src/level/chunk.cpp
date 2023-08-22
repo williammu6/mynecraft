@@ -1,3 +1,4 @@
+#include "chunk.hpp"
 #include "gen.hpp"
 #include "world.hpp"
 
@@ -8,7 +9,7 @@ std::map<Direction, glm::vec3> direction_offset{{SOUTH, {0, 0, 1}},
                                                 {WEST, {-1, 0, 0}},
                                                 {EAST, {1, 0, 0}}};
 
-void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
+void Chunk::add_face_to_mesh(CubeFace cf, Block block) {
   TextureAtlas *texture_atlas = state.renderer->texture_atlas;
   auto texture_offset = block.type->texture_offset(cf.direction);
 
@@ -39,13 +40,13 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   glm::vec3 *V = cf.vertices();
 
   std::vector<Vertex> tmpVertices{
-      {V[0] * (glm::vec3)cf.position + (glm::vec3)block.position,
+      {V[0] * cf.position + block.position,
        face_direction, glm::vec2(minTX, minTY)},
-      {V[1] * (glm::vec3)cf.position + (glm::vec3)block.position,
+      {V[1] * cf.position + block.position,
        face_direction, glm::vec2(maxTX, minTY)},
-      {V[2] * (glm::vec3)cf.position + (glm::vec3)block.position,
+      {V[2] * cf.position + block.position,
        face_direction, glm::vec2(minTX, maxTY)},
-      {V[3] * (glm::vec3)cf.position + (glm::vec3)block.position,
+      {V[3] * cf.position + block.position,
        face_direction, glm::vec2(maxTX, maxTY)}};
 
   this->vertices.push_back(tmpVertices);
@@ -65,10 +66,10 @@ void Chunk::init() {
     this->blocks[i].resize(this->SIZE);
 }
 
-Block *Chunk::get_neighbor_block(Direction direction, Block *block) {
-  int x = block->position.x;
-  int y = block->position.y;
-  int z = block->position.z;
+Block *Chunk::get_neighbor_block(Direction direction, Block block) {
+  int x = block.position.x;
+  int y = block.position.y;
+  int z = block.position.z;
 
   if (direction == SOUTH) {
     if (z != SIZE - 1) {
@@ -77,53 +78,38 @@ Block *Chunk::get_neighbor_block(Direction direction, Block *block) {
       return &neighbor_chunk[SOUTH]->blocks[x][0][y];
     }
   }
-  /*
 
   if (direction == NORTH) {
     if (z != 0) {
-      return this->get_block(x, y, z - 1);
-    }
-
-    // std::cout << this->position.x << " " << this->position.z << std::endl;
-
-      // printf("Looking for neighbor chunk for (%d, %d) = DIR = %d\n",
-      // (int)position.x, (int)position.z, NORTH); return
-      // &neighbor_chunk[NORTH]->blocks[x][SIZE - 1][y];
-  }
-
-  if (direction == EAST) {
-    if (x != SIZE - 1) {
-      return this->get_block(x + 1, y, z);
-    } else if (neighbor_chunk[EAST]) {
-      return neighbor_chunk[EAST]->get_block(0, y, z);
+      return get_block(x, y, z - 1);
+    } else if (neighbor_chunk[NORTH]) {
+      return &neighbor_chunk[NORTH]->blocks[x][SIZE - 1][y];
     }
   }
+
   if (direction == WEST) {
     if (x != 0) {
       return this->get_block(x - 1, y, z);
     } else if (neighbor_chunk[WEST]) {
-      return neighbor_chunk[WEST]->get_block(SIZE - 1, y, z);
+      return &neighbor_chunk[WEST]->blocks[SIZE - 1][z][y];    
     }
   }
 
-  if (direction == NORTH) {
-    if (z != 0) {
-      return this->get_block(x, y, z - 1);
-    } else if (neighbor_chunk[NORTH]) {
-      return neighbor_chunk[NORTH]->get_block(x, y, SIZE - 1);
+  if (direction == EAST) {
+    if (x != SIZE - 1) {
+      return get_block(x + 1, y, z );
+    } else if (neighbor_chunk[EAST]) {
+      return &neighbor_chunk[EAST]->blocks[0][z][y];
     }
   }
-
-  */
-
   return nullptr;
 }
 
 bool should_draw_block_face(Chunk *chunk, Direction direction,
                             glm::vec3 position) {
   Block *block = chunk->get_block(position.x, position.y, position.z);
-  Block *neigh_block = chunk->get_neighbor_block(direction, block);
-  return !neigh_block || !neigh_block->type->solid;
+  Block *neigh_block = chunk->get_neighbor_block(direction, *block);
+  return neigh_block == nullptr || !neigh_block->type->solid;
 }
 
 void Chunk::prepare_render() {
@@ -131,28 +117,18 @@ void Chunk::prepare_render() {
     for (int z = 0; z < this->SIZE; z++) {
       int height = this->blocks[x][z].size();
       for (int y = height - 1; y >= 0; y--) {
-        Block *block = this->get_block(x, y, z);
-        if (!block->type->solid)
+        Block block = this->blocks[x][z][y];
+        if (!block.type->solid)
           continue;
 
-        if (should_draw_block_face(this, SOUTH, {x, y, z}))
-          this->add_face_to_mesh(CUBE_FACES[SOUTH], *block);
+        if (should_draw_block_face(this, SOUTH, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[SOUTH], block);
+        if (should_draw_block_face(this, NORTH, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[NORTH], block);
+        if (should_draw_block_face(this, WEST, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[WEST], block);
+        if (should_draw_block_face(this, EAST, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[EAST], block);
 
-        // if (should_draw_block_face(this, NORTH, {x, y, z}))
-        // this->add_face_to_mesh(CUBE_FACES[NORTH], *block);
-
-        /*
-        if (should_draw_block_face(this, WEST, {x, y, z}))
-          this->add_face_to_mesh(CUBE_FACES[WEST], *block);
-
-        if (should_draw_block_face(this, EAST, {x, y, z}))
-          this->add_face_to_mesh(CUBE_FACES[EAST], *block);
-          */
-
-        for (const auto &cube_face : CUBE_FACES) {
-          if (cube_face.direction == TOP)
-            this->add_face_to_mesh(cube_face, *block);
-        }
+        for (const auto &cube_face : CUBE_FACES)
+          if (cube_face.direction == TOP || cube_face.direction == DOWN)
+            this->add_face_to_mesh(cube_face, block);
       }
     }
   }

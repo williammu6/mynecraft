@@ -65,7 +65,7 @@ struct Chunk {
 
   glm::vec3 position;
 
-  int SIZE = 16;
+  int SIZE = 4;
 
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
@@ -85,15 +85,14 @@ struct Chunk {
   void prepare_render();
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Block element);
-  void add_face_to_mesh(CubeFace cf, Block &block);
+  void add_face_to_mesh(CubeFace cf, Block block);
   void set(glm::vec3 position, Block block);
   void render();
   void update_neighbors();
 
-  bool should_draw_block(int x, int y, int z);
   bool in_bounds(glm::vec3 position);
 
-  Block *get_neighbor_block(Direction direction, Block *block);
+  Block *get_neighbor_block(Direction direction, Block block);
   Block *get_block(int x, int y, int z);
 };
 
