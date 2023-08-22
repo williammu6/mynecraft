@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../blocks/blocks.hpp"
-#include "../../common.hpp"
-#include "../../state.hpp"
-#include "../../utils/math.hpp"
+#include "blocks/blocks.hpp"
+#include "direction.hpp"
+#include "../common.hpp"
+#include "../state.hpp"
+#include "../utils/math.hpp"
 #include "mesh.hpp"
-#include "perlin_noise.hpp"
 
 static glm::vec3 CUBE_F_B_VERTICES[] = {
     glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0.5, -0.5, 0.5),
@@ -26,20 +26,20 @@ static std::vector<std::vector<unsigned int>> QUAD_FACE_INDICES{
 
 struct CubeFace {
   int ID;
-  enum Face face;
+  enum Direction direction;
   glm::vec3 position;
 
   glm::vec3 *vertices() {
-    switch (face) {
+    switch (direction) {
     case TOP:
       return CUBE_T_B_VERTICES;
-    case FRONT:
-    case BACK:
+    case NORTH:
+    case SOUTH:
       return CUBE_F_B_VERTICES;
-    case LEFT:
-    case RIGHT:
+    case WEST:
+    case EAST:
       return CUBE_L_R_VERTICES;
-    case BOTTOM:
+    case DOWN:
       return CUBE_T_B_VERTICES;
     }
   }
@@ -49,20 +49,11 @@ const glm::vec3 DIRECTIONS[] = {glm::vec3(0, 1, 0),  glm::vec3(0, 0, 1),
                                 glm::vec3(1, 0, 0),  glm::vec3(-1, 0, 0),
                                 glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)};
 
-enum Direction {
-  TOP_ = 0,
-  SOUTH,
-  EAST,
-  WEST,
-  NORTH,
-  DOWN,
-};
-
 
 static const std::vector<CubeFace> CUBE_FACES{
-    {0, TOP, glm::vec3(1, 1, 1)},   {1, FRONT, glm::vec3(1, 1, 1)},
-    {2, LEFT, glm::vec3(-1, 1, 1)}, {3, RIGHT, glm::vec3(1, 1, 1)},
-    {4, BACK, glm::vec3(1, 1, -1)}, {5, BOTTOM, glm::vec3(1, -1, 1)},
+    {0, TOP, glm::vec3(1, 1, 1)},   {1, SOUTH, glm::vec3(1, 1, 1)},
+    {2, WEST, glm::vec3(-1, 1, 1)}, {3, EAST, glm::vec3(1, 1, 1)},
+    {4, NORTH, glm::vec3(1, 1, -1)}, {5, DOWN, glm::vec3(1, -1, 1)},
 };
 
 struct Block {
@@ -102,7 +93,6 @@ struct Chunk {
   Block *get_block(int x, int y, int z);
   bool in_bounds(glm::vec3 position);
   void set(glm::vec3 position, Block block);
-  void generate();
   void render();
 
   Chunk *get_neighbor_chunk(Direction direction);

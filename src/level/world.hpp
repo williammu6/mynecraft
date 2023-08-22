@@ -1,17 +1,17 @@
 #pragma once
 
-#include "../../common.hpp"
-#include "../../state.hpp"
-#include "../gfx.hpp"
-#include "../shader.hpp"
-#include "../texture.hpp"
+#include "../common.hpp"
+#include "../state.hpp"
+#include "../gfx/gfx.hpp"
+#include "../gfx/shader.hpp"
+#include "../gfx/texture.hpp"
 #include "chunk.hpp"
 
 struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
-  int n_chunks = 8;
+  int n_chunks = 16;
   int seed;
   int MAX_HEIGHT = 256;
 

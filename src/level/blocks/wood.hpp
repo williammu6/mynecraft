@@ -7,13 +7,13 @@ struct Wood : BlockType {
     name = "wood";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) {
-    switch (face) {
+  glm::vec2 texture_offset(Direction direction) {
+    switch (direction) {
     case TOP:
-    case BOTTOM:
+    case DOWN:
       return glm::vec2(4, 0);
-    case LEFT:
-    case RIGHT:
+    case WEST:
+    case EAST:
       return glm::vec2(3, 2);
     default:
       return glm::vec2(3, 1);

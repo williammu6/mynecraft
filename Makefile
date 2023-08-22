@@ -428,126 +428,6 @@ src/gfx/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/window.cpp.s
 .PHONY : src/gfx/window.cpp.s
 
-src/gfx/world/biome.o: src/gfx/world/biome.cpp.o
-.PHONY : src/gfx/world/biome.o
-
-# target to build an object file
-src/gfx/world/biome.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.o
-.PHONY : src/gfx/world/biome.cpp.o
-
-src/gfx/world/biome.i: src/gfx/world/biome.cpp.i
-.PHONY : src/gfx/world/biome.i
-
-# target to preprocess a source file
-src/gfx/world/biome.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.i
-.PHONY : src/gfx/world/biome.cpp.i
-
-src/gfx/world/biome.s: src/gfx/world/biome.cpp.s
-.PHONY : src/gfx/world/biome.s
-
-# target to generate assembly for a file
-src/gfx/world/biome.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/biome.cpp.s
-.PHONY : src/gfx/world/biome.cpp.s
-
-src/gfx/world/chunk.o: src/gfx/world/chunk.cpp.o
-.PHONY : src/gfx/world/chunk.o
-
-# target to build an object file
-src/gfx/world/chunk.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/chunk.cpp.o
-.PHONY : src/gfx/world/chunk.cpp.o
-
-src/gfx/world/chunk.i: src/gfx/world/chunk.cpp.i
-.PHONY : src/gfx/world/chunk.i
-
-# target to preprocess a source file
-src/gfx/world/chunk.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/chunk.cpp.i
-.PHONY : src/gfx/world/chunk.cpp.i
-
-src/gfx/world/chunk.s: src/gfx/world/chunk.cpp.s
-.PHONY : src/gfx/world/chunk.s
-
-# target to generate assembly for a file
-src/gfx/world/chunk.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/chunk.cpp.s
-.PHONY : src/gfx/world/chunk.cpp.s
-
-src/gfx/world/mesh.o: src/gfx/world/mesh.cpp.o
-.PHONY : src/gfx/world/mesh.o
-
-# target to build an object file
-src/gfx/world/mesh.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/mesh.cpp.o
-.PHONY : src/gfx/world/mesh.cpp.o
-
-src/gfx/world/mesh.i: src/gfx/world/mesh.cpp.i
-.PHONY : src/gfx/world/mesh.i
-
-# target to preprocess a source file
-src/gfx/world/mesh.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/mesh.cpp.i
-.PHONY : src/gfx/world/mesh.cpp.i
-
-src/gfx/world/mesh.s: src/gfx/world/mesh.cpp.s
-.PHONY : src/gfx/world/mesh.s
-
-# target to generate assembly for a file
-src/gfx/world/mesh.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/mesh.cpp.s
-.PHONY : src/gfx/world/mesh.cpp.s
-
-src/gfx/world/tree.o: src/gfx/world/tree.cpp.o
-.PHONY : src/gfx/world/tree.o
-
-# target to build an object file
-src/gfx/world/tree.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.o
-.PHONY : src/gfx/world/tree.cpp.o
-
-src/gfx/world/tree.i: src/gfx/world/tree.cpp.i
-.PHONY : src/gfx/world/tree.i
-
-# target to preprocess a source file
-src/gfx/world/tree.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.i
-.PHONY : src/gfx/world/tree.cpp.i
-
-src/gfx/world/tree.s: src/gfx/world/tree.cpp.s
-.PHONY : src/gfx/world/tree.s
-
-# target to generate assembly for a file
-src/gfx/world/tree.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/tree.cpp.s
-.PHONY : src/gfx/world/tree.cpp.s
-
-src/gfx/world/world.o: src/gfx/world/world.cpp.o
-.PHONY : src/gfx/world/world.o
-
-# target to build an object file
-src/gfx/world/world.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/world.cpp.o
-.PHONY : src/gfx/world/world.cpp.o
-
-src/gfx/world/world.i: src/gfx/world/world.cpp.i
-.PHONY : src/gfx/world/world.i
-
-# target to preprocess a source file
-src/gfx/world/world.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/world.cpp.i
-.PHONY : src/gfx/world/world.cpp.i
-
-src/gfx/world/world.s: src/gfx/world/world.cpp.s
-.PHONY : src/gfx/world/world.s
-
-# target to generate assembly for a file
-src/gfx/world/world.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/world/world.cpp.s
-.PHONY : src/gfx/world/world.cpp.s
-
 src/input.o: src/input.cpp.o
 .PHONY : src/input.o
 
@@ -571,6 +451,102 @@ src/input.s: src/input.cpp.s
 src/input.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/input.cpp.s
 .PHONY : src/input.cpp.s
+
+src/level/chunk.o: src/level/chunk.cpp.o
+.PHONY : src/level/chunk.o
+
+# target to build an object file
+src/level/chunk.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.o
+.PHONY : src/level/chunk.cpp.o
+
+src/level/chunk.i: src/level/chunk.cpp.i
+.PHONY : src/level/chunk.i
+
+# target to preprocess a source file
+src/level/chunk.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.i
+.PHONY : src/level/chunk.cpp.i
+
+src/level/chunk.s: src/level/chunk.cpp.s
+.PHONY : src/level/chunk.s
+
+# target to generate assembly for a file
+src/level/chunk.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.s
+.PHONY : src/level/chunk.cpp.s
+
+src/level/gen.o: src/level/gen.cpp.o
+.PHONY : src/level/gen.o
+
+# target to build an object file
+src/level/gen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.o
+.PHONY : src/level/gen.cpp.o
+
+src/level/gen.i: src/level/gen.cpp.i
+.PHONY : src/level/gen.i
+
+# target to preprocess a source file
+src/level/gen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.i
+.PHONY : src/level/gen.cpp.i
+
+src/level/gen.s: src/level/gen.cpp.s
+.PHONY : src/level/gen.s
+
+# target to generate assembly for a file
+src/level/gen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.s
+.PHONY : src/level/gen.cpp.s
+
+src/level/mesh.o: src/level/mesh.cpp.o
+.PHONY : src/level/mesh.o
+
+# target to build an object file
+src/level/mesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.o
+.PHONY : src/level/mesh.cpp.o
+
+src/level/mesh.i: src/level/mesh.cpp.i
+.PHONY : src/level/mesh.i
+
+# target to preprocess a source file
+src/level/mesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.i
+.PHONY : src/level/mesh.cpp.i
+
+src/level/mesh.s: src/level/mesh.cpp.s
+.PHONY : src/level/mesh.s
+
+# target to generate assembly for a file
+src/level/mesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.s
+.PHONY : src/level/mesh.cpp.s
+
+src/level/world.o: src/level/world.cpp.o
+.PHONY : src/level/world.o
+
+# target to build an object file
+src/level/world.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.o
+.PHONY : src/level/world.cpp.o
+
+src/level/world.i: src/level/world.cpp.i
+.PHONY : src/level/world.i
+
+# target to preprocess a source file
+src/level/world.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.i
+.PHONY : src/level/world.cpp.i
+
+src/level/world.s: src/level/world.cpp.s
+.PHONY : src/level/world.s
+
+# target to generate assembly for a file
+src/level/world.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.s
+.PHONY : src/level/world.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -637,24 +613,21 @@ help:
 	@echo "... src/gfx/window.o"
 	@echo "... src/gfx/window.i"
 	@echo "... src/gfx/window.s"
-	@echo "... src/gfx/world/biome.o"
-	@echo "... src/gfx/world/biome.i"
-	@echo "... src/gfx/world/biome.s"
-	@echo "... src/gfx/world/chunk.o"
-	@echo "... src/gfx/world/chunk.i"
-	@echo "... src/gfx/world/chunk.s"
-	@echo "... src/gfx/world/mesh.o"
-	@echo "... src/gfx/world/mesh.i"
-	@echo "... src/gfx/world/mesh.s"
-	@echo "... src/gfx/world/tree.o"
-	@echo "... src/gfx/world/tree.i"
-	@echo "... src/gfx/world/tree.s"
-	@echo "... src/gfx/world/world.o"
-	@echo "... src/gfx/world/world.i"
-	@echo "... src/gfx/world/world.s"
 	@echo "... src/input.o"
 	@echo "... src/input.i"
 	@echo "... src/input.s"
+	@echo "... src/level/chunk.o"
+	@echo "... src/level/chunk.i"
+	@echo "... src/level/chunk.s"
+	@echo "... src/level/gen.o"
+	@echo "... src/level/gen.i"
+	@echo "... src/level/gen.s"
+	@echo "... src/level/mesh.o"
+	@echo "... src/level/mesh.i"
+	@echo "... src/level/mesh.s"
+	@echo "... src/level/world.o"
+	@echo "... src/level/world.i"
+	@echo "... src/level/world.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

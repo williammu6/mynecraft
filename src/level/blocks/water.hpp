@@ -7,5 +7,5 @@ struct Water : BlockType {
     name = "water";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) { return glm::vec2(3, 0); }
+  glm::vec2 texture_offset(Direction direction) { return glm::vec2(3, 0); }
 };

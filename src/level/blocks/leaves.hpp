@@ -7,7 +7,7 @@ struct Leaves : BlockType {
     name = "wood";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) {
+  glm::vec2 texture_offset(Direction direction) {
     return glm::vec2(5, 0);
   }
 };

@@ -1,11 +1,9 @@
-#include "chunk.hpp"
 #include "world.hpp"
-#include <cstdio>
-#include <iostream>
+#include "gen.hpp"
 
 void Chunk::add_face_to_mesh(CubeFace cf, Block &block) {
   TextureAtlas *texture_atlas = state.renderer->texture_atlas;
-  auto texture_offset = block.type->texture_offset(cf.face);
+  auto texture_offset = block.type->texture_offset(cf.direction);
 
   auto face_direction = DIRECTIONS[cf.ID];
 
@@ -157,7 +155,7 @@ void Chunk::prepare_render() {
           this->add_face_to_mesh(CUBE_FACES[EAST], block);
 
         for (const auto &cube_face : CUBE_FACES) {
-          if (cube_face.face == TOP)
+          if (cube_face.direction == TOP)
             this->add_face_to_mesh(cube_face, block);
         }
       }
@@ -194,61 +192,8 @@ void Chunk::set(glm::vec3 position, Block block) {
     blocks[position.x][position.z][position.y] = block;
 }
 
-void Chunk::generate() {
-  BlockType *block_type = nullptr;
-
-  const siv::PerlinNoise::seed_type seed = 2u;
-  const siv::PerlinNoise perlin{seed};
-
-  for (int x = 0; x < this->SIZE; x++) {
-    int nX = (x + 1) + position.x * this->SIZE;
-    for (int z = 0; z < this->SIZE; z++) {
-      int nZ = (z + 1) + position.z * this->SIZE;
-      const double noise = perlin.octave2D_01(nX * 0.01, nZ * 0.01, 4);
-      int height = glm::max(1, (int)(noise * 64));
-
-      if (height < 10) {
-        block_type = new Water();
-      } else if (height < 14) {
-        block_type = new Sand();
-      } else if (height < 96) {
-        block_type = new Grass();
-      } else {
-        block_type = new Snow();
-      }
-      // height = z + 1;
-
-      if (this->position.z == 0)
-        block_type = new Grass();
-      if (this->position.z == 1)
-        block_type = new Cobblestone();
-
-      for (int y = 0; y < height; y++) {
-        blocks[x][z].push_back({block_type, glm::vec3(x, y, z)});
-      }
-
-      for (int y = height; y < 64; y++) {
-        blocks[x][z].push_back({new Air(), glm::vec3(x, y, z)});
-      }
-
-      if (RANDCHANCE(0.02) && strcmp(block_type->name, "sand") == 0) {
-        for (int cY = height; cY < height + RAND(3, 5); cY++) {
-          glm::vec3 cactus_position = {x, cY, z};
-          this->set(cactus_position, {new Cactus(), cactus_position});
-        }
-      }
-
-      if (RANDCHANCE(0.01) && strcmp(block_type->name, "grass") == 0) {
-        // create_tree({x, height, z}, this);
-      }
-    }
-  }
-
-  // this->prepare_render();
-}
-
 Chunk *create_chunk(glm::vec3 position, struct World *world) {
   Chunk *chunk = new Chunk(position, world);
-  chunk->generate();
+  gen(*chunk);
   return chunk;
 }

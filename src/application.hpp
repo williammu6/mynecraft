@@ -6,7 +6,7 @@
 #include "gfx/shader.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/window.hpp"
-#include "gfx/world/world.hpp"
+#include "level/world.hpp"
 #include "input.hpp"
 #include "state.hpp"
 

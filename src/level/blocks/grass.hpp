@@ -7,17 +7,17 @@ struct Grass : BlockType {
     name = "grass";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) {
-    switch (face) {
-    case BOTTOM:
+  glm::vec2 texture_offset(Direction direction) {
+    switch (direction) {
+    case DOWN:
       return glm::vec2(0, 0);
     case TOP:
       return glm::vec2(1, 1);
-    case LEFT:
-    case RIGHT:
+    case WEST:
+    case EAST:
       return glm::vec2(1, 0);
-    case FRONT:
-    case BACK:
+    case NORTH:
+    case SOUTH:
       return glm::vec2(0, 1);
     }
   }

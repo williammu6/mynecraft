@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../../common.hpp"
-#include "../../state.hpp"
-#include "../gfx.hpp"
-#include "../shader.hpp"
+#include "../gfx/gfx.hpp"
+#include "../common.hpp"
+#include "../state.hpp"
 
 struct Vertex {
   glm::vec3 Position;

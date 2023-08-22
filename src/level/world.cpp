@@ -1,13 +1,8 @@
 #include "world.hpp"
-#include "tree.hpp"
 
-#include "../../blocks/blocks.hpp"
-#include "../../utils/math.hpp"
+#include "../utils/math.hpp"
+#include "blocks/blocks.hpp"
 #include "glm/common.hpp"
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <ostream>
 
 void World::init() {
   for (int i = 0; i < n_chunks; i++)
@@ -16,7 +11,8 @@ void World::init() {
       this->chunks.push_back(chunk);
     }
 
-  for (Chunk *chunk : this->chunks) chunk->prepare_render();
+  for (Chunk *chunk : this->chunks)
+    chunk->prepare_render();
 
   glm::vec3 center = chunks[chunks.size() - 1]->position * 16.0f * 0.5f;
   state.camera.position = glm::vec3(center.x, 40, center.z);
@@ -24,7 +20,6 @@ void World::init() {
 
 void World::render() {
   for (int i = 0; i < chunks.size(); i++) {
-    break;
     Chunk *chunk = chunks[i];
 
     auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
@@ -68,9 +63,10 @@ void World::render() {
   }
 }
 
-Chunk* World::get_chunk_at(int x, int z) {
-  for (Chunk* chunk : this->chunks) {
-    if (chunk->position.x == x && chunk->position.z == z) return chunk;
+Chunk *World::get_chunk_at(int x, int z) {
+  for (Chunk *chunk : this->chunks) {
+    if (chunk->position.x == x && chunk->position.z == z)
+      return chunk;
   }
   return nullptr;
 }

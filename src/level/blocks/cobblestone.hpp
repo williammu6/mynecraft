@@ -7,5 +7,5 @@ struct Cobblestone : BlockType {
     name = "cobblestone";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) { return glm::vec2(2, 0); }
+  glm::vec2 texture_offset(Direction face) { return glm::vec2(2, 0); }
 };

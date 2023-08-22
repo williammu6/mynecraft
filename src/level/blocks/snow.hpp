@@ -7,16 +7,16 @@ struct Snow : BlockType {
     name = "snow";
     solid = true;
   }
-  glm::vec2 texture_offset(Face face) {
-    switch (face) {
-    case LEFT:
-    case RIGHT:
-    case FRONT:
-    case BACK:
+  glm::vec2 texture_offset(Direction direction) {
+    switch (direction) {
+    case WEST:
+    case EAST:
+    case NORTH:
+    case SOUTH:
       return glm::vec2(6, 1);
     case TOP:
       return glm::vec2(5, 1);
-    case BOTTOM:
+    case DOWN:
       return glm::vec2(0, 0);
     }
   }
