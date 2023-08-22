@@ -11,15 +11,20 @@ void World::init() {
       this->chunks.push_back(chunk);
     }
 
-  for (Chunk *chunk : this->chunks)
+  std::cout << "Chunks " << chunks.size() << std::endl;
+  for (Chunk *chunk : this->chunks) {
+    chunk->update_neighbors();
     chunk->prepare_render();
+  }
 
-  glm::vec3 center = chunks[chunks.size() - 1]->position * 16.0f * 0.5f;
+  glm::vec3 center =
+      (glm::vec3)chunks[chunks.size() - 1]->position * 16.0f * 0.5f;
   state.camera.position = glm::vec3(center.x, 40, center.z);
 }
 
 void World::render() {
   for (int i = 0; i < chunks.size(); i++) {
+    break;
     Chunk *chunk = chunks[i];
 
     auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
@@ -54,6 +59,7 @@ void World::render() {
       glm::vec3 new_chunk_position = glm::vec3(newX, 0, newZ);
       delete chunk;
       chunks[i] = create_chunk(new_chunk_position, this);
+      chunks[i]->update_neighbors();
       chunks[i]->prepare_render();
     }
   }
