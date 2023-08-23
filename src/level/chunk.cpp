@@ -9,7 +9,7 @@ std::map<Direction, glm::vec3> direction_offset{{SOUTH, {0, 0, 1}},
                                                 {WEST, {-1, 0, 0}},
                                                 {EAST, {1, 0, 0}}};
 
-void Chunk::add_face_to_mesh(CubeFace cf, Block block, bool border) {
+void Chunk::add_face_to_mesh(CubeFace cf, Block block) {
   TextureAtlas *texture_atlas = state.renderer->texture_atlas;
   auto texture_offset = block.type->texture_offset(cf.direction);
 
@@ -48,13 +48,9 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block block, bool border) {
                                   {V[3] * cf.position + block.position,
                                    face_direction, glm::vec2(maxTX, maxTY)}};
 
-  if (border) {
-    this->border_vertices.push_back(tmpVertices);
-    this->border_indices.push_back(QUAD_FACE_INDICES[cf.ID]);
-  } else {
+
     this->vertices.push_back(tmpVertices);
     this->indices.push_back(QUAD_FACE_INDICES[cf.ID]);
-  }
 }
 
 void Chunk::render() {
@@ -114,38 +110,15 @@ bool should_draw_block_face(Chunk *chunk, Direction direction,
 }
 
 void Chunk::prepare_render_borders() {
-  this->border_indices = {};
-  this->border_vertices = {};
 
-  for (int x = 0; x < SIZE; x++) {
-    for (int z = 0; z < SIZE; z++) {
-      if (x != 0 && x != SIZE - 1 && z != 0 && z != SIZE - 1) continue;
-
-      int height = this->blocks[x][z].size();
-      for (int y = 0; y < height; y++) {
-        Block block = this->blocks[x][z][y];
-        if (!block.type->solid)
-          continue;
-
-        for (const auto &cube_face : CUBE_FACES) {
-          if (cube_face.direction == TOP || cube_face.direction == DOWN)
-            this->add_face_to_mesh(cube_face, block, true);
-          if (should_draw_block_face(this, cube_face.direction, {x, y, z}))
-            this->add_face_to_mesh(CUBE_FACES[cube_face.direction], block, true);
-        }
-      }
-    }
-  }
-
-  this->mesh = new Mesh(this->vertices, this->indices, this->border_vertices, this->border_indices);
 }
 
 void Chunk::prepare_render() {
   this->indices = {};
   this->vertices = {};
 
-  for (int x = 1; x < this->SIZE - 1; x++) {
-    for (int z = 1; z < this->SIZE -1; z++) {
+  for (int x = 0; x < this->SIZE; x++) {
+    for (int z = 0; z < this->SIZE; z++) {
       int height = this->blocks[x][z].size();
       for (int y = 0; y < height; y++) {
         Block block = this->blocks[x][z][y];
@@ -154,15 +127,15 @@ void Chunk::prepare_render() {
 
         for (const auto &cube_face : CUBE_FACES) {
           if (cube_face.direction == TOP || cube_face.direction == DOWN)
-            this->add_face_to_mesh(cube_face, block, false);
+            this->add_face_to_mesh(cube_face, block);
           if (should_draw_block_face(this, cube_face.direction, {x, y, z}))
-            this->add_face_to_mesh(CUBE_FACES[cube_face.direction], block, false);
+            this->add_face_to_mesh(CUBE_FACES[cube_face.direction], block);
         }
       }
     }
   }
 
-  this->mesh = new Mesh(this->vertices, this->indices, this->border_vertices, this->border_indices);
+  this->mesh = new Mesh(this->vertices, this->indices);
 }
 
 Block *Chunk::get_block(int x, int y, int z) {
@@ -182,7 +155,7 @@ bool Chunk::in_bounds(glm::ivec3 p) {
   return ok;
 }
 
-void Chunk::set(glm::vec3 position, Block block) {
+void Chunk::set(glm::ivec3 position, Block block) {
   if (in_bounds(position))
     blocks[(int)position.x][(int)position.z][(int)position.y] = block;
 }
