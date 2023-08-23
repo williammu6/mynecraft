@@ -524,6 +524,30 @@ src/level/mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.s
 .PHONY : src/level/mesh.cpp.s
 
+src/level/tree.o: src/level/tree.cpp.o
+.PHONY : src/level/tree.o
+
+# target to build an object file
+src/level/tree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.o
+.PHONY : src/level/tree.cpp.o
+
+src/level/tree.i: src/level/tree.cpp.i
+.PHONY : src/level/tree.i
+
+# target to preprocess a source file
+src/level/tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.i
+.PHONY : src/level/tree.cpp.i
+
+src/level/tree.s: src/level/tree.cpp.s
+.PHONY : src/level/tree.s
+
+# target to generate assembly for a file
+src/level/tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.s
+.PHONY : src/level/tree.cpp.s
+
 src/level/world.o: src/level/world.cpp.o
 .PHONY : src/level/world.o
 
@@ -625,6 +649,9 @@ help:
 	@echo "... src/level/mesh.o"
 	@echo "... src/level/mesh.i"
 	@echo "... src/level/mesh.s"
+	@echo "... src/level/tree.o"
+	@echo "... src/level/tree.i"
+	@echo "... src/level/tree.s"
 	@echo "... src/level/world.o"
 	@echo "... src/level/world.i"
 	@echo "... src/level/world.s"

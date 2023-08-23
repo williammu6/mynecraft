@@ -1,6 +1,7 @@
 #pragma once
 
-#include "perlin_noise.hpp"
 #include "chunk.hpp"
+#include "perlin_noise.hpp"
+#include "tree.hpp"
 
-void gen(Chunk &chunk);
+void gen(Chunk *chunk);

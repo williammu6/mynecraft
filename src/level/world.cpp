@@ -61,8 +61,6 @@ void World::render() {
       delete chunk;
       chunks[i] = create_chunk(new_chunk_position, this);
       new_chunks_vec.push_back(chunks[i]);
-      // chunks[i]->update_neighbors();
-      // chunks[i]->prepare_render();
     }
   }
 

@@ -90,13 +90,13 @@ struct Chunk {
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Block element);
   void add_face_to_mesh(CubeFace cf, Block block);
-  void set(glm::vec3 position, Block block);
+  void set(glm::ivec3 position, Block block);
   void render();
   void update();
   void update_neighbors();
   std::vector<Chunk*> neighbors();
 
-  bool in_bounds(glm::vec3 position);
+  bool in_bounds(glm::ivec3 position);
   void mark_neighbors_dirty();
 
   Block *get_neighbor_block(Direction direction, Block block);
