@@ -62,10 +62,12 @@ struct Block {
 
 struct Chunk {
   struct World *world;
-
+  int version = 1;
   glm::vec3 position;
 
-  int SIZE = 4;
+  int SIZE = 16;
+
+  bool dirty = false;
 
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
@@ -73,6 +75,7 @@ struct Chunk {
   Mesh *mesh;
   std::vector<std::vector<std::vector<Block>>> blocks;
   std::map<Direction, Chunk*> neighbor_chunk{};
+
 
   Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
@@ -83,14 +86,18 @@ struct Chunk {
 
   void init();
   void prepare_render();
+  void prepare_render_borders();
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Block element);
   void add_face_to_mesh(CubeFace cf, Block block);
   void set(glm::vec3 position, Block block);
   void render();
+  void update();
   void update_neighbors();
+  std::vector<Chunk*> neighbors();
 
   bool in_bounds(glm::vec3 position);
+  void mark_neighbors_dirty();
 
   Block *get_neighbor_block(Direction direction, Block block);
   Block *get_block(int x, int y, int z);

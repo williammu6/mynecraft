@@ -6,8 +6,8 @@ struct State global_state;
 State &state = global_state;
 
 Application::Application() {
-  state.windowWidth = 1000;
-  state.windowHeight = 800;
+  state.windowWidth = 2000;
+  state.windowHeight = 1000;
 
   state.window = Window::create();
 }

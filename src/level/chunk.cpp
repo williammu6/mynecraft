@@ -39,15 +39,14 @@ void Chunk::add_face_to_mesh(CubeFace cf, Block block) {
 
   glm::vec3 *V = cf.vertices();
 
-  std::vector<Vertex> tmpVertices{
-      {V[0] * cf.position + block.position,
-       face_direction, glm::vec2(minTX, minTY)},
-      {V[1] * cf.position + block.position,
-       face_direction, glm::vec2(maxTX, minTY)},
-      {V[2] * cf.position + block.position,
-       face_direction, glm::vec2(minTX, maxTY)},
-      {V[3] * cf.position + block.position,
-       face_direction, glm::vec2(maxTX, maxTY)}};
+  std::vector<Vertex> tmpVertices{{V[0] * cf.position + block.position,
+                                   face_direction, glm::vec2(minTX, minTY)},
+                                  {V[1] * cf.position + block.position,
+                                   face_direction, glm::vec2(maxTX, minTY)},
+                                  {V[2] * cf.position + block.position,
+                                   face_direction, glm::vec2(minTX, maxTY)},
+                                  {V[3] * cf.position + block.position,
+                                   face_direction, glm::vec2(maxTX, maxTY)}};
 
   this->vertices.push_back(tmpVertices);
 
@@ -91,13 +90,13 @@ Block *Chunk::get_neighbor_block(Direction direction, Block block) {
     if (x != 0) {
       return this->get_block(x - 1, y, z);
     } else if (neighbor_chunk[WEST]) {
-      return &neighbor_chunk[WEST]->blocks[SIZE - 1][z][y];    
+      return &neighbor_chunk[WEST]->blocks[SIZE - 1][z][y];
     }
   }
 
   if (direction == EAST) {
     if (x != SIZE - 1) {
-      return get_block(x + 1, y, z );
+      return get_block(x + 1, y, z);
     } else if (neighbor_chunk[EAST]) {
       return &neighbor_chunk[EAST]->blocks[0][z][y];
     }
@@ -112,23 +111,51 @@ bool should_draw_block_face(Chunk *chunk, Direction direction,
   return neigh_block == nullptr || !neigh_block->type->solid;
 }
 
+void Chunk::prepare_render_borders() {
+  this->indices = {};
+  this->vertices = {};
+
+  for (int x = 0; x < this->SIZE; x++) {
+    for (int z = 0; z < this->SIZE; z++) {
+      if (x == 0 || z == 0 || x == SIZE - 1 || z == SIZE - 1) {
+        int height = this->blocks[x][z].size();
+        for (int y = 0; y < height; y++) {
+          Block block = this->blocks[x][z][y];
+          if (!block.type->solid)
+            continue;
+
+          for (const auto &cube_face : CUBE_FACES) {
+            if (cube_face.direction == TOP || cube_face.direction == DOWN)
+              this->add_face_to_mesh(cube_face, block);
+            if (should_draw_block_face(this, cube_face.direction, {x, y, z}))
+              this->add_face_to_mesh(CUBE_FACES[cube_face.direction], block);
+          }
+        }
+      }
+    }
+  }
+
+  this->mesh = new Mesh(this->vertices, this->indices);
+}
+
 void Chunk::prepare_render() {
+  this->indices = {};
+  this->vertices = {};
+
   for (int x = 0; x < this->SIZE; x++) {
     for (int z = 0; z < this->SIZE; z++) {
       int height = this->blocks[x][z].size();
-      for (int y = height - 1; y >= 0; y--) {
+      for (int y = 0; y < height; y++) {
         Block block = this->blocks[x][z][y];
         if (!block.type->solid)
           continue;
 
-        if (should_draw_block_face(this, SOUTH, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[SOUTH], block);
-        if (should_draw_block_face(this, NORTH, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[NORTH], block);
-        if (should_draw_block_face(this, WEST, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[WEST], block);
-        if (should_draw_block_face(this, EAST, {x, y, z})) this->add_face_to_mesh(CUBE_FACES[EAST], block);
-
-        for (const auto &cube_face : CUBE_FACES)
+        for (const auto &cube_face : CUBE_FACES) {
           if (cube_face.direction == TOP || cube_face.direction == DOWN)
             this->add_face_to_mesh(cube_face, block);
+          if (should_draw_block_face(this, cube_face.direction, {x, y, z}))
+            this->add_face_to_mesh(CUBE_FACES[cube_face.direction], block);
+        }
       }
     }
   }
@@ -164,10 +191,8 @@ Chunk *create_chunk(glm::vec3 position, struct World *world) {
 }
 
 void Chunk::update_neighbors() {
+  this->neighbor_chunk = {};
   for (Direction dir : directions) {
-    if (this->neighbor_chunk[dir])
-      continue;
-
     int newX = (int)this->position.x + (int)direction_offset[dir].x;
     int newZ = (int)this->position.z + (int)direction_offset[dir].z;
 
@@ -175,14 +200,38 @@ void Chunk::update_neighbors() {
     if (!chunk)
       continue;
 
-    printf("Setting neighbor chunk for (%d, %d) = DIR = %d\n", (int)position.x,
-           (int)position.z, dir);
-
-    std::cout << "Has blocks " << chunk->blocks[0].size() << std::endl;
-
     this->neighbor_chunk[dir] = chunk;
-
-    if (this->neighbor_chunk[dir])
-      this->neighbor_chunk[dir]->update_neighbors();
   }
+}
+
+void Chunk::update() {
+  this->update_neighbors();
+  this->prepare_render();
+  this->version = this->world->version;
+}
+
+void Chunk::mark_neighbors_dirty() {
+  for (Direction dir : directions) {
+    int newX = (int)this->position.x + (int)direction_offset[dir].x;
+    int newZ = (int)this->position.z + (int)direction_offset[dir].z;
+
+    Chunk *chunk = this->world->get_chunk_at(newX, newZ);
+    if (chunk)
+      chunk->dirty = true;
+  }
+}
+
+std::vector<Chunk *> Chunk::neighbors() {
+  std::vector<Chunk *> neighbor_chunks;
+
+  for (Direction dir : directions) {
+    int newX = (int)this->position.x + (int)direction_offset[dir].x;
+    int newZ = (int)this->position.z + (int)direction_offset[dir].z;
+
+    Chunk *chunk = this->world->get_chunk_at(newX, newZ);
+    if (chunk)
+      neighbor_chunks.push_back(chunk);
+  }
+
+  return neighbor_chunks;
 }

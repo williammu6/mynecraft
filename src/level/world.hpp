@@ -11,7 +11,8 @@ struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
-  int n_chunks = 2;
+  int n_chunks = 24;
+  int version = 1;
   int seed;
   int MAX_HEIGHT = 256;
 

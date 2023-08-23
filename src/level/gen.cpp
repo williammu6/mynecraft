@@ -24,12 +24,6 @@ void gen(Chunk &chunk) {
         block_type = new Snow();
       }
 
-      height = z + 5;
-
-      if (chunk.position.x == 0) block_type = new Water();
-      if (chunk.position.x == 1) block_type = new Wood();
-      if (chunk.position.z == 1) block_type = new Cobblestone();
-
       for (int y = 0; y < height; y++) {
         chunk.blocks[x][z].push_back({block_type, glm::vec3(x, y, z)});
       }

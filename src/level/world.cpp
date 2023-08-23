@@ -23,10 +23,10 @@ void World::init() {
 }
 
 void World::render() {
+  bool new_chunks = false;
+  std::vector<Chunk *> new_chunks_vec{};
   for (int i = 0; i < chunks.size(); i++) {
-    break;
     Chunk *chunk = chunks[i];
-
     auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
     auto xyCamera =
         glm::vec3(state.camera.position.x, 0, state.camera.position.z);
@@ -40,12 +40,12 @@ void World::render() {
         chunk->position.z * (float)chunk->SIZE - state.camera.position.z;
 
     if (distanceX <= distance && distanceX >= -distance &&
-        distanceZ <= distance && distanceZ >= -distance) {
+        distanceZ <= distance && distanceZ >= -distance)
       continue;
-    }
 
     int newX = chunk->position.x;
     int newZ = chunk->position.z;
+
     if (distanceX > distance)
       newX -= n_chunks;
     if (distanceX < -distance)
@@ -56,11 +56,25 @@ void World::render() {
       newZ += n_chunks;
 
     if (newX != chunk->position.x || newZ != chunk->position.z) {
+      new_chunks = true;
       glm::vec3 new_chunk_position = glm::vec3(newX, 0, newZ);
       delete chunk;
       chunks[i] = create_chunk(new_chunk_position, this);
-      chunks[i]->update_neighbors();
-      chunks[i]->prepare_render();
+      new_chunks_vec.push_back(chunks[i]);
+      // chunks[i]->update_neighbors();
+      // chunks[i]->prepare_render();
+    }
+  }
+
+  if (new_chunks) {
+    this->version++;
+    for (Chunk *chunk : new_chunks_vec) {
+      chunk->update();
+      for (Chunk *neighbor : chunk->neighbors()) {
+        if (neighbor->version != this->version) {
+          neighbor->update();
+        }
+      }
     }
   }
 
