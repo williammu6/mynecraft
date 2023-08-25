@@ -1,17 +1,24 @@
 #pragma once
 
 #include "../common.hpp"
-#include "../state.hpp"
 #include "../gfx/gfx.hpp"
 #include "../gfx/shader.hpp"
 #include "../gfx/texture.hpp"
+#include "../state.hpp"
+#include "../utils/position.hpp"
 #include "chunk.hpp"
+
+struct OutOfBoundsBlock {
+  glm::ivec3 chunk_position;
+  glm::ivec3 block_position;
+  Block block;
+};
 
 struct World {
   size_t chunk_size;
   Shader *shader;
   TextureAtlas *texture_atlas;
-  int n_chunks = 24;
+  int n_chunks = 16;
   int version = 1;
   int seed;
   int MAX_HEIGHT = 256;
@@ -24,9 +31,12 @@ struct World {
     this->init();
   }
 
-  std::vector<Chunk *> chunks;
+  std::vector<OutOfBoundsBlock> out_bounds_blocks{};
+
+  std::unordered_map<Position, Chunk *, Position::Hash> chunk_map;
   void init();
   void render();
   bool chunk_too_far(Chunk &chunk);
   Chunk *get_chunk_at(int x, int z);
+  void put_blocks_outta_bounds(Chunk *chunk);
 };

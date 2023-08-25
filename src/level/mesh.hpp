@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../gfx/gfx.hpp"
 #include "../common.hpp"
+#include "../gfx/gfx.hpp"
 #include "../state.hpp"
 
 struct Vertex {
@@ -17,6 +17,14 @@ public:
 
   Mesh(std::vector<std::vector<Vertex>> vertices,
        std::vector<std::vector<unsigned int>> indices);
+
+  ~Mesh() {
+    this->vertices.clear();
+    this->vertices.shrink_to_fit();
+    this->indices.clear();
+    this->indices.shrink_to_fit();
+  }
+
   void draw(glm::vec3 position);
 
 private:

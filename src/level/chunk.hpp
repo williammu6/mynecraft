@@ -57,7 +57,7 @@ static const std::vector<CubeFace> CUBE_FACES{
 
 struct Block {
   BlockType *type;
-  glm::vec3 position;
+  // glm::vec3 position;
 };
 
 struct Chunk {
@@ -69,6 +69,7 @@ struct Chunk {
 
   bool dirty = false;
 
+  std::vector<size_t> mesh_border_indexes;
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
 
@@ -89,7 +90,7 @@ struct Chunk {
   void prepare_render_borders();
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Block element);
-  void add_face_to_mesh(CubeFace cf, Block block);
+  void add_face_to_mesh(CubeFace cf, glm::vec3 position);
   void set(glm::ivec3 position, Block block);
   void render();
   void update();
@@ -97,10 +98,20 @@ struct Chunk {
   std::vector<Chunk*> neighbors();
 
   bool in_bounds(glm::ivec3 position);
+  bool is_border(int x, int z);
   void mark_neighbors_dirty();
 
-  Block *get_neighbor_block(Direction direction, Block block);
+  Block *get_neighbor_block(Direction direction, glm::vec3 position);
   Block *get_block(int x, int y, int z);
+  ~Chunk() {
+    this->blocks.clear();
+    this->blocks.shrink_to_fit();
+    this->indices.clear();
+    this->indices.shrink_to_fit();
+    this->vertices.clear();
+    this->vertices.shrink_to_fit();
+    delete this->mesh;
+  }
 };
 
 Chunk *create_chunk(glm::vec3 position, struct World *world);

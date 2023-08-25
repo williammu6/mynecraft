@@ -63,7 +63,7 @@ void Application::input_handler(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     state.running = false;
 
-  float cameraSpeed = 35 * this->delta_time;
+  float cameraSpeed = 15 * this->delta_time;
   if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
     state.wireframe_mode = !state.wireframe_mode;
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

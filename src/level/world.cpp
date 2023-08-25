@@ -5,28 +5,31 @@
 #include "glm/common.hpp"
 
 void World::init() {
-  for (int i = 0; i < n_chunks; i++)
-    for (int j = 0; j < n_chunks; j++) {
-      Chunk *chunk = create_chunk(glm::vec3(i, 0, j), this);
-      this->chunks.push_back(chunk);
+  for (int x = 0; x < n_chunks; x++) {
+    for (int z = 0; z < n_chunks; z++) {
+      this->chunk_map[{x, 0, z}] = create_chunk(glm::vec3(x, 0, z), this);
     }
+  }
 
-  std::cout << "Chunks " << chunks.size() << std::endl;
-  for (Chunk *chunk : this->chunks) {
-    chunk->update_neighbors();
-    chunk->prepare_render();
+  for (const auto &[position, chunk] : chunk_map) {
+    put_blocks_outta_bounds(chunk);
+    chunk->update();
   }
 
   glm::vec3 center =
-      (glm::vec3)chunks[chunks.size() - 1]->position * 16.0f * 0.5f;
+      (glm::vec3)chunk_map[{n_chunks - 1, 0, n_chunks - 1}]->position * 16.0f *
+      0.5f;
   state.camera.position = glm::vec3(center.x, 40, center.z);
 }
 
 void World::render() {
   bool new_chunks = false;
   std::vector<Chunk *> new_chunks_vec{};
-  for (int i = 0; i < chunks.size(); i++) {
-    Chunk *chunk = chunks[i];
+
+  auto it = chunk_map.begin();
+
+  while (it != chunk_map.end()) {
+    Chunk *chunk = it->second;
     auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
     auto xyCamera =
         glm::vec3(state.camera.position.x, 0, state.camera.position.z);
@@ -39,12 +42,13 @@ void World::render() {
     float distanceZ =
         chunk->position.z * (float)chunk->SIZE - state.camera.position.z;
 
-    if (distanceX <= distance && distanceX >= -distance &&
-        distanceZ <= distance && distanceZ >= -distance)
+    if (distanceX <= distance && distanceX >= -distance && distanceZ <= distance && distanceZ >= -distance) {
+      it++;
       continue;
+    }
 
-    int newX = chunk->position.x;
-    int newZ = chunk->position.z;
+    int newX = it->first.x;
+    int newZ = it->first.z;
 
     if (distanceX > distance)
       newX -= n_chunks;
@@ -59,8 +63,14 @@ void World::render() {
       new_chunks = true;
       glm::vec3 new_chunk_position = glm::vec3(newX, 0, newZ);
       delete chunk;
-      chunks[i] = create_chunk(new_chunk_position, this);
-      new_chunks_vec.push_back(chunks[i]);
+      chunk_map.erase(it++);
+      Chunk *new_chunk = create_chunk(new_chunk_position, this);
+      chunk_map[{newX, 0, newZ}] = new_chunk;
+      new_chunks_vec.push_back(new_chunk);
+      printf("NEW chunk Position %d %d %d\n", newX, 0, newZ);
+      put_blocks_outta_bounds(new_chunk);
+    } else {
+      it++;
     }
   }
 
@@ -76,15 +86,25 @@ void World::render() {
     }
   }
 
-  for (Chunk *chunk : chunks) {
+  for (const auto &[position, chunk] : chunk_map) {
     chunk->render();
   }
 }
 
 Chunk *World::get_chunk_at(int x, int z) {
-  for (Chunk *chunk : this->chunks) {
-    if (chunk->position.x == x && chunk->position.z == z)
-      return chunk;
+  if (chunk_map.find({x, 0, z}) != chunk_map.end()) {
+    return chunk_map.at({x, 0, z});
   }
   return nullptr;
+}
+
+void World::put_blocks_outta_bounds(Chunk *chunk) {
+  for (int i = 0; i < out_bounds_blocks.size(); i++) {
+    OutOfBoundsBlock outtabounds = out_bounds_blocks[i];
+    if (outtabounds.chunk_position.x == chunk->position.x &&
+        outtabounds.chunk_position.z == chunk->position.z) {
+      chunk->set(outtabounds.block_position, outtabounds.block);
+      out_bounds_blocks.erase(out_bounds_blocks.begin() + i);
+    }
+  }
 }
