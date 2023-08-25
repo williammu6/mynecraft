@@ -27,7 +27,9 @@ uniform Material material;
 
 void main()
 {
-    vec3 ambient = light.ambient * texture(ourTexture, TexCoord).rgb;
+    vec4 ambient = vec4(light.ambient, 1.0) * texture(ourTexture, TexCoord);
+    if (ambient.a < 0.1)
+        discard;
 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(-light.direction);  
@@ -39,5 +41,6 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.3f);
     vec3 specular = light.specular * spec * texture(material.specular, TexCoord).rgb;  
 
-    FragColor = vec4(ambient + diffuse + specular, 1.0);
+    vec3 ambientColor = ambient.rgb;
+    FragColor = vec4(ambientColor + diffuse + specular, 1.0);
 }
