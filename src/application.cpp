@@ -18,12 +18,7 @@ void Application::run() {
 
   setup_mouse_input();
 
-  Renderer renderer = {
-      .texture_atlas = new TextureAtlas("res/textures.png"),
-      .shader = new Shader(
-          "res/shaders/basicTexture.vert", "res/shaders/basicTexture.frag")
-  };
-
+  Renderer renderer = Renderer();
   state.renderer = &renderer;
 
   this->world = new World(16, 123456);
@@ -52,6 +47,7 @@ void Application::run() {
   }
   state.window->terminate();
 }
+
 void Application::update() {
   state.window->clear();
   world->render();

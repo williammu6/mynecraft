@@ -18,13 +18,4 @@ void create_tree(struct Chunk *chunk, glm::ivec3 position) {
       }
     }
   }
-  /*
-
-  chunk->set({-1, 20 + tree_height, 0}, {new Leaves()});
-  chunk->set({-2, 20 + tree_height, 0}, {new Leaves()});
-  chunk->set({-3, 20 + tree_height, 0}, {new Leaves()});
-  chunk->set({0, 20 + tree_height, -1}, {new Leaves()});
-  chunk->set({0, 20 + tree_height, -2}, {new Leaves()});
-  chunk->set({0, 20 + tree_height, -3}, {new Leaves()});
-  */
 }

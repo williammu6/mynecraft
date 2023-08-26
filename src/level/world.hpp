@@ -3,7 +3,6 @@
 #include "../common.hpp"
 #include "../gfx/gfx.hpp"
 #include "../gfx/shader.hpp"
-#include "../gfx/texture.hpp"
 #include "../state.hpp"
 #include "../utils/position.hpp"
 #include "chunk.hpp"
@@ -17,7 +16,6 @@ struct OutOfBoundsBlock {
 struct World {
   size_t chunk_size;
   Shader *shader;
-  TextureAtlas *texture_atlas;
   int n_chunks = 16;
   int version = 1;
   int seed;

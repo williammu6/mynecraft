@@ -4,6 +4,7 @@
 #include "gfx/camera.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
+// #include "level/sky.hpp"
 
 struct State {
   int windowWidth, windowHeight;
@@ -13,6 +14,7 @@ struct State {
   bool running;
   glm::vec3 sun_position;
   Renderer *renderer;
+  // Sky *sky;
 };
 
 extern State &state;

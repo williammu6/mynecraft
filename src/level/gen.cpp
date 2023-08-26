@@ -30,7 +30,7 @@ void gen(Chunk *chunk) {
         block_type = new Water();
       } else if (height < 14) {
         block_type = new Sand();
-      } else if (height < MAX_HEIGHT * 2 / 3) {
+      } else if (height < MAX_HEIGHT) {
         block_type = new Grass();
       } else {
         block_type = new Snow();

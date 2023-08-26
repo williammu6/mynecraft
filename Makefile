@@ -332,30 +332,6 @@ src/gfx/shader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/shader.cpp.s
 .PHONY : src/gfx/shader.cpp.s
 
-src/gfx/sun.o: src/gfx/sun.cpp.o
-.PHONY : src/gfx/sun.o
-
-# target to build an object file
-src/gfx/sun.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.o
-.PHONY : src/gfx/sun.cpp.o
-
-src/gfx/sun.i: src/gfx/sun.cpp.i
-.PHONY : src/gfx/sun.i
-
-# target to preprocess a source file
-src/gfx/sun.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.i
-.PHONY : src/gfx/sun.cpp.i
-
-src/gfx/sun.s: src/gfx/sun.cpp.s
-.PHONY : src/gfx/sun.s
-
-# target to generate assembly for a file
-src/gfx/sun.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/sun.cpp.s
-.PHONY : src/gfx/sun.cpp.s
-
 src/gfx/texture.o: src/gfx/texture.cpp.o
 .PHONY : src/gfx/texture.o
 
@@ -524,6 +500,30 @@ src/level/mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.s
 .PHONY : src/level/mesh.cpp.s
 
+src/level/sky.o: src/level/sky.cpp.o
+.PHONY : src/level/sky.o
+
+# target to build an object file
+src/level/sky.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.o
+.PHONY : src/level/sky.cpp.o
+
+src/level/sky.i: src/level/sky.cpp.i
+.PHONY : src/level/sky.i
+
+# target to preprocess a source file
+src/level/sky.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.i
+.PHONY : src/level/sky.cpp.i
+
+src/level/sky.s: src/level/sky.cpp.s
+.PHONY : src/level/sky.s
+
+# target to generate assembly for a file
+src/level/sky.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.s
+.PHONY : src/level/sky.cpp.s
+
 src/level/tree.o: src/level/tree.cpp.o
 .PHONY : src/level/tree.o
 
@@ -625,9 +625,6 @@ help:
 	@echo "... src/gfx/shader.o"
 	@echo "... src/gfx/shader.i"
 	@echo "... src/gfx/shader.s"
-	@echo "... src/gfx/sun.o"
-	@echo "... src/gfx/sun.i"
-	@echo "... src/gfx/sun.s"
 	@echo "... src/gfx/texture.o"
 	@echo "... src/gfx/texture.i"
 	@echo "... src/gfx/texture.s"
@@ -649,6 +646,9 @@ help:
 	@echo "... src/level/mesh.o"
 	@echo "... src/level/mesh.i"
 	@echo "... src/level/mesh.s"
+	@echo "... src/level/sky.o"
+	@echo "... src/level/sky.i"
+	@echo "... src/level/sky.s"
 	@echo "... src/level/tree.o"
 	@echo "... src/level/tree.i"
 	@echo "... src/level/tree.s"

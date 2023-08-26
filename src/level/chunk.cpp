@@ -11,7 +11,7 @@ std::map<Direction, glm::vec3> direction_offset{{SOUTH, {0, 0, 1}},
 
 void Chunk::add_face_to_mesh(CubeFace cf, glm::vec3 position) {
   Block *block = this->get_block(position.x, position.y, position.z);
-  TextureAtlas *texture_atlas = state.renderer->texture_atlas;
+  Texture texture = state.renderer->textures[TextureID::ATLAS];
   auto texture_offset = block->type->texture_offset(cf.direction);
 
   auto face_direction = DIRECTIONS[cf.ID];
@@ -27,16 +27,16 @@ void Chunk::add_face_to_mesh(CubeFace cf, glm::vec3 position) {
   }
 
   float minTX =
-      texture_atlas->tW * texture_offset.x / texture_atlas->atlas_width;
+      texture.tile_size * texture_offset.x / texture.width;
 
   float maxTX =
-      texture_atlas->tW * (texture_offset.x + 1) / texture_atlas->atlas_width;
+      texture.tile_size * (texture_offset.x + 1) / texture.width;
 
   float minTY =
-      texture_atlas->tH * texture_offset.y / texture_atlas->atlas_height;
+      texture.tile_size * texture_offset.y / texture.height;
 
   float maxTY =
-      texture_atlas->tH * (texture_offset.y + 1) / texture_atlas->atlas_height;
+      texture.tile_size * (texture_offset.y + 1) / texture.height;
 
   glm::vec3 *V = cf.vertices();
 
@@ -46,8 +46,8 @@ void Chunk::add_face_to_mesh(CubeFace cf, glm::vec3 position) {
       {{V[0] * cf.position + position, face_direction, glm::vec2(minTX, minTY)},
        {V[1] * cf.position + position, face_direction, glm::vec2(maxTX, minTY)},
        {V[2] * cf.position + position, face_direction, glm::vec2(minTX, maxTY)},
-       {V[3] * cf.position + position, face_direction,
-        glm::vec2(maxTX, maxTY)}});
+       {V[3] * cf.position + position, face_direction, glm::vec2(maxTX, maxTY)}});
+
   this->indices.push_back(QUAD_FACE_INDICES[cf.ID]);
 }
 
@@ -180,15 +180,15 @@ void Chunk::set(glm::ivec3 block_position, Block block) {
       out_bounds_chunk_position.z++;
     }
 
-    if (block.type->name == "leaves") {
-      printf("Outtabounds position %d %d %d\n", block_position.x,
-             block_position.y, block_position.z);
-      printf("Outtabounds block %d %d %d\n", out_bounds_block_position.x,
-             out_bounds_block_position.y, out_bounds_block_position.z);
-      printf("Outtabounds chunk %d %d %d\n", out_bounds_chunk_position.x,
-             out_bounds_chunk_position.y, out_bounds_chunk_position.z);
-      printf("------------------------------------\n");
-    }
+    // if (block.type->name == "leaves") {
+    //   printf("Outtabounds position %d %d %d\n", block_position.x,
+    //          block_position.y, block_position.z);
+    //   printf("Outtabounds block %d %d %d\n", out_bounds_block_position.x,
+    //          out_bounds_block_position.y, out_bounds_block_position.z);
+    //   printf("Outtabounds chunk %d %d %d\n", out_bounds_chunk_position.x,
+    //          out_bounds_chunk_position.y, out_bounds_chunk_position.z);
+    //   printf("------------------------------------\n");
+    // }
 
     OutOfBoundsBlock outta_bounds_block = {
         .chunk_position = out_bounds_chunk_position,
