@@ -12,8 +12,8 @@ struct State {
   Camera camera;
   bool wireframe_mode = false;
   bool running;
-  glm::vec3 sun_position;
   Renderer *renderer;
+  glm::vec3 sun_position;
   // Sky *sky;
 };
 

@@ -1,13 +1,19 @@
 #include "application.hpp"
+#include <chrono>
+#include <cmath>
 #include <iostream>
 #include <memory>
+
+#define TAU (M_PI * 2.0)
+
+using namespace std::chrono;
 
 struct State global_state;
 State &state = global_state;
 
 Application::Application() {
-  state.windowWidth = 2000;
-  state.windowHeight = 1000;
+  state.windowWidth = 1700;
+  state.windowHeight = 1200;
 
   state.window = Window::create();
 }
@@ -26,8 +32,10 @@ void Application::run() {
   double previous_time = glfwGetTime();
 
   int frames = 0;
+  double timer;
+  double speed = 0.1;
 
-  state.sun_position = glm::vec3(0, 400, 0);
+  state.sun_position = glm::vec3(140, 150, 120);
 
   while (state.running) {
     float current_time = glfwGetTime();
@@ -44,13 +52,45 @@ void Application::run() {
     }
 
     update();
+    glm::vec3 center = state.camera.position;
+    timer += delta_time * speed;
+    if (timer > TAU) timer -= TAU;
+    state.sun_position.z = cos(M_PI_2 * timer)*400 + center.z;
+    state.sun_position.y = sin(M_PI_2 * timer)*400 + center.y;
+    state.sun_position.x = state.camera.position.x;
   }
+
   state.window->terminate();
 }
 
 void Application::update() {
   state.window->clear();
   world->render();
+
+  Shader sun_shader("res/shaders/5.2.light_cube.vs", "res/shaders/5.2.light_cube.fs");
+
+  unsigned int VBO;
+  sun_shader.use();
+  sun_shader.setMat4("projection", state.camera.projection);
+  sun_shader.setMat4("view", state.camera.view);
+
+  glm::mat4 model = glm::mat4(1.0f);
+  model = glm::translate(model, state.sun_position);
+  model = glm::scale(model, glm::vec3(500.2f)); // a smaller cube
+  sun_shader.setMat4("model", model);
+
+  unsigned int lightCubeVAO;
+  glGenVertexArrays(1, &lightCubeVAO);
+  glBindVertexArray(lightCubeVAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  // note that we update the lamp's position attribute's stride to reflect the updated buffer data
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+
+  glBindVertexArray(lightCubeVAO);
+  glDrawArrays(GL_TRIANGLES, 0, 36);
   state.camera.update();
   state.window->update();
 }
@@ -68,12 +108,12 @@ void Application::input_handler(GLFWwindow *window) {
     state.camera.position -= cameraSpeed * state.camera.front;
   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     state.camera.position -=
-        glm::normalize(glm::cross(state.camera.front, state.camera.up)) *
-        cameraSpeed;
+      glm::normalize(glm::cross(state.camera.front, state.camera.up)) *
+      cameraSpeed;
   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     state.camera.position +=
-        glm::normalize(glm::cross(state.camera.front, state.camera.up)) *
-        cameraSpeed;
+      glm::normalize(glm::cross(state.camera.front, state.camera.up)) *
+      cameraSpeed;
   if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     state.camera.position -= glm::vec3(0, 1, 0) * cameraSpeed;
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)

@@ -8,7 +8,7 @@ void gen(Chunk *chunk) {
 
   const siv::PerlinNoise::seed_type seed = 2u;
   const siv::PerlinNoise perlin{seed};
-  srand(time(NULL));
+  SRAND(seed);
 
   for (int x = 0; x < chunk->SIZE; x++) {
     for (int z = 0; z < chunk->SIZE; z++) {

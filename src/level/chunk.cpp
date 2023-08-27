@@ -26,17 +26,13 @@ void Chunk::add_face_to_mesh(CubeFace cf, glm::vec3 position) {
     return;
   }
 
-  float minTX =
-      texture.tile_size * texture_offset.x / texture.width;
+  float minTX = texture.tile_size * texture_offset.x / texture.width;
 
-  float maxTX =
-      texture.tile_size * (texture_offset.x + 1) / texture.width;
+  float maxTX = texture.tile_size * (texture_offset.x + 1) / texture.width;
 
-  float minTY =
-      texture.tile_size * texture_offset.y / texture.height;
+  float minTY = texture.tile_size * texture_offset.y / texture.height;
 
-  float maxTY =
-      texture.tile_size * (texture_offset.y + 1) / texture.height;
+  float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
 
   glm::vec3 *V = cf.vertices();
 
@@ -46,13 +42,15 @@ void Chunk::add_face_to_mesh(CubeFace cf, glm::vec3 position) {
       {{V[0] * cf.position + position, face_direction, glm::vec2(minTX, minTY)},
        {V[1] * cf.position + position, face_direction, glm::vec2(maxTX, minTY)},
        {V[2] * cf.position + position, face_direction, glm::vec2(minTX, maxTY)},
-       {V[3] * cf.position + position, face_direction, glm::vec2(maxTX, maxTY)}});
+       {V[3] * cf.position + position, face_direction,
+        glm::vec2(maxTX, maxTY)}});
 
   this->indices.push_back(QUAD_FACE_INDICES[cf.ID]);
 }
 
 void Chunk::render() {
-  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE);
+  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE,
+                   &state.renderer->textures[TextureID::ATLAS]);
 }
 
 void Chunk::init() {

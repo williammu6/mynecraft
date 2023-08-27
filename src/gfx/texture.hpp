@@ -10,7 +10,7 @@ enum class TextureID {
 };
 
 struct Texture {
-  unsigned char* texture;
+  GLuint texture;
   int tile_size = 64;
   int width;
   int height;

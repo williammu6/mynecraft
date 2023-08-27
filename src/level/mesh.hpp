@@ -25,7 +25,7 @@ public:
     this->indices.shrink_to_fit();
   }
 
-  void draw(glm::vec3 position);
+  void draw(glm::vec3 position, struct Texture *texture);
 
 private:
   unsigned int VAO, VBO, EBO;
