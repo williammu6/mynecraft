@@ -452,6 +452,30 @@ src/level/chunk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.s
 .PHONY : src/level/chunk.cpp.s
 
+src/level/chunkmesh.o: src/level/chunkmesh.cpp.o
+.PHONY : src/level/chunkmesh.o
+
+# target to build an object file
+src/level/chunkmesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.o
+.PHONY : src/level/chunkmesh.cpp.o
+
+src/level/chunkmesh.i: src/level/chunkmesh.cpp.i
+.PHONY : src/level/chunkmesh.i
+
+# target to preprocess a source file
+src/level/chunkmesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.i
+.PHONY : src/level/chunkmesh.cpp.i
+
+src/level/chunkmesh.s: src/level/chunkmesh.cpp.s
+.PHONY : src/level/chunkmesh.s
+
+# target to generate assembly for a file
+src/level/chunkmesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.s
+.PHONY : src/level/chunkmesh.cpp.s
+
 src/level/gen.o: src/level/gen.cpp.o
 .PHONY : src/level/gen.o
 
@@ -476,29 +500,29 @@ src/level/gen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.s
 .PHONY : src/level/gen.cpp.s
 
-src/level/mesh.o: src/level/mesh.cpp.o
-.PHONY : src/level/mesh.o
+src/level/sky.o: src/level/sky.cpp.o
+.PHONY : src/level/sky.o
 
 # target to build an object file
-src/level/mesh.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.o
-.PHONY : src/level/mesh.cpp.o
+src/level/sky.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.o
+.PHONY : src/level/sky.cpp.o
 
-src/level/mesh.i: src/level/mesh.cpp.i
-.PHONY : src/level/mesh.i
+src/level/sky.i: src/level/sky.cpp.i
+.PHONY : src/level/sky.i
 
 # target to preprocess a source file
-src/level/mesh.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.i
-.PHONY : src/level/mesh.cpp.i
+src/level/sky.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.i
+.PHONY : src/level/sky.cpp.i
 
-src/level/mesh.s: src/level/mesh.cpp.s
-.PHONY : src/level/mesh.s
+src/level/sky.s: src/level/sky.cpp.s
+.PHONY : src/level/sky.s
 
 # target to generate assembly for a file
-src/level/mesh.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/mesh.cpp.s
-.PHONY : src/level/mesh.cpp.s
+src/level/sky.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.s
+.PHONY : src/level/sky.cpp.s
 
 src/level/tree.o: src/level/tree.cpp.o
 .PHONY : src/level/tree.o
@@ -616,12 +640,15 @@ help:
 	@echo "... src/level/chunk.o"
 	@echo "... src/level/chunk.i"
 	@echo "... src/level/chunk.s"
+	@echo "... src/level/chunkmesh.o"
+	@echo "... src/level/chunkmesh.i"
+	@echo "... src/level/chunkmesh.s"
 	@echo "... src/level/gen.o"
 	@echo "... src/level/gen.i"
 	@echo "... src/level/gen.s"
-	@echo "... src/level/mesh.o"
-	@echo "... src/level/mesh.i"
-	@echo "... src/level/mesh.s"
+	@echo "... src/level/sky.o"
+	@echo "... src/level/sky.i"
+	@echo "... src/level/sky.s"
 	@echo "... src/level/tree.o"
 	@echo "... src/level/tree.i"
 	@echo "... src/level/tree.s"

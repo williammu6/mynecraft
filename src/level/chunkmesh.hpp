@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CHUNKMESH_H
+#define CHUNKMESH_H
 
 #include "../common.hpp"
 #include "../gfx/gfx.hpp"
@@ -82,3 +83,5 @@ private:
   std::vector<std::vector<Vertex>> vertices;
   std::vector<std::vector<unsigned int>> indices;
 };
+
+#endif

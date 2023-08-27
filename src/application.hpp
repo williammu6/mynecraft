@@ -1,4 +1,5 @@
-#pragma once
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
 #include "common.hpp"
 #include "gfx/camera.hpp"
@@ -20,3 +21,5 @@ public:
   void update();
   void input_handler(GLFWwindow *window);
 };
+
+#endif

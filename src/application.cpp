@@ -1,8 +1,6 @@
 #include "application.hpp"
-#include <chrono>
 #include <cmath>
 #include <iostream>
-#include <memory>
 
 #define TAU (M_PI * 2.0)
 
@@ -33,7 +31,7 @@ void Application::run() {
 
   int frames = 0;
   double timer;
-  double speed = 0.1;
+  double speed = 1;
 
   state.sun_position = glm::vec3(140, 150, 120);
 
@@ -46,8 +44,8 @@ void Application::run() {
     input_handler(state.window->p_getWindow());
     this->last_frame = current_time;
     if (current_time - previous_time >= 1.0) {
-      previous_time = current_time;
       std::cout << "FPS: " << frames << std::endl;
+      previous_time = current_time;
       frames = 0;
     }
 
@@ -55,8 +53,8 @@ void Application::run() {
     glm::vec3 center = state.camera.position;
     timer += delta_time * speed;
     if (timer > TAU) timer -= TAU;
-    // state.sun_position.z = cos(M_PI_2 * timer)*400 + center.z;
-    // state.sun_position.y = sin(M_PI_2 * timer)*400 + center.y;
+    state.sun_position.z = cos(M_PI_2 * timer)*400 + center.z;
+    state.sun_position.y = sin(M_PI_2 * timer)*400 + center.y;
     state.sun_position.x = state.camera.position.x;
   }
 
@@ -66,33 +64,7 @@ void Application::run() {
 void Application::update() {
   state.window->clear();
   world->render();
-
-  /*
-  Shader sun_shader("res/shaders/5.2.light_cube.vs", "res/shaders/5.2.light_cube.fs");
-
-  unsigned int VBO;
-  sun_shader.use();
-  sun_shader.setMat4("projection", state.camera.projection);
-  sun_shader.setMat4("view", state.camera.view);
-
-  glm::mat4 model = glm::mat4(1.0f);
-  model = glm::translate(model, state.sun_position);
-  model = glm::scale(model, glm::vec3(500.2f)); // a smaller cube
-  sun_shader.setMat4("model", model);
-
-  unsigned int lightCubeVAO;
-  glGenVertexArrays(1, &lightCubeVAO);
-  glBindVertexArray(lightCubeVAO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  // note that we update the lamp's position attribute's stride to reflect the updated buffer data
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
-
-
-  glBindVertexArray(lightCubeVAO);
-  glDrawArrays(GL_TRIANGLES, 0, 36);
-  */
+  // world->sky->render();
   state.camera.update();
   state.window->update();
 }

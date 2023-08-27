@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CHUNK_H
+#define CHUNK_H
 
 #include "../common.hpp"
 #include "../state.hpp"
@@ -54,3 +55,5 @@ struct Chunk {
 };
 
 Chunk *create_chunk(glm::vec3 position, struct World *world);
+
+#endif

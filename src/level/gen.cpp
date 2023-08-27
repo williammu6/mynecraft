@@ -36,8 +36,6 @@ void gen(Chunk *chunk) {
         block_type = new Snow();
       }
 
-      // height = x + 1;
-
       for (int y = 0; y < height; y++) {
         glm::ivec3 position = {x, y, z};
         chunk->set(position, {block_type});

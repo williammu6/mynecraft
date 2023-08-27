@@ -22,26 +22,18 @@ void Chunk::init() {
     this->blocks[i].resize(this->SIZE);
 }
 
-Block *Chunk::get_neighbor_block(Direction direction, glm::vec3 position) {
-  int x = position.x;
-  int y = position.y;
-  int z = position.z;
-
-  if (in_bounds(position + DIRECTIONS[direction]))
-    return get_block(position + DIRECTIONS[direction]);
+Block *Chunk::get_neighbor_block(Direction direction, glm::vec3 pos) {
+  if (in_bounds(pos + DIRECTIONS[direction]))
+    return get_block(pos + DIRECTIONS[direction]);
 
   if (direction == NORTH && neighbor_chunk[NORTH])
-    return &neighbor_chunk[NORTH]->blocks[x][SIZE - 1][y];
+    return &neighbor_chunk[NORTH]->blocks[pos.x][SIZE - 1][pos.y];
   if (direction == SOUTH && neighbor_chunk[SOUTH])
-    return &neighbor_chunk[SOUTH]->blocks[x][0][y];
+    return &neighbor_chunk[SOUTH]->blocks[pos.x][0][pos.y];
   if (direction == EAST && neighbor_chunk[EAST])
-    return &neighbor_chunk[EAST]->blocks[SIZE - 1][z][y];
+    return &neighbor_chunk[EAST]->blocks[0][pos.z][pos.y];
   if (direction == WEST && neighbor_chunk[WEST])
-    return &neighbor_chunk[WEST]->blocks[0][z][y];
-  if (direction == TOP)
-    return get_block(x, y + 1, z);
-  if (direction == DOWN)
-    return get_block(x, y - 1, z);
+    return &neighbor_chunk[WEST]->blocks[SIZE - 1][pos.z][pos.y];
 
   return NULL;
 }
@@ -49,7 +41,8 @@ Block *Chunk::get_neighbor_block(Direction direction, glm::vec3 position) {
 bool should_draw_block_face(Chunk *chunk, Direction direction,
                             glm::vec3 position) {
   Block *neigh_block = chunk->get_neighbor_block(direction, position);
-  return !neigh_block || !neigh_block->type->solid;
+  return !neigh_block || !neigh_block->type->solid ||
+         neigh_block->type->transparent;
 }
 
 bool Chunk::is_border(int x, int z) {
@@ -62,7 +55,8 @@ void Chunk::prepare_render() {
     for (int z = 0; z < this->SIZE; z++) {
       int height = this->blocks[x][z].size();
       for (int y = 0; y < height; y++) {
-        Block *block = this->get_block(x, y, z);
+        glm::ivec3 block_position(x, y, z);
+        Block *block = this->get_block(block_position);
         if (!block->type->solid)
           continue;
 
@@ -70,9 +64,9 @@ void Chunk::prepare_render() {
           glm::vec2 texture_offset =
               block->type->texture_offset(cube_face.direction);
 
-          if (should_draw_block_face(this, cube_face.direction, {x, y, z}))
-            this->mesh->add_face(CUBE_FACES[cube_face.direction], {x, y, z},
-                                 texture_offset);
+          if (should_draw_block_face(this, cube_face.direction, block_position))
+            this->mesh->add_face(CUBE_FACES[cube_face.direction],
+                                 block_position, texture_offset);
         }
       }
     }

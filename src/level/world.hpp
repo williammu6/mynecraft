@@ -1,10 +1,12 @@
-#pragma once
+#ifndef WORLD_H
+#define WORLD_H
 
 #include "../common.hpp"
 #include "../gfx/gfx.hpp"
 #include "../gfx/shader.hpp"
 #include "../state.hpp"
 #include "../utils/position.hpp"
+#include "sky.hpp"
 #include "chunk.hpp"
 
 struct OutOfBoundsBlock {
@@ -16,7 +18,8 @@ struct OutOfBoundsBlock {
 struct World {
   size_t chunk_size;
   Shader *shader;
-  int n_chunks = 2;
+  Sky *sky;
+  int n_chunks = 24;
   int version = 1;
   int seed;
   int MAX_HEIGHT = 256;
@@ -38,3 +41,5 @@ struct World {
   Chunk *get_chunk_at(int x, int z);
   void put_blocks_outta_bounds(Chunk *chunk);
 };
+
+#endif

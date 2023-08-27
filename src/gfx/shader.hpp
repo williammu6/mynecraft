@@ -1,14 +1,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <assert.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-
 #include "gfx.hpp"
-#include <glm/glm.hpp>
+#include "../common.hpp"
 
 struct VertexAttributes
 {
