@@ -1,14 +1,6 @@
-#include "mesh.hpp"
+#include "chunkmesh.hpp"
 
-Mesh::Mesh(std::vector<std::vector<Vertex>> vertices,
-           std::vector<std::vector<unsigned int>> indices) {
-  this->vertices = vertices;
-  this->indices = indices;
-
-  setup();
-}
-
-void Mesh::setup() {
+void ChunkMesh::setup() {
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
   glGenBuffers(1, &EBO);
@@ -32,28 +24,33 @@ void Mesh::setup() {
                &all_vertices[0], GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, all_indices.size() * sizeof(unsigned int), &all_indices[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+               all_indices.size() * sizeof(unsigned int), &all_indices[0],
+               GL_STATIC_DRAW);
 
   // Position
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
   // Face direction
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
   // Texture Coords
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
   glBindVertexArray(0);
 }
 
-void Mesh::draw(glm::vec3 position, struct Texture *texture) {
+void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
   Shader *shader = state.renderer->shader;
   shader->use();
 
-  // printf("Camera %.2f %.2f %.2f\n", state.camera.position.x, state.camera.position.y, state.camera.position.z);
+  // printf("Camera %.2f %.2f %.2f\n", state.camera.position.x,
+  // state.camera.position.y, state.camera.position.z);
   // shader->setVec3("light.position", state.camera.position);
   shader->setVec3("light.position", state.sun_position);
   shader->setVec3("viewPos", state.camera.position);
@@ -83,4 +80,34 @@ void Mesh::draw(glm::vec3 position, struct Texture *texture) {
   glBindTexture(GL_TEXTURE_2D, texture->texture);
 
   glDrawElements(GL_TRIANGLES, indices.size() * 6, GL_UNSIGNED_INT, (void *)0);
+}
+
+void ChunkMesh::add_face(CubeFace cube_face, glm::vec3 position,
+                         glm::vec2 texture_offset) {
+  Texture texture = state.renderer->textures[TextureID::ATLAS];
+
+  auto face_direction = DIRECTIONS[cube_face.direction];
+
+  float minTX = texture.tile_size * texture_offset.x / texture.width;
+
+  float maxTX = texture.tile_size * (texture_offset.x + 1) / texture.width;
+
+  float minTY = texture.tile_size * texture_offset.y / texture.height;
+
+  float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
+
+  glm::vec3 *V = cube_face.vertices();
+
+  std::vector<Vertex> tmp_vertices;
+
+  this->vertices.push_back({{V[0] * cube_face.position + position,
+                             face_direction, glm::vec2(minTX, minTY)},
+                            {V[1] * cube_face.position + position,
+                             face_direction, glm::vec2(maxTX, minTY)},
+                            {V[2] * cube_face.position + position,
+                             face_direction, glm::vec2(minTX, maxTY)},
+                            {V[3] * cube_face.position + position,
+                             face_direction, glm::vec2(maxTX, maxTY)}});
+
+  this->indices.push_back(QUAD_FACE_INDICES[cube_face.direction]);
 }

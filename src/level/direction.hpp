@@ -3,8 +3,8 @@
 enum Direction {
   TOP = 0,
   SOUTH,
-  EAST,
   WEST,
+  EAST,
   NORTH,
   DOWN,
 };

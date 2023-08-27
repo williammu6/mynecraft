@@ -55,8 +55,8 @@ void Application::run() {
     glm::vec3 center = state.camera.position;
     timer += delta_time * speed;
     if (timer > TAU) timer -= TAU;
-    state.sun_position.z = cos(M_PI_2 * timer)*400 + center.z;
-    state.sun_position.y = sin(M_PI_2 * timer)*400 + center.y;
+    // state.sun_position.z = cos(M_PI_2 * timer)*400 + center.z;
+    // state.sun_position.y = sin(M_PI_2 * timer)*400 + center.y;
     state.sun_position.x = state.camera.position.x;
   }
 
@@ -67,6 +67,7 @@ void Application::update() {
   state.window->clear();
   world->render();
 
+  /*
   Shader sun_shader("res/shaders/5.2.light_cube.vs", "res/shaders/5.2.light_cube.fs");
 
   unsigned int VBO;
@@ -91,6 +92,7 @@ void Application::update() {
 
   glBindVertexArray(lightCubeVAO);
   glDrawArrays(GL_TRIANGLES, 0, 36);
+  */
   state.camera.update();
   state.window->update();
 }

@@ -16,7 +16,7 @@ struct OutOfBoundsBlock {
 struct World {
   size_t chunk_size;
   Shader *shader;
-  int n_chunks = 16;
+  int n_chunks = 2;
   int version = 1;
   int seed;
   int MAX_HEIGHT = 256;

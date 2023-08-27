@@ -34,6 +34,7 @@ void World::render()
 
   while (it != chunk_map.end())
   {
+    break;
     Chunk *chunk = it->second;
     auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
     auto xyCamera =
