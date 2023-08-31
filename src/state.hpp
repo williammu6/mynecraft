@@ -1,10 +1,9 @@
 #pragma once
 
-#include "level/blocks/block_type.hpp"
 #include "gfx/camera.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
-// #include "level/sky.hpp"
+#include "level/blocks/block_type.hpp"
 
 struct State {
   int windowWidth, windowHeight;
@@ -14,7 +13,7 @@ struct State {
   bool running;
   Renderer *renderer;
   glm::vec3 sun_position;
-  // Sky *sky;
+  float tick;
 };
 
 extern State &state;

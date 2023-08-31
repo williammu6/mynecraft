@@ -117,16 +117,6 @@ void Chunk::set(glm::ivec3 block_position, Block block) {
       out_bounds_chunk_position.z++;
     }
 
-    // if (block.type->name == "leaves") {
-    //   printf("Outtabounds position %d %d %d\n", block_position.x,
-    //          block_position.y, block_position.z);
-    //   printf("Outtabounds block %d %d %d\n", out_bounds_block_position.x,
-    //          out_bounds_block_position.y, out_bounds_block_position.z);
-    //   printf("Outtabounds chunk %d %d %d\n", out_bounds_chunk_position.x,
-    //          out_bounds_chunk_position.y, out_bounds_chunk_position.z);
-    //   printf("------------------------------------\n");
-    // }
-
     OutOfBoundsBlock outta_bounds_block = {
         .chunk_position = out_bounds_chunk_position,
         .block_position = out_bounds_block_position,

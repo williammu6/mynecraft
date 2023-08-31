@@ -6,7 +6,6 @@
 #include "../utils/math.hpp"
 #include "blocks/blocks.hpp"
 #include "chunkmesh.hpp"
-#include "direction.hpp"
 
 struct Block {
   BlockType *type;

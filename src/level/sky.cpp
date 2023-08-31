@@ -1,58 +1,59 @@
 #include "sky.hpp"
 
 void Sky::prepare_render() {
-  float vertices[] = {
-      // positions          // colors           // texture coords
-      0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-      0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-      -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f  // top left
-  };
+  glm::vec3 p = state.sun_position;
+  auto vertices = get_block_vertices();
+  std::vector<Vertex> real_vertices;
+  std::vector<unsigned int> indices;
 
-  unsigned int indices[] = {
-      0, 1, 3, // first triangle
-      1, 2, 3  // second triangle
-  };
-  glGenVertexArrays(1, &VAO);
-  glGenBuffers(1, &VBO);
-  glGenBuffers(1, &EBO);
+  for (CubeFace c : CUBE_FACES) {
+    std::vector<glm::vec3> V = c.vertices();
 
-  glBindVertexArray(VAO);
+    auto face_direction = DIRECTIONS[c.direction];
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    real_vertices.push_back(
+        {V[0] * c.position + p, face_direction, glm::vec2(0, 0)});
+    real_vertices.push_back(
+        {V[1] * c.position + p, face_direction, glm::vec2(0, 1)});
+    real_vertices.push_back(
+        {V[2] * c.position + p, face_direction, glm::vec2(1, 0)});
+    real_vertices.push_back(
+        {V[3] * c.position + p, face_direction, glm::vec2(1, 1)});
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-               GL_STATIC_DRAW);
+    // this->indices.push_back(QUAD_FACE_INDICES[cube_face.direction]);
 
-  // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-  // color attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-  // texture coord attribute
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void *)(6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
+    for (auto i : QUAD_FACE_INDICES[c.direction]) {
+      indices.push_back(i);
+    }
+  }
+
+  // for (auto v : vertices) { real_vertices.push_back( {v * this->position,
+  // glm::vec3(1, 0, 0), glm::vec2(0, 0)}); }
+  primitive->prepare(real_vertices, indices);
 }
 
 void Sky::render() {
-  glBindTexture(GL_TEXTURE_2D,
-                state.renderer->textures[TextureID::SUN].texture);
-  // render container
-  sun_shader->use();
+  Shader *shader = state.renderer->sun_shader;
 
-  sun_shader->setMat4("projection", state.camera.projection);
-  sun_shader->setMat4("view", state.camera.view);
+  glm::vec3 p = state.sun_position;
 
-  glm::mat4 model = glm::mat4(1.0f);
-  model = glm::translate(model, state.sun_position);
-  model = glm::scale(model, glm::vec3(500.2f)); // a smaller cube
-  sun_shader->setMat4("model", model);
+  float r = glm::radians(-45.0f);
 
-  glBindVertexArray(VAO);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  auto setup_model = [&shader, &p, &r]() {
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(state.camera.model, p);
+    model = glm::scale(model, glm::vec3(25.0f));
+    model =
+        glm::rotate(model, r * state.tick, glm::vec3({1, 0, 0}));
+    model = glm::rotate(model, 0.0f, glm::vec3({0, 1, 0}));
+    model = glm::rotate(model, 0.0f, glm::vec3({0, 0, 1}));
+    shader->setMat4("model", model);
+  };
+
+  printf("Pos %f %f %f\n", p.x, p.y, p.z);
+  printf("Camera %f %f %f\n", state.camera.position.x, state.camera.position.y,
+         state.camera.position.z);
+
+  primitive->draw(p, shader, state.renderer->textures[TextureID::SUN],
+                  setup_model);
 }

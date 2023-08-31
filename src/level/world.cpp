@@ -4,7 +4,6 @@
 #include "glm/common.hpp"
 
 void World::init() {
-  // this->sky = new Sky();
   for (int x = 0; x < n_chunks; x++) {
     for (int z = 0; z < n_chunks; z++) {
       this->chunk_map[{x, 0, z}] = create_chunk(glm::vec3(x, 0, z), this);

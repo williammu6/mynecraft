@@ -1,16 +1,14 @@
 #pragma once
 
+#include "../common.hpp"
 #include "gfx.hpp"
 #include "vendor/stb_image.h"
-#include "../common.hpp"
 
-enum class TextureID {
-  ATLAS = 0,
-  SUN
-};
+enum class TextureID { ATLAS = 0, SUN };
 
 struct Texture {
-  GLuint texture;
+  TextureID id;
+  GLuint pixels;
   int tile_size = 64;
   int width;
   int height;

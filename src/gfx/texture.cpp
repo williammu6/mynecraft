@@ -1,7 +1,8 @@
 #include "texture.hpp"
 
 void load_pixels(const char *path, unsigned char **pixels_out, int *width_out,
-                 int *height_out) {
+                 int *height_out)
+{
   int width, height, channels;
 
   unsigned char *image = stbi_load(path, &width, &height, &channels, 0);
@@ -16,10 +17,11 @@ void load_pixels(const char *path, unsigned char **pixels_out, int *width_out,
   stbi_image_free(image);
 }
 
-Texture from_pixels(unsigned char *pixels, int width, int height) {
+Texture from_pixels(unsigned char *pixels, int width, int height)
+{
   struct Texture tex = {.width = width, .height = height};
-  glGenTextures(1, &tex.texture);
-  glBindTexture(GL_TEXTURE_2D, tex.texture);
+  glGenTextures(1, &tex.pixels);
+  glBindTexture(GL_TEXTURE_2D, tex.pixels);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -33,7 +35,8 @@ Texture from_pixels(unsigned char *pixels, int width, int height) {
   return tex;
 }
 
-Texture texture_from_path(const char *path) {
+Texture texture_from_path(const char *path)
+{
   unsigned char *pixels;
 
   int width, height, nrChannels;

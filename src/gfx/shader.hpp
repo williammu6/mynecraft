@@ -4,12 +4,6 @@
 #include "gfx.hpp"
 #include "../common.hpp"
 
-struct VertexAttributes
-{
-  GLint size;
-  const GLchar *attr;
-};
-
 class Shader
 {
 private:

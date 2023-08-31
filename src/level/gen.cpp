@@ -1,7 +1,7 @@
 #include "gen.hpp"
 #include "blocks/cobblestone.hpp"
 
-#define MAX_HEIGHT 64
+#define MAX_HEIGHT 128
 
 void gen(Chunk *chunk) {
   BlockType *block_type = nullptr;
@@ -24,7 +24,7 @@ void gen(Chunk *chunk) {
     for (int z = 0; z < chunk->SIZE; z++) {
       int nZ = (z + 1) + chunk->position.z * chunk->SIZE;
       const double noise = perlin.octave2D_01(nX * 0.01, nZ * 0.01, 4);
-      int height = glm::max(1, (int)(noise * MAX_HEIGHT));
+      int height = glm::max(1, (int)(noise * MAX_HEIGHT / 2));
 
       if (height < 10) {
         block_type = new Water();
