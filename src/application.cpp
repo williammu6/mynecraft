@@ -4,7 +4,7 @@
 
 #define TAU (M_PI * 2.0)
 
-Params get_params(char **argv) { return {.seed = argv[1]}; }
+Params get_params(char **argv) { return {.seed = std::atoi(argv[1])}; }
 
 struct State global_state;
 State &state = global_state;
@@ -20,7 +20,7 @@ void Application::run(char **argv) {
 
   setup_mouse_input();
 
-  this->world = new World(16, 1);
+  this->world = new World(16, params.seed);
 
   state.window->loop([this]() { update(); },
                      [this](GLFWwindow *window, double delta_time) {

@@ -3,16 +3,15 @@
 
 #define MAX_HEIGHT 128
 
-void gen(Chunk *chunk) {
+void gen(Chunk *chunk, int world_seed) {
   BlockType *block_type = nullptr;
 
-  const siv::PerlinNoise::seed_type seed = 2u;
+  const siv::PerlinNoise::seed_type seed = world_seed;
   const siv::PerlinNoise perlin{seed};
-  SRAND(seed);
 
   for (int x = 0; x < chunk->SIZE; x++) {
     for (int z = 0; z < chunk->SIZE; z++) {
-      for (int y = 0; y < 64; y++) {
+      for (int y = 0; y < MAX_HEIGHT; y++) {
         chunk->blocks[x][z].push_back({new Air()});
       }
     }
@@ -46,7 +45,7 @@ void gen(Chunk *chunk) {
           chunk->set(cactus_position, {new Cactus()});
         }
       }
-      if (RANDCHANCE(0.015) && strcmp(block_type->name, "grass") == 0) {
+      if (RANDCHANCE(0.005) && strcmp(block_type->name, "grass") == 0) {
         create_tree(chunk, {x, height, z});
       }
     }

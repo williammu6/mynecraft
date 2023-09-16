@@ -12,7 +12,7 @@
 #include "state.hpp"
 
 struct Params {
-  char* seed;
+  int seed;
 };
 
 Params get_params(char **argv);

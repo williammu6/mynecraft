@@ -128,7 +128,7 @@ void Chunk::set(glm::ivec3 block_position, Block block) {
 
 Chunk *create_chunk(glm::vec3 position, struct World *world) {
   Chunk *chunk = new Chunk(position, world);
-  gen(chunk);
+  gen(chunk, world->seed);
   return chunk;
 }
 

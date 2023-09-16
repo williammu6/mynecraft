@@ -5,6 +5,6 @@
 #include "perlin_noise.hpp"
 #include "tree.hpp"
 
-void gen(Chunk *chunk);
+void gen(Chunk *chunk, int world_seed);
 
 #endif

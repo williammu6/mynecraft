@@ -43,16 +43,15 @@ void Sky::render() {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(state.camera.model, p);
     model = glm::scale(model, glm::vec3(25.0f));
-    model =
-        glm::rotate(model, r * state.tick, glm::vec3({1, 0, 0}));
+    model = glm::rotate(model, r * state.tick, glm::vec3({1, 0, 0}));
     model = glm::rotate(model, 0.0f, glm::vec3({0, 1, 0}));
     model = glm::rotate(model, 0.0f, glm::vec3({0, 0, 1}));
     shader->setMat4("model", model);
   };
 
-  printf("Pos %f %f %f\n", p.x, p.y, p.z);
-  printf("Camera %f %f %f\n", state.camera.position.x, state.camera.position.y,
-         state.camera.position.z);
+  // printf("Pos %f %f %f\n", p.x, p.y, p.z);
+  // printf("Camera %f %f %f\n", state.camera.position.x,
+  // state.camera.position.y, state.camera.position.z);
 
   primitive->draw(p, shader, state.renderer->textures[TextureID::SUN],
                   setup_model);

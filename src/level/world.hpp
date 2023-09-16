@@ -28,6 +28,7 @@ struct World {
   World(size_t chunk_size, int seed) {
     srand(seed);
 
+    this->seed = seed;
     this->chunk_size = chunk_size;
     this->sky = new Sky();
 
