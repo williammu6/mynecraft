@@ -4,70 +4,33 @@
 
 #define TAU (M_PI * 2.0)
 
-using namespace std::chrono;
+Params get_params(char **argv) { return {.seed = argv[1]}; }
 
 struct State global_state;
 State &state = global_state;
 
-Application::Application()
-{
-  state.windowWidth = 1700;
-  state.windowHeight = 1200;
+Application::Application() {}
 
-  state.window = Window::create();
-}
-
-void Application::run()
-{
+void Application::run(char **argv) {
+  Params params = get_params(argv);
   state.running = true;
-  state.camera = Camera(state.windowWidth, state.windowHeight);
-
-  setup_mouse_input();
 
   Renderer renderer;
   state.renderer = &renderer;
 
-  this->world = new World(16, 123456);
+  setup_mouse_input();
 
-  double previous_time = glfwGetTime();
+  this->world = new World(16, 1);
 
-  int frames = 0;
-  double timer;
-  double speed = 0.5;
-
-  state.sun_position = glm::vec3(0, 10, 0);
-
-  while (state.running)
-  {
-    float current_time = glfwGetTime();
-    this->delta_time = current_time - this->last_frame;
-
-    frames++;
-
-    input_handler(state.window->p_getWindow());
-    this->last_frame = current_time;
-    if (current_time - previous_time >= 1.0)
-    {
-      std::cout << "FPS: " << frames << std::endl;
-      previous_time = current_time;
-      frames = 0;
-    }
-
-    update();
-    glm::vec3 center = { 0, 0, 0};
-    timer += delta_time * speed;
-    // if (timer > TAU) timer -= TAU;
-    state.tick = timer;
-    state.sun_position.z = cos(M_PI_2 * timer)*200 + state.camera.position.z;
-    state.sun_position.y = sin(M_PI_2 * timer)*200 + state.camera.position.y;
-    state.sun_position.x = state.camera.position.x;
-  }
+  state.window->loop([this]() { update(); },
+                     [this](GLFWwindow *window, double delta_time) {
+                       input_handler(window, delta_time);
+                     });
 
   state.window->terminate();
 }
 
-void Application::update()
-{
+void Application::update() {
   state.window->clear();
   world->render();
   world->sky->render();
@@ -75,12 +38,11 @@ void Application::update()
   state.window->update();
 }
 
-void Application::input_handler(GLFWwindow *window)
-{
+void Application::input_handler(GLFWwindow *window, double delta_time) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     state.running = false;
 
-  float cameraSpeed = 15 * this->delta_time;
+  float cameraSpeed = 15 * delta_time;
   if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
     state.wireframe_mode = !state.wireframe_mode;
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

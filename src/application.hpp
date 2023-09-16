@@ -7,19 +7,24 @@
 #include "gfx/shader.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/window.hpp"
-#include "level/world.hpp"
 #include "input.hpp"
+#include "level/world.hpp"
 #include "state.hpp"
+
+struct Params {
+  char* seed;
+};
+
+Params get_params(char **argv);
 
 class Application {
 public:
   World *world;
-  double delta_time, last_frame;
   Application();
   ~Application();
-  void run();
+  void run(char **argv);
   void update();
-  void input_handler(GLFWwindow *window);
+  void input_handler(GLFWwindow *window, double delta_time);
 };
 
 #endif
