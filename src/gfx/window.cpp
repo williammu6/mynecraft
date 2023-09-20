@@ -51,24 +51,3 @@ void Window::terminate() {
 }
 
 GLFWwindow *Window::p_getWindow() { return window; }
-
-void Window::loop(std::function<void()> update_world_fn,
-                  std::function<void(GLFWwindow *, double)> input_handler_fn) {
-  int frames = 0;
-  double delta_time, last_frame;
-  double previous_time = glfwGetTime();
-  while (state.running) {
-    float current_time = glfwGetTime();
-    delta_time = current_time - last_frame;
-    frames++;
-    input_handler_fn(this->p_getWindow(), delta_time);
-    last_frame = current_time;
-    if (current_time - previous_time >= 1.0) {
-      DEBUG(frames);
-      previous_time = current_time;
-      frames = 0;
-    }
-
-    update_world_fn();
-  }
-}

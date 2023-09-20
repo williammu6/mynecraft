@@ -1,5 +1,4 @@
 #include "chunkmesh.hpp"
-#include "glm/ext/matrix_transform.hpp"
 
 void ChunkMesh::setup() {
   std::vector<Vertex> all_vertices;
@@ -44,8 +43,8 @@ void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
   primitive->draw(position, shader, *texture, setup_shader);
 }
 
-void ChunkMesh::add_face(CubeFace cube_face, glm::vec3 position,
-    glm::vec2 texture_offset) {
+void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
+                         glm::vec2 texture_offset) {
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
   auto face_direction = DIRECTIONS[cube_face.direction];
@@ -59,15 +58,16 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::vec3 position,
   float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
 
   std::vector<glm::vec3> V = cube_face.vertices();
+  glm::vec3 float_position = position;
 
-  this->vertices.push_back({{V[0] * cube_face.position + position,
-      face_direction, glm::vec2(minTX, minTY)},
-      {V[1] * cube_face.position + position,
-      face_direction, glm::vec2(maxTX, minTY)},
-      {V[2] * cube_face.position + position,
-      face_direction, glm::vec2(minTX, maxTY)},
-      {V[3] * cube_face.position + position,
-      face_direction, glm::vec2(maxTX, maxTY)}});
+  this->vertices.push_back({{V[0] * cube_face.position + float_position,
+                             face_direction, glm::vec2(minTX, minTY)},
+                            {V[1] * cube_face.position + float_position,
+                             face_direction, glm::vec2(maxTX, minTY)},
+                            {V[2] * cube_face.position + float_position,
+                             face_direction, glm::vec2(minTX, maxTY)},
+                            {V[3] * cube_face.position + float_position,
+                             face_direction, glm::vec2(maxTX, maxTY)}});
 
   this->indices.push_back(QUAD_FACE_INDICES[cube_face.direction]);
 }

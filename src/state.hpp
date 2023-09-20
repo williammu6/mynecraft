@@ -6,10 +6,11 @@
 #include "level/blocks/block_type.hpp"
 
 struct State {
-  int windowWidth = 1200;
-  int windowHeight = 800;
+  int windowWidth;
+  int windowHeight;
   Window *window;
   Camera camera;
+  struct World *world;
   bool wireframe_mode = false;
   bool running = false;
   Renderer *renderer;
@@ -18,8 +19,8 @@ struct State {
   int frames = 0;
 
   State() {
-    windowWidth = 1700;
-    windowHeight = 1200;
+    windowWidth = 800;
+    windowHeight = 640;
     window = Window::create();
     camera = Camera(windowWidth, windowHeight);
   }

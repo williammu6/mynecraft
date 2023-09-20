@@ -21,6 +21,4 @@ public:
   void clear();
   int shouldClose();
   GLFWwindow *p_getWindow();
-  void loop(std::function<void()> update_world_fn,
-            std::function<void(GLFWwindow *, double)> input_handler_fn);
 };

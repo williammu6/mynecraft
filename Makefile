@@ -183,17 +183,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Shitcraft
+# Target rules for targets named Mynecraft
 
 # Build rule for target.
-Shitcraft: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Shitcraft
-.PHONY : Shitcraft
+Mynecraft: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Mynecraft
+.PHONY : Mynecraft
 
 # fast build rule for target.
-Shitcraft/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/build
-.PHONY : Shitcraft/fast
+Mynecraft/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/build
+.PHONY : Mynecraft/fast
 
 #=============================================================================
 # Target rules for targets named uninstall
@@ -265,7 +265,7 @@ src/application.o: src/application.cpp.o
 
 # target to build an object file
 src/application.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/application.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/application.cpp.o
 .PHONY : src/application.cpp.o
 
 src/application.i: src/application.cpp.i
@@ -273,7 +273,7 @@ src/application.i: src/application.cpp.i
 
 # target to preprocess a source file
 src/application.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/application.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/application.cpp.i
 .PHONY : src/application.cpp.i
 
 src/application.s: src/application.cpp.s
@@ -281,7 +281,7 @@ src/application.s: src/application.cpp.s
 
 # target to generate assembly for a file
 src/application.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/application.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/application.cpp.s
 .PHONY : src/application.cpp.s
 
 src/gfx/camera.o: src/gfx/camera.cpp.o
@@ -289,7 +289,7 @@ src/gfx/camera.o: src/gfx/camera.cpp.o
 
 # target to build an object file
 src/gfx/camera.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/camera.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/camera.cpp.o
 .PHONY : src/gfx/camera.cpp.o
 
 src/gfx/camera.i: src/gfx/camera.cpp.i
@@ -297,7 +297,7 @@ src/gfx/camera.i: src/gfx/camera.cpp.i
 
 # target to preprocess a source file
 src/gfx/camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/camera.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/camera.cpp.i
 .PHONY : src/gfx/camera.cpp.i
 
 src/gfx/camera.s: src/gfx/camera.cpp.s
@@ -305,7 +305,7 @@ src/gfx/camera.s: src/gfx/camera.cpp.s
 
 # target to generate assembly for a file
 src/gfx/camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/camera.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/camera.cpp.s
 .PHONY : src/gfx/camera.cpp.s
 
 src/gfx/shader.o: src/gfx/shader.cpp.o
@@ -313,7 +313,7 @@ src/gfx/shader.o: src/gfx/shader.cpp.o
 
 # target to build an object file
 src/gfx/shader.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/shader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/shader.cpp.o
 .PHONY : src/gfx/shader.cpp.o
 
 src/gfx/shader.i: src/gfx/shader.cpp.i
@@ -321,7 +321,7 @@ src/gfx/shader.i: src/gfx/shader.cpp.i
 
 # target to preprocess a source file
 src/gfx/shader.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/shader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/shader.cpp.i
 .PHONY : src/gfx/shader.cpp.i
 
 src/gfx/shader.s: src/gfx/shader.cpp.s
@@ -329,7 +329,7 @@ src/gfx/shader.s: src/gfx/shader.cpp.s
 
 # target to generate assembly for a file
 src/gfx/shader.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/shader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/shader.cpp.s
 .PHONY : src/gfx/shader.cpp.s
 
 src/gfx/texture.o: src/gfx/texture.cpp.o
@@ -337,7 +337,7 @@ src/gfx/texture.o: src/gfx/texture.cpp.o
 
 # target to build an object file
 src/gfx/texture.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/texture.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/texture.cpp.o
 .PHONY : src/gfx/texture.cpp.o
 
 src/gfx/texture.i: src/gfx/texture.cpp.i
@@ -345,7 +345,7 @@ src/gfx/texture.i: src/gfx/texture.cpp.i
 
 # target to preprocess a source file
 src/gfx/texture.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/texture.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/texture.cpp.i
 .PHONY : src/gfx/texture.cpp.i
 
 src/gfx/texture.s: src/gfx/texture.cpp.s
@@ -353,7 +353,7 @@ src/gfx/texture.s: src/gfx/texture.cpp.s
 
 # target to generate assembly for a file
 src/gfx/texture.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/texture.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/texture.cpp.s
 .PHONY : src/gfx/texture.cpp.s
 
 src/gfx/vendor/stb_image.o: src/gfx/vendor/stb_image.cpp.o
@@ -361,7 +361,7 @@ src/gfx/vendor/stb_image.o: src/gfx/vendor/stb_image.cpp.o
 
 # target to build an object file
 src/gfx/vendor/stb_image.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/vendor/stb_image.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.o
 .PHONY : src/gfx/vendor/stb_image.cpp.o
 
 src/gfx/vendor/stb_image.i: src/gfx/vendor/stb_image.cpp.i
@@ -369,7 +369,7 @@ src/gfx/vendor/stb_image.i: src/gfx/vendor/stb_image.cpp.i
 
 # target to preprocess a source file
 src/gfx/vendor/stb_image.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/vendor/stb_image.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.i
 .PHONY : src/gfx/vendor/stb_image.cpp.i
 
 src/gfx/vendor/stb_image.s: src/gfx/vendor/stb_image.cpp.s
@@ -377,7 +377,7 @@ src/gfx/vendor/stb_image.s: src/gfx/vendor/stb_image.cpp.s
 
 # target to generate assembly for a file
 src/gfx/vendor/stb_image.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/vendor/stb_image.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.s
 .PHONY : src/gfx/vendor/stb_image.cpp.s
 
 src/gfx/window.o: src/gfx/window.cpp.o
@@ -385,7 +385,7 @@ src/gfx/window.o: src/gfx/window.cpp.o
 
 # target to build an object file
 src/gfx/window.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/window.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/window.cpp.o
 .PHONY : src/gfx/window.cpp.o
 
 src/gfx/window.i: src/gfx/window.cpp.i
@@ -393,7 +393,7 @@ src/gfx/window.i: src/gfx/window.cpp.i
 
 # target to preprocess a source file
 src/gfx/window.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/window.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/window.cpp.i
 .PHONY : src/gfx/window.cpp.i
 
 src/gfx/window.s: src/gfx/window.cpp.s
@@ -401,7 +401,7 @@ src/gfx/window.s: src/gfx/window.cpp.s
 
 # target to generate assembly for a file
 src/gfx/window.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/gfx/window.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/window.cpp.s
 .PHONY : src/gfx/window.cpp.s
 
 src/input.o: src/input.cpp.o
@@ -409,7 +409,7 @@ src/input.o: src/input.cpp.o
 
 # target to build an object file
 src/input.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/input.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.o
 .PHONY : src/input.cpp.o
 
 src/input.i: src/input.cpp.i
@@ -417,7 +417,7 @@ src/input.i: src/input.cpp.i
 
 # target to preprocess a source file
 src/input.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/input.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.i
 .PHONY : src/input.cpp.i
 
 src/input.s: src/input.cpp.s
@@ -425,7 +425,7 @@ src/input.s: src/input.cpp.s
 
 # target to generate assembly for a file
 src/input.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/input.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.s
 .PHONY : src/input.cpp.s
 
 src/level/chunk.o: src/level/chunk.cpp.o
@@ -433,7 +433,7 @@ src/level/chunk.o: src/level/chunk.cpp.o
 
 # target to build an object file
 src/level/chunk.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.o
 .PHONY : src/level/chunk.cpp.o
 
 src/level/chunk.i: src/level/chunk.cpp.i
@@ -441,7 +441,7 @@ src/level/chunk.i: src/level/chunk.cpp.i
 
 # target to preprocess a source file
 src/level/chunk.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.i
 .PHONY : src/level/chunk.cpp.i
 
 src/level/chunk.s: src/level/chunk.cpp.s
@@ -449,7 +449,7 @@ src/level/chunk.s: src/level/chunk.cpp.s
 
 # target to generate assembly for a file
 src/level/chunk.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunk.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.s
 .PHONY : src/level/chunk.cpp.s
 
 src/level/chunkmesh.o: src/level/chunkmesh.cpp.o
@@ -457,7 +457,7 @@ src/level/chunkmesh.o: src/level/chunkmesh.cpp.o
 
 # target to build an object file
 src/level/chunkmesh.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.o
 .PHONY : src/level/chunkmesh.cpp.o
 
 src/level/chunkmesh.i: src/level/chunkmesh.cpp.i
@@ -465,7 +465,7 @@ src/level/chunkmesh.i: src/level/chunkmesh.cpp.i
 
 # target to preprocess a source file
 src/level/chunkmesh.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.i
 .PHONY : src/level/chunkmesh.cpp.i
 
 src/level/chunkmesh.s: src/level/chunkmesh.cpp.s
@@ -473,7 +473,7 @@ src/level/chunkmesh.s: src/level/chunkmesh.cpp.s
 
 # target to generate assembly for a file
 src/level/chunkmesh.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/chunkmesh.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.s
 .PHONY : src/level/chunkmesh.cpp.s
 
 src/level/gen.o: src/level/gen.cpp.o
@@ -481,7 +481,7 @@ src/level/gen.o: src/level/gen.cpp.o
 
 # target to build an object file
 src/level/gen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.o
 .PHONY : src/level/gen.cpp.o
 
 src/level/gen.i: src/level/gen.cpp.i
@@ -489,7 +489,7 @@ src/level/gen.i: src/level/gen.cpp.i
 
 # target to preprocess a source file
 src/level/gen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.i
 .PHONY : src/level/gen.cpp.i
 
 src/level/gen.s: src/level/gen.cpp.s
@@ -497,7 +497,7 @@ src/level/gen.s: src/level/gen.cpp.s
 
 # target to generate assembly for a file
 src/level/gen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/gen.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.s
 .PHONY : src/level/gen.cpp.s
 
 src/level/sky.o: src/level/sky.cpp.o
@@ -505,7 +505,7 @@ src/level/sky.o: src/level/sky.cpp.o
 
 # target to build an object file
 src/level/sky.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.o
 .PHONY : src/level/sky.cpp.o
 
 src/level/sky.i: src/level/sky.cpp.i
@@ -513,7 +513,7 @@ src/level/sky.i: src/level/sky.cpp.i
 
 # target to preprocess a source file
 src/level/sky.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.i
 .PHONY : src/level/sky.cpp.i
 
 src/level/sky.s: src/level/sky.cpp.s
@@ -521,7 +521,7 @@ src/level/sky.s: src/level/sky.cpp.s
 
 # target to generate assembly for a file
 src/level/sky.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/sky.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.s
 .PHONY : src/level/sky.cpp.s
 
 src/level/tree.o: src/level/tree.cpp.o
@@ -529,7 +529,7 @@ src/level/tree.o: src/level/tree.cpp.o
 
 # target to build an object file
 src/level/tree.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.o
 .PHONY : src/level/tree.cpp.o
 
 src/level/tree.i: src/level/tree.cpp.i
@@ -537,7 +537,7 @@ src/level/tree.i: src/level/tree.cpp.i
 
 # target to preprocess a source file
 src/level/tree.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.i
 .PHONY : src/level/tree.cpp.i
 
 src/level/tree.s: src/level/tree.cpp.s
@@ -545,7 +545,7 @@ src/level/tree.s: src/level/tree.cpp.s
 
 # target to generate assembly for a file
 src/level/tree.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/tree.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.s
 .PHONY : src/level/tree.cpp.s
 
 src/level/world.o: src/level/world.cpp.o
@@ -553,7 +553,7 @@ src/level/world.o: src/level/world.cpp.o
 
 # target to build an object file
 src/level/world.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.o
 .PHONY : src/level/world.cpp.o
 
 src/level/world.i: src/level/world.cpp.i
@@ -561,7 +561,7 @@ src/level/world.i: src/level/world.cpp.i
 
 # target to preprocess a source file
 src/level/world.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.i
 .PHONY : src/level/world.cpp.i
 
 src/level/world.s: src/level/world.cpp.s
@@ -569,7 +569,7 @@ src/level/world.s: src/level/world.cpp.s
 
 # target to generate assembly for a file
 src/level/world.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/level/world.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.s
 .PHONY : src/level/world.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -577,7 +577,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -585,7 +585,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -593,7 +593,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Shitcraft.dir/build.make CMakeFiles/Shitcraft.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -613,7 +613,7 @@ help:
 	@echo "... docs"
 	@echo "... uninstall"
 	@echo "... update_mappings"
-	@echo "... Shitcraft"
+	@echo "... Mynecraft"
 	@echo "... glad"
 	@echo "... glfw"
 	@echo "... src/application.o"

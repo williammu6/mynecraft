@@ -4,6 +4,7 @@
 #include "../state.hpp"
 #include "../utils/vectors.hpp"
 #include "gfx.hpp"
+#include "glad/glad.h"
 #include "shader.hpp"
 
 struct Vertex {
@@ -18,6 +19,10 @@ private:
 
 public:
   Primitive() { n_indices = 0; };
+  ~Primitive(){
+      // glDeleteVertexArrays(VAO);
+      // glDeleteBuffers(VBO);
+  };
 
   int n_indices;
 
@@ -66,7 +71,6 @@ public:
     fn();
     shader->setMat4("view", state.camera.view);
     shader->setMat4("projection", state.camera.projection);
-
 
     glActiveTexture(GL_TEXTURE + (int)texture.id);
     glBindTexture(GL_TEXTURE_2D, texture.pixels);
@@ -118,9 +122,9 @@ struct CubeFace {
   std::vector<glm::vec3> vertices() { return CUBE_VERTICES[direction]; }
 };
 
-const glm::vec3 DIRECTIONS[] = {glm::vec3(0, 1, 0),  glm::vec3(0, 0, 1),
-                                glm::vec3(-1, 0, 0), glm::vec3(1, 0, 0),
-                                glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)};
+const glm::ivec3 DIRECTIONS[] = {glm::ivec3(0, 1, 0),  glm::ivec3(0, 0, 1),
+                                 glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0),
+                                 glm::ivec3(0, 0, -1), glm::ivec3(0, -1, 0)};
 
 static const std::vector<CubeFace> CUBE_FACES{
     {TOP, glm::vec3(1, 1, 1)},    {SOUTH, glm::vec3(1, 1, 1)},

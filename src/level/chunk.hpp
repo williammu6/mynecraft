@@ -4,8 +4,10 @@
 #include "../common.hpp"
 #include "../state.hpp"
 #include "../utils/math.hpp"
+#include "../utils/position.hpp"
 #include "blocks/blocks.hpp"
 #include "chunkmesh.hpp"
+#include <unordered_map>
 
 struct Block {
   BlockType *type;
@@ -18,7 +20,8 @@ struct Chunk {
   glm::vec3 position;
 
   ChunkMesh *mesh;
-  std::vector<std::vector<std::vector<Block>>> blocks;
+  // std::unordered_map<Position, Block, Position::Hash> blocks;
+  std::unordered_map<glm::ivec3, Block> blocks{};
   std::map<Direction, Chunk *> neighbor_chunk{};
 
   Chunk(glm::vec3 position, struct World *world) {
@@ -27,7 +30,6 @@ struct Chunk {
 
     this->init();
   };
-
   void init();
   void prepare_render();
   void prepare_render_borders();
@@ -43,12 +45,13 @@ struct Chunk {
   bool in_bounds(glm::ivec3 position);
   bool is_border(int x, int z);
 
-  Block *get_neighbor_block(Direction direction, glm::vec3 position);
+  Block *get_neighbor_block(Direction direction, glm::ivec3 position);
   Block *get_block(int x, int y, int z);
   Block *get_block(glm::ivec3 position);
   ~Chunk() {
-    this->blocks.clear();
-    this->blocks.shrink_to_fit();
+    this->neighbor_chunk = {};
+    this->neighbor_chunk.clear();
+    this->blocks = {};
     delete this->mesh;
   }
 };

@@ -6,7 +6,7 @@
 void World::init() {
   for (int x = 0; x < n_chunks; x++) {
     for (int z = 0; z < n_chunks; z++) {
-      this->chunk_map[{x, 0, z}] = create_chunk(glm::vec3(x, 0, z), this);
+      this->chunk_map[{x, 0, z}] = create_chunk(glm::ivec3(x, 0, z), this);
     }
   }
 
@@ -16,8 +16,7 @@ void World::init() {
   }
 
   glm::vec3 center =
-      (glm::vec3)chunk_map[{n_chunks - 1, 0, n_chunks - 1}]->position * 16.0f *
-      0.5f;
+      chunk_map[{n_chunks - 1, 0, n_chunks - 1}]->position * 16.0f * 0.5f;
   state.camera.position = glm::vec3(center.x, 40, center.z);
 }
 

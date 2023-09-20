@@ -13,13 +13,15 @@ public:
     this->indices = {};
     this->vertices = {};
   };
-  ~ChunkMesh() { clean(); }
+  ~ChunkMesh() {
+    clean();
+    delete this->primitive;
+  }
 
   struct Primitive *primitive;
 
   void draw(glm::vec3 position, struct Texture *texture);
-  void add_face(CubeFace cube_face, glm::vec3 position,
-                glm::vec2 texture_offset);
+  void add_face(CubeFace cube_face, glm::ivec3 position, glm::vec2 texture_offset);
   void setup();
   void clean() {
     this->vertices.clear();

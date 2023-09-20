@@ -1,20 +1,21 @@
 #pragma once
 
-#include "../common.hpp"
+// #include "../common.hpp"
 
-struct Position {
-  int x;
-  int y;
-  int z;
+#include "../gfx/gfx.hpp"
+#include <iostream>
+#include <tuple>
+#include <unordered_map>
 
-  bool operator==(const Position position) const {
-    return position.x == x && position.y == y && position.z == z;
+// Specialize std::hash for your custom key type
+namespace std {
+template <> struct hash<glm::ivec3> {
+  size_t operator()(const glm::ivec3 &p) const {
+    size_t seed = 0;
+    seed ^= hash<int>{}(p.x) + 0x9e3779b9 + (seed << 3) + (seed >> 2);
+    seed ^= hash<int>{}(p.y) + 0x9e3779b9 + (seed << 3) + (seed >> 2);
+    seed ^= hash<int>{}(p.z) + 0x9e3779b9 + (seed << 3) + (seed >> 2);
+    return seed;
   }
-
-  struct Hash {
-    std::size_t operator()(const Position &p) const {
-      std::hash<int> hasher;
-      return hasher(p.x) ^ hasher(p.z);
-    }
-  };
 };
+} // namespace std

@@ -17,23 +17,22 @@ void Chunk::render() {
 
 void Chunk::init() {
   this->mesh = new ChunkMesh();
-  this->blocks.resize(this->SIZE);
-  for (int i = 0; i < this->SIZE; i++)
-    this->blocks[i].resize(this->SIZE);
+  this->blocks = {};
 }
 
-Block *Chunk::get_neighbor_block(Direction direction, glm::vec3 pos) {
-  if (in_bounds(pos + DIRECTIONS[direction]))
-    return get_block(pos + DIRECTIONS[direction]);
+Block *Chunk::get_neighbor_block(Direction direction, glm::ivec3 pos) {
+  if (in_bounds(pos + DIRECTIONS[direction])) {
+    return this->get_block(pos + DIRECTIONS[direction]);
+  }
 
-  if (direction == NORTH && neighbor_chunk[NORTH])
-    return &neighbor_chunk[NORTH]->blocks[pos.x][SIZE - 1][pos.y];
-  if (direction == SOUTH && neighbor_chunk[SOUTH])
-    return &neighbor_chunk[SOUTH]->blocks[pos.x][0][pos.y];
-  if (direction == EAST && neighbor_chunk[EAST])
-    return &neighbor_chunk[EAST]->blocks[0][pos.z][pos.y];
-  if (direction == WEST && neighbor_chunk[WEST])
-    return &neighbor_chunk[WEST]->blocks[SIZE - 1][pos.z][pos.y];
+  if (direction != NORTH && direction != SOUTH && direction != EAST && direction != WEST) return NULL;
+  if (direction == NORTH) pos.z = SIZE - 1;
+  else if (direction == SOUTH) pos.z = 0;
+  else if (direction == EAST) pos.x = 0;
+  else if (direction == WEST) pos.x = SIZE - 1;
+
+  if (neighbor_chunk[direction])
+    return neighbor_chunk[direction]->get_block(pos);
 
   return NULL;
 }
@@ -51,52 +50,47 @@ bool Chunk::is_border(int x, int z) {
 
 void Chunk::prepare_render() {
   this->mesh->clean();
-  for (int x = 0; x < this->SIZE; x++) {
-    for (int z = 0; z < this->SIZE; z++) {
-      int height = this->blocks[x][z].size();
-      for (int y = 0; y < height; y++) {
-        glm::ivec3 block_position(x, y, z);
-        Block *block = this->get_block(block_position);
-        if (!block->type->solid)
-          continue;
 
-        for (const auto &cube_face : CUBE_FACES) {
-          glm::vec2 texture_offset =
-              block->type->texture_offset(cube_face.direction);
+  for (const auto &[block_position, block] : blocks) {
+    if (!block.type->solid)
+      continue;
 
-          if (should_draw_block_face(this, cube_face.direction, block_position))
-            this->mesh->add_face(CUBE_FACES[cube_face.direction],
-                                 block_position, texture_offset);
-        }
+    for (const auto &cube_face : CUBE_FACES) {
+      glm::vec2 texture_offset =
+          block.type->texture_offset(cube_face.direction);
+
+      if (should_draw_block_face(this, cube_face.direction, block_position)) {
+        this->mesh->add_face(CUBE_FACES[cube_face.direction], block_position, texture_offset);
       }
     }
   }
+
   this->mesh->setup();
 }
 
 Block *Chunk::get_block(int x, int y, int z) {
-  if (this->in_bounds({x, y, z})) {
-    return &this->blocks[x][z][y];
-  }
-
-  return nullptr;
+  glm::ivec3 block_position(x, y, z);
+  return this->blocks.find(block_position) != this->blocks.end()
+             ? &this->blocks.at(block_position)
+             : nullptr;
 }
 
-Block *Chunk::get_block(glm::ivec3 p) { return &this->blocks[p.x][p.z][p.y]; }
+Block *Chunk::get_block(glm::ivec3 block_position) {
+  return this->blocks.find(block_position) != this->blocks.end()
+             ? &this->blocks.at(block_position)
+             : nullptr;
+}
 
 bool Chunk::in_bounds(glm::ivec3 p) {
-  int x = p.x;
-  int y = p.y;
-  int z = p.z;
-  return x >= 0 && y >= 0 && z >= 0 && x < SIZE && z < SIZE &&
-         y < blocks[x][z].size();
+  return p.x >= 0 && p.y >= 0 && p.z >= 0 && p.x < SIZE && p.z < SIZE &&
+         p.y < MAX_WORLD_HEIGHT;
 }
 
 void Chunk::set(glm::ivec3 block_position, Block block) {
   if (in_bounds(block_position))
-    blocks[(int)block_position.x][(int)block_position.z]
-          [(int)block_position.y] = block;
+    blocks[block_position] = block;
   else {
+    /*
     glm::ivec3 out_bounds_chunk_position = this->position;
     glm::ivec3 out_bounds_block_position = block_position;
 
@@ -123,6 +117,7 @@ void Chunk::set(glm::ivec3 block_position, Block block) {
         .block = block};
 
     this->world->out_bounds_blocks.push_back(outta_bounds_block);
+    */
   }
 }
 

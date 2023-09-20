@@ -20,11 +20,15 @@ Params get_params(char **argv);
 class Application {
 public:
   World *world;
-  Application();
+  Application(char **argv);
   ~Application();
-  void run(char **argv);
+  void run();
   void update();
+  void loop();
+  void tick();
   void input_handler(GLFWwindow *window, double delta_time);
+private:
+  struct Params params;
 };
 
 #endif

@@ -9,8 +9,6 @@
 #include "sky.hpp"
 #include "chunk.hpp"
 
-#define MAX_WORLD_HEIGHT = 256;
-
 struct OutOfBoundsBlock {
   glm::ivec3 chunk_position;
   glm::ivec3 block_position;
@@ -21,7 +19,7 @@ struct World {
   size_t chunk_size;
   Shader *shader;
   Sky *sky;
-  int n_chunks = 18;
+  int n_chunks = 16;
   int version = 1;
   int seed;
 
@@ -37,7 +35,7 @@ struct World {
 
   std::vector<OutOfBoundsBlock> out_bounds_blocks{};
 
-  std::unordered_map<Position, Chunk *, Position::Hash> chunk_map;
+  std::unordered_map<glm::ivec3, Chunk *> chunk_map;
   void init();
   void render();
   bool chunk_too_far(Chunk &chunk);
