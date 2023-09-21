@@ -16,6 +16,13 @@ struct OutOfBoundsBlock {
 };
 
 struct World {
+  World(size_t chunk_size, int seed) {
+    srand(seed);
+    this->seed = seed;
+    this->chunk_size = chunk_size;
+    this->sky = new Sky();
+    this->init();
+  }
   size_t chunk_size;
   Shader *shader;
   Sky *sky;
@@ -23,19 +30,9 @@ struct World {
   int version = 1;
   int seed;
 
-  World(size_t chunk_size, int seed) {
-    srand(seed);
-
-    this->seed = seed;
-    this->chunk_size = chunk_size;
-    this->sky = new Sky();
-
-    this->init();
-  }
-
   std::vector<OutOfBoundsBlock> out_bounds_blocks{};
-
   std::unordered_map<glm::ivec3, Chunk *> chunk_map;
+
   void init();
   void render();
   bool chunk_too_far(Chunk &chunk);

@@ -19,10 +19,6 @@ private:
 
 public:
   Primitive() { n_indices = 0; };
-  ~Primitive(){
-      // glDeleteVertexArrays(VAO);
-      // glDeleteBuffers(VBO);
-  };
 
   int n_indices;
 
@@ -43,8 +39,7 @@ public:
                  &indices[0], GL_STATIC_DRAW);
 
     // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     // Face direction
@@ -62,15 +57,14 @@ public:
     n_indices += indices.size();
   }
 
-  void draw(glm::vec3 position, Shader *shader, Texture texture,
-            std::function<void()> fn) {
+  void draw(const glm::vec3 &position, Shader *shader, const Texture &texture) {
     shader->use();
+    shader->setUniforms(position);
 
     glBindVertexArray(VAO);
 
-    fn();
-    shader->setMat4("view", state.camera.view);
-    shader->setMat4("projection", state.camera.projection);
+    shader->setUniform("view", state.camera.view);
+    shader->setUniform("projection", state.camera.projection);
 
     glActiveTexture(GL_TEXTURE + (int)texture.id);
     glBindTexture(GL_TEXTURE_2D, texture.pixels);
@@ -82,16 +76,16 @@ public:
 };
 
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {
-    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0.5, -0.5, 0.5),
-    glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0.5, -0.5, 0.5), glm::vec3(-0.5, 0.5, 0.5),
+    glm::vec3(0.5, 0.5, 0.5)};
 
 static std::vector<glm::vec3> CUBE_L_R_VERTICES = {
-    glm::vec3(-0.5, -0.5, -0.5), glm::vec3(-0.5, 0.5, -0.5),
-    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(-0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, -0.5, -0.5), glm::vec3(-0.5, 0.5, -0.5), glm::vec3(-0.5, -0.5, 0.5),
+    glm::vec3(-0.5, 0.5, 0.5)};
 
 static std::vector<glm::vec3> CUBE_T_B_VERTICES = {
-    glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0.5, 0.5, -0.5),
-    glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0.5, 0.5, -0.5), glm::vec3(-0.5, 0.5, 0.5),
+    glm::vec3(0.5, 0.5, 0.5)};
 
 static std::vector<std::vector<unsigned int>> QUAD_FACE_INDICES{
     {2, 1, 0, 1, 2, 3}, {0, 1, 2, 1, 3, 2}, {0, 1, 2, 1, 3, 2},
@@ -107,9 +101,7 @@ static std::vector<std::vector<glm::vec3>> CUBE_VERTICES{
     CUBE_T_B_VERTICES  // DOWN
 };
 
-static std::vector<glm::vec3> get_block_vertices() {
-  return flatten(CUBE_VERTICES);
-}
+static std::vector<glm::vec3> get_block_vertices() { return flatten(CUBE_VERTICES); }
 
 static std::vector<unsigned int> get_block_indices() {
   return flatten(QUAD_FACE_INDICES);

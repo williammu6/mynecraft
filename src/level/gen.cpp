@@ -16,10 +16,8 @@ void gen(Chunk *chunk, int world_seed) {
       int nZ = (z + 1) + chunk->position.z * chunk->SIZE;
 
       const float roughness = 0.01;
-      const double octave1 =
-          perlin.octave2D_01(nX * roughness, nZ * roughness, 1);
-      const double octave2 =
-          perlin.octave2D_01(nX * roughness, nZ * roughness, 8);
+      const double octave1 = perlin.octave2D_01(nX * roughness, nZ * roughness, 1);
+      const double octave2 = perlin.octave2D_01(nX * roughness, nZ * roughness, 8);
 
       int height =
           glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 2));

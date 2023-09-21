@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include "../state.hpp"
 #include "GLFW/glfw3.h"
+#include "glad/glad.h"
 #include <iostream>
 
 Window::Window() {
@@ -14,8 +15,8 @@ Window::Window() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-  window = glfwCreateWindow(state.windowWidth, state.windowHeight, "Mynecraft",
-                            NULL, NULL);
+  window =
+      glfwCreateWindow(state.windowWidth, state.windowHeight, "Mynecraft", NULL, NULL);
 
   glfwMakeContextCurrent(window);
 
@@ -35,6 +36,11 @@ void Window::update() {
 void Window::clear() {
   glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // TODO enable Blend for water probably?
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glEnable(GL_BLEND);
+
   glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);

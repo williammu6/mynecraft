@@ -1,4 +1,5 @@
 #include "shader.hpp"
+#include "../state.hpp"
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) {
   char infoLog[512];
@@ -68,45 +69,39 @@ std::string Shader::read_file(std::string path) {
   return code;
 }
 
-void Shader::use() { glUseProgram(program); }
+void Shader::use() const { glUseProgram(program); }
 
-void Shader::destroy() { glDeleteProgram(program); }
+void Shader::destroy() const { glDeleteProgram(program); }
 
-void Shader::setInt(const std::string &name, int value) {
-  glUniform1i(glGetUniformLocation(program, name.c_str()), value);
-}
-
-void Shader::setVec3(const std::string &name, const glm::vec3 &value) const {
-  glUniform3fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
-}
-
-void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const {
-  glUniformMatrix3fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE,
-                     &mat[0][0]);
-}
-
-void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const {
-  glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE,
-                     &mat[0][0]);
-}
-
-void Shader::setBool(const std::string &name, bool value) const {
-  glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
+void BlockShader::setUniforms(glm::vec3 position) {
+  glm::mat4 model = glm::mat4(1.0f);
+  model = glm::translate(state.camera.model, position);
+  setUniform("model", model);
+  setUniform("light.position", state.sun_position);
+  setUniform("viewPos", state.camera.position);
+  setUniform("material.diffuse", 0);
+  setUniform("material.specular", 1);
+  setUniform("material.shininess", 32.0f);
+  setUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+  setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+  setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+  setUniform("light.constant", state.sun_position.y < 0 ? 5.0f : 0.5f);
+  setUniform("light.linear", 0.09f);
+  setUniform("light.quadratic", 0.32f);
 }
 
-// ------------------------------------------------------------------------
-void Shader::setVec2(const std::string &name, const glm::vec2 &value) const {
-  glUniform2fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
+void SkyShader::setUniforms(glm::vec3 position) {
+  glm::mat4 model = glm::mat4(1.0f);
+
+  float r = glm::radians(-45.0f);
+
+  model = glm::translate(state.camera.model, position);
+  model = glm::scale(model, glm::vec3(25.0f));
+  model = glm::rotate(model, state.tick, glm::vec3({1, 0, 0}));
+  model = glm::rotate(model, 0.0f, glm::vec3({0, 1, 0}));
+  model = glm::rotate(model, 0.0f, glm::vec3({0, 0, 1}));
+
+  setUniform("model", model);
 }
-// ------------------------------------------------------------------------
-void Shader::setVec4(const std::string &name, const glm::vec4 &value) const {
-  glUniform4fv(glGetUniformLocation(program, name.c_str()), 1, &value[0]);
-}
-// ------------------------------------------------------------------------
-void Shader::setMat2(const std::string &name, const glm::mat2 &mat) const {
-  glUniformMatrix2fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE,
-                     &mat[0][0]);
-}
-void Shader::setFloat(const std::string &name, float value) const {
-  glUniform1f(glGetUniformLocation(program, name.c_str()), value);
-}
+
+

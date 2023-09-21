@@ -14,6 +14,17 @@ struct Block {
 };
 
 struct Chunk {
+  Chunk(glm::vec3 position, struct World *world) {
+    this->position = position;
+    this->world = world;
+    this->init();
+  };
+  ~Chunk() {
+    this->neighbor_chunk = {};
+    this->neighbor_chunk.clear();
+    this->blocks = {};
+    delete this->mesh;
+  }
   struct World *world;
   int version = 1;
   int SIZE = 16;
@@ -23,19 +34,16 @@ struct Chunk {
   // std::unordered_map<Position, Block, Position::Hash> blocks;
   std::unordered_map<glm::ivec3, Block> blocks{};
   std::map<Direction, Chunk *> neighbor_chunk{};
-
-  Chunk(glm::vec3 position, struct World *world) {
-    this->position = position;
-    this->world = world;
-
-    this->init();
-  };
   void init();
   void prepare_render();
   void prepare_render_borders();
+
+  // TODO should live somewhere else
   void prepare_block(Block &block);
   void prepare_face(CubeFace cf, Block element);
   void add_face_to_mesh(CubeFace cf, glm::vec3 position);
+  // TODO end should live somewhere else
+
   void set(glm::ivec3 position, Block block);
   void render();
   void update();
@@ -48,12 +56,6 @@ struct Chunk {
   Block *get_neighbor_block(Direction direction, glm::ivec3 position);
   Block *get_block(int x, int y, int z);
   Block *get_block(glm::ivec3 position);
-  ~Chunk() {
-    this->neighbor_chunk = {};
-    this->neighbor_chunk.clear();
-    this->blocks = {};
-    delete this->mesh;
-  }
 };
 
 Chunk *create_chunk(glm::vec3 position, struct World *world);

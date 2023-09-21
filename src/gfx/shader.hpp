@@ -1,33 +1,62 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "gfx.hpp"
 #include "../common.hpp"
+#include "gfx.hpp"
 
-class Shader
-{
+class Shader {
 private:
-  GLuint vertex_shader, fragment_shader;
-  GLuint compile(std::string path, GLenum shader_type);
+  unsigned int program;
+  unsigned int vertex_shader, fragment_shader;
+  unsigned int compile(std::string path, GLenum shader_type);
   std::string read_file(std::string path);
 
+  // setUniforms methods
+  void setUniformInternal(unsigned int location, const int &value) const {
+    glUniform1i(location, value);
+  }
+  void setUniformInternal(unsigned int location, const float &value) const {
+    glUniform1f(location, value);
+  }
+  void setUniformInternal(unsigned int location, const glm::vec3 &value) const {
+    glUniform3fv(location, 1, &value[0]);
+  }
+  void setUniformInternal(unsigned int location, const glm::mat4 &value) const {
+    glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
+  }
+
 public:
-  GLuint program;
   Shader(std::string vertex_path, std::string fragment_path);
 
-  void use();
+  void use() const;
+  void destroy() const;
 
-  void destroy();
+  virtual void setUniforms(glm::vec3 position) = 0;
 
-  void setInt(const std::string &name, int value);
-  void setFloat(const std::string &name, float value) const;
-  void setBool(const std::string &name, bool value) const;
-  void setVec2(const std::string &name, const glm::vec2 &value) const;
-  void setVec3(const std::string &name, const glm::vec3 &value) const;
-  void setVec4(const std::string &name, const glm::vec4 &value) const;
-  void setMat2(const std::string &name, const glm::mat2 &mat) const;
-  void setMat3(const std::string &name, const glm::mat3 &mat) const;
-  void setMat4(const std::string &name, const glm::mat4 &mat) const;
+  template <typename T> void setUniform(const std::string &name, const T &value) const {
+    int location = glGetUniformLocation(program, name.c_str());
+    if (location != -1) {
+      setUniformInternal(location, value);
+    } else {
+      std::cerr << "Uniform not found: " << name << std::endl;
+    }
+  };
 };
+
+class BlockShader : public Shader {
+public:
+  BlockShader()
+      : Shader("res/shaders/basicTexture.vert", "res/shaders/basicTexture.frag"){};
+
+  void setUniforms(glm::vec3) override;
+};
+
+class SkyShader : public Shader {
+public:
+  SkyShader() : Shader("res/shaders/sun.vert", "res/shaders/sun.frag") {}
+
+  void setUniforms(glm::vec3) override;
+};
+class WaterShader : public Shader {};
 
 #endif

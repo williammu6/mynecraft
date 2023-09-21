@@ -9,15 +9,14 @@
 class Sky {
 private:
   GLuint VAO, VBO, EBO;
-  Shader *sun_shader;
+  SkyShader *sky_shader;
   Primitive *primitive;
 
 public:
   Sky() {
-    Shader shader = Shader("res/shaders/sun.vert",
-                           "res/shaders/sun.frag");
+    SkyShader _sky_shader;
     primitive = new Primitive();
-    this->sun_shader = &shader;
+    this->sky_shader = &_sky_shader;
     prepare_render();
   }
   void prepare_render();
