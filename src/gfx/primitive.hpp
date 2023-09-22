@@ -9,83 +9,73 @@
 
 struct Vertex {
   glm::vec3 Position;
-  glm::vec3 FaceDirection;
+  glm::ivec3 FaceDirection;
   glm::vec2 TexCoords;
 };
 
-class Primitive {
+static std::vector<unsigned int> vertexSizes{3, 3, 2};
+
+/** VertexBuffer */
+class VertexBuffer {
 private:
-  unsigned int VAO, VBO, EBO;
+  unsigned int id;
 
 public:
-  Primitive() { n_indices = 0; };
+  VertexBuffer(const void *data, unsigned int size);
+  ~VertexBuffer();
 
-  int n_indices;
+  void bind() const;
+  void unbind() const;
+};
 
-  template <class T>
-  void prepare(std::vector<T> vertices, std::vector<unsigned int> indices) {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+/** IndexBuffer */
+class IndexBuffer {
+private:
+  unsigned int id;
+  unsigned int m_count;
 
-    glBindVertexArray(VAO);
+public:
+  IndexBuffer(const void *data, unsigned int count);
+  ~IndexBuffer();
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, 4 * vertices.size() * sizeof(T), &vertices[0],
-                 GL_STATIC_DRAW);
+  void bind() const;
+  void unbind() const;
+  unsigned int get_count() const { return m_count; }
+};
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-                 &indices[0], GL_STATIC_DRAW);
+/** Primitive */
+class Primitive {
+private:
+  unsigned int VAO;
+  VertexBuffer *vb;
+  IndexBuffer *ib;
 
-    // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
+  std::vector<Vertex> vertices;
+  std::vector<unsigned int> indices;
 
-    // Face direction
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+  int n_faces = 0;
 
-    // Texture Coords
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+public:
+  Primitive();
+  ~Primitive();
 
-    glBindVertexArray(0);
-
-    n_indices += indices.size();
-  }
-
-  void draw(const glm::vec3 &position, Shader *shader, const Texture &texture) {
-    shader->use();
-    shader->setUniforms(position);
-
-    glBindVertexArray(VAO);
-
-    shader->setUniform("view", state.camera.view);
-    shader->setUniform("projection", state.camera.projection);
-
-    glActiveTexture(GL_TEXTURE + (int)texture.id);
-    glBindTexture(GL_TEXTURE_2D, texture.pixels);
-
-    glDrawElements(GL_TRIANGLES, n_indices * 6, GL_UNSIGNED_INT, (void *)0);
-
-    glBindVertexArray(0);
-  }
+  void clean();
+  void prepare();
+  void draw(const glm::vec3 &position, Shader *shader, const Texture &texture);
+  void push(const std::vector<Vertex> &v, std::vector<unsigned int> _indices);
 };
 
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {
-    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0.5, -0.5, 0.5), glm::vec3(-0.5, 0.5, 0.5),
-    glm::vec3(0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0.5, -0.5, 0.5),
+    glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0.5, 0.5, 0.5)};
 
 static std::vector<glm::vec3> CUBE_L_R_VERTICES = {
-    glm::vec3(-0.5, -0.5, -0.5), glm::vec3(-0.5, 0.5, -0.5), glm::vec3(-0.5, -0.5, 0.5),
-    glm::vec3(-0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, -0.5, -0.5), glm::vec3(-0.5, 0.5, -0.5),
+    glm::vec3(-0.5, -0.5, 0.5), glm::vec3(-0.5, 0.5, 0.5)};
 
 static std::vector<glm::vec3> CUBE_T_B_VERTICES = {
-    glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0.5, 0.5, -0.5), glm::vec3(-0.5, 0.5, 0.5),
-    glm::vec3(0.5, 0.5, 0.5)};
+    glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0.5, 0.5, -0.5),
+    glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0.5, 0.5, 0.5)};
 
 static std::vector<std::vector<unsigned int>> QUAD_FACE_INDICES{
     {2, 1, 0, 1, 2, 3}, {0, 1, 2, 1, 3, 2}, {0, 1, 2, 1, 3, 2},
@@ -101,7 +91,9 @@ static std::vector<std::vector<glm::vec3>> CUBE_VERTICES{
     CUBE_T_B_VERTICES  // DOWN
 };
 
-static std::vector<glm::vec3> get_block_vertices() { return flatten(CUBE_VERTICES); }
+static std::vector<glm::vec3> get_block_vertices() {
+  return flatten(CUBE_VERTICES);
+}
 
 static std::vector<unsigned int> get_block_indices() {
   return flatten(QUAD_FACE_INDICES);

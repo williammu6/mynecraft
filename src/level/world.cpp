@@ -66,7 +66,7 @@ void World::render() {
       Chunk *new_chunk = create_chunk(new_chunk_position, this);
       chunk_map[{newX, 0, newZ}] = new_chunk;
       new_chunks_vec.push_back(new_chunk);
-      put_blocks_outta_bounds(new_chunk);
+      // put_blocks_outta_bounds(new_chunk);
     } else {
       it++;
     }

@@ -48,7 +48,7 @@ void Application::loop() {
 void Application::tick() {
   state.window->clear();
   state.world->render();
-  state.world->sky->render();
+  // state.world->sky->render();
   // state.sun_position = state.camera.position; // TODO remove
   state.camera.update();
   state.window->update();

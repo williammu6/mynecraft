@@ -7,34 +7,17 @@
 #include "../state.hpp"
 
 class ChunkMesh {
-public:
-  ChunkMesh() {
-    this->primitive = new Primitive();
-    this->indices = {};
-    this->vertices = {};
-  };
-  ~ChunkMesh() {
-    clean();
-    delete this->primitive;
-  }
+private:
+  Primitive *primitive;
 
-  struct Primitive *primitive;
+public:
+  ChunkMesh() { this->primitive = new Primitive(); };
+  ~ChunkMesh() { delete this->primitive; }
 
   void draw(glm::vec3 position, struct Texture *texture);
-  void add_face(CubeFace cube_face, glm::ivec3 position, glm::vec2 texture_offset);
-  void setup();
-  void clean() {
-    this->vertices.clear();
-    this->vertices.shrink_to_fit();
-    this->indices.clear();
-    this->indices.shrink_to_fit();
-  }
-
-private:
-  unsigned int VAO, VBO, EBO;
-
-  std::vector<std::vector<Vertex>> vertices;
-  std::vector<std::vector<unsigned int>> indices;
+  void add_face(CubeFace cube_face, glm::ivec3 position,
+                glm::vec2 texture_offset);
+  void setup() { this->primitive->prepare(); };
 };
 
 #endif

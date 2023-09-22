@@ -8,6 +8,7 @@ CPackSourceConfig.cmake
 CMakeCacheDoxyfile.in
 cmake_install.cmake
 CMakeFiles
+Makefile
 CMakeDoxygenDefaults.cmake
 CPackConfig.cmake
 Mynecraft

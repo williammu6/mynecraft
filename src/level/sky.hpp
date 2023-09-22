@@ -15,7 +15,7 @@ private:
 public:
   Sky() {
     SkyShader _sky_shader;
-    primitive = new Primitive();
+    // primitive = new Primitive();
     this->sky_shader = &_sky_shader;
     prepare_render();
   }

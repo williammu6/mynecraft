@@ -3,6 +3,7 @@
 #include "shader.hpp"
 #include "texture.hpp"
 
+// TODO delete this
 struct Renderer {
   BlockShader *block_shader;
   SkyShader *sky_shader;

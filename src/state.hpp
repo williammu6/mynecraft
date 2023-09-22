@@ -19,8 +19,8 @@ struct State {
   int frames = 0;
 
   State() {
-    windowWidth = 800;
-    windowHeight = 640;
+    windowWidth = 1200;
+    windowHeight = 860;
     window = Window::create();
     camera = Camera(windowWidth, windowHeight);
   }

@@ -21,7 +21,7 @@ void Sky::prepare_render() {
     }
   }
 
-  primitive->prepare(real_vertices, indices);
+  // primitive->prepare(real_vertices, indices);
 }
 
 void Sky::render() {

@@ -79,6 +79,8 @@ void BlockShader::setUniforms(glm::vec3 position) {
   setUniform("model", model);
   setUniform("light.position", state.sun_position);
   setUniform("viewPos", state.camera.position);
+  setUniform("view", state.camera.view);
+  setUniform("projection", state.camera.projection);
   setUniform("material.diffuse", 0);
   setUniform("material.specular", 1);
   setUniform("material.shininess", 32.0f);
@@ -101,7 +103,7 @@ void SkyShader::setUniforms(glm::vec3 position) {
   model = glm::rotate(model, 0.0f, glm::vec3({0, 1, 0}));
   model = glm::rotate(model, 0.0f, glm::vec3({0, 0, 1}));
 
+  setUniform("view", state.camera.view);
+  setUniform("projection", state.camera.projection);
   setUniform("model", model);
 }
-
-
