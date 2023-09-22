@@ -6,9 +6,15 @@ VertexBuffer::VertexBuffer(const void *data, unsigned int size) {
   glBindBuffer(GL_ARRAY_BUFFER, id);
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
-VertexBuffer::~VertexBuffer() { glDeleteBuffers(1, &id); }
-void VertexBuffer::bind() const { glBindBuffer(GL_ARRAY_BUFFER, id); }
-void VertexBuffer::unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); };
+VertexBuffer::~VertexBuffer() {
+  glDeleteBuffers(1, &id);
+}
+void VertexBuffer::bind() const {
+  glBindBuffer(GL_ARRAY_BUFFER, id);
+}
+void VertexBuffer::unbind() const {
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+};
 
 /** IndexBuffer */
 IndexBuffer::IndexBuffer(const void *data, unsigned int count)
@@ -19,9 +25,15 @@ IndexBuffer::IndexBuffer(const void *data, unsigned int count)
                GL_STATIC_DRAW);
 }
 
-IndexBuffer::~IndexBuffer() { glDeleteBuffers(1, &id); }
-void IndexBuffer::bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id); }
-void IndexBuffer::unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); };
+IndexBuffer::~IndexBuffer() {
+  glDeleteBuffers(1, &id);
+}
+void IndexBuffer::bind() const {
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+}
+void IndexBuffer::unbind() const {
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+};
 
 /** Primitive */
 /** Primitive */
@@ -56,10 +68,6 @@ void Primitive::prepare() {
                           (void *)(3 * locIndex * sizeof(float)));
     glEnableVertexAttribArray(locIndex);
   }
-
-  glBindVertexArray(0);
-  ib->unbind();
-  vb->unbind();
 }
 
 void Primitive::draw(const glm::vec3 &position, Shader *shader,

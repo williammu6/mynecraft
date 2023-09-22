@@ -52,6 +52,9 @@ void Chunk::render() {
 }
 
 void Chunk::prepare_render() {
+  delete this->mesh;
+  this->mesh = new ChunkMesh();
+  
   for (const auto &[block_position, block] : blocks) {
     if (!block.type->solid)
       continue;
@@ -124,7 +127,6 @@ void Chunk::set(glm::ivec3 block_position, Block block) {
 Chunk *create_chunk(glm::vec3 position, struct World *world) {
   Chunk *chunk = new Chunk(position, world);
   gen(chunk, world->seed);
-  chunk->prepare_render();
   return chunk;
 }
 
@@ -144,6 +146,7 @@ void Chunk::update_neighbors() {
 
 void Chunk::update() {
   this->update_neighbors();
+  this->prepare_render();
   this->version = this->world->version;
 }
 

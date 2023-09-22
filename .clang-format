@@ -1,1 +1,2 @@
-ColumnLimit: 80
+AccessModifierOffset: -2 # -2
+AllowShortFunctionsOnASingleLine: false
