@@ -2,10 +2,6 @@
 
 out vec4 FragColor;
 
-in vec3 FragPos;
-in vec3 Normal;
-in vec2 TexCoord;
-
 uniform sampler2D ourTexture;
 
 struct Material {
@@ -16,18 +12,23 @@ struct Material {
 };
 
 struct Light {
+  // vec3 position;
+  vec3 direction;
+
   vec3 ambient;
   vec3 diffuse;
   vec3 specular;
-  vec3 position;
-  float constant;
-  float linear;
-  float quadratic;
+
+  vec3 color;
 };
 
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoord;
+
 uniform vec3 viewPos;
-uniform Light light;
 uniform Material material;
+uniform Light light; // uniform vec3 viewPos;
 
 void main() {
   // ambient
@@ -35,10 +36,10 @@ void main() {
 
   // diffuse
   vec3 norm = normalize(Normal);
-  vec3 lightDir = normalize(light.position - FragPos);
+  vec3 lightDir = normalize(-light.direction);
+  // vec3 lightDir = normalize(light.direction - FragPos);
   float diff = max(dot(norm, lightDir), 0.0);
-  vec3 diffuse =
-      light.diffuse * diff * texture(material.diffuse, TexCoord).rgb;
+  vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoord).rgb;
 
   // specular
   vec3 viewDir = normalize(viewPos - FragPos);
@@ -47,15 +48,6 @@ void main() {
   vec3 specular =
       light.specular * spec * texture(material.specular, TexCoord).rgb;
 
-  // attenuation
-  float distance = length(light.position - FragPos) / 50;
-  float attenuation = 1.0 / (light.constant + light.linear * distance +
-                             light.quadratic * (distance * distance));
-
-  ambient *= attenuation;
-  diffuse *= attenuation;
-  specular *= attenuation;
-
   vec3 result = ambient + diffuse + specular;
-  FragColor = vec4(result, material.opacity);
+  FragColor = vec4(max(result, ambient), material.opacity);
 }

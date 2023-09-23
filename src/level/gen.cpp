@@ -16,20 +16,18 @@ void gen(Chunk *chunk, int world_seed) {
       int nZ = (z + 1) + chunk->position.z * chunk->SIZE;
 
       const float roughness = 0.01;
-      const double octave1 = perlin.octave2D_01(nX * roughness, nZ * roughness, 1);
-      const double octave2 = perlin.octave2D_01(nX * roughness, nZ * roughness, 8);
+      const double octave1 =
+          perlin.octave2D_01(nX * roughness, nZ * roughness, 1);
+      const double octave2 =
+          perlin.octave2D_01(nX * roughness, nZ * roughness, 8);
 
       int height =
           glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 2));
 
-      if (height < WATER_LEVEL) {
-        block_type = new Water();
-        for (int y = height; y < WATER_LEVEL; y++) {
-          chunk->set({x, y, z}, {block_type});
-        }
-      } else if (height < WATER_LEVEL + 2) {
+      block_type = new Grass();
+      if (height < WATER_LEVEL + 2) {
         block_type = new Sand();
-      } else if (height < MAX_WORLD_HEIGHT * 2/3) {
+      } else if (height < MAX_WORLD_HEIGHT * 2 / 3) {
         block_type = new Grass();
       } else {
         block_type = new Snow();
@@ -38,6 +36,14 @@ void gen(Chunk *chunk, int world_seed) {
       for (int y = 0; y < height; y++) {
         glm::ivec3 position = {x, y, z};
         chunk->set(position, {block_type});
+      }
+
+      for (int y = height; y < WATER_LEVEL; y++) {
+        glm::ivec3 position = {x, y, z};
+        if (y == height)
+          chunk->set(position, {new Sand()});
+        else
+          chunk->set(position, {new Water()});
       }
 
       if (RANDCHANCE(0.01) && strcmp(block_type->name, "sand") == 0) {

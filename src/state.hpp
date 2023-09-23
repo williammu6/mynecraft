@@ -14,7 +14,7 @@ struct State {
   bool wireframe_mode = false;
   bool running = false;
   Renderer *renderer;
-  glm::vec3 sun_position = {0, 10, 0};
+  glm::vec3 sun_position = {0, 50, 0};
   float tick;
   int frames = 0;
 

@@ -13,6 +13,8 @@ struct Vertex {
   glm::vec2 TexCoords;
 };
 
+enum class RenderType { NORMAL = 0, TRANSPARENT };
+
 static std::vector<unsigned int> vertexSizes{3, 3, 2};
 
 /** VertexBuffer */
@@ -40,7 +42,9 @@ public:
 
   void bind() const;
   void unbind() const;
-  unsigned int get_count() const { return m_count; }
+  unsigned int get_count() const {
+    return m_count;
+  }
 };
 
 /** Primitive */
@@ -51,7 +55,8 @@ private:
   IndexBuffer *ib;
 
   std::vector<Vertex> vertices;
-  std::vector<unsigned int> indices;
+  std::map<RenderType, std::vector<unsigned int>> indices_map;
+  std::map<RenderType, IndexBuffer *> ib_map;
 
   int n_faces = 0;
 
@@ -62,7 +67,8 @@ public:
   void clean();
   void prepare();
   void draw(const glm::vec3 &position, Shader *shader, const Texture &texture);
-  void push(const std::vector<Vertex> &v, std::vector<unsigned int> _indices);
+  void push(const std::vector<Vertex> &v, std::vector<unsigned int> _indices,
+            RenderType render_type);
 };
 
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {
@@ -103,7 +109,9 @@ struct CubeFace {
   enum Direction direction;
   glm::vec3 position;
 
-  std::vector<glm::vec3> vertices() { return CUBE_VERTICES[direction]; }
+  std::vector<glm::vec3> vertices() const {
+    return CUBE_VERTICES[direction];
+  }
 };
 
 const glm::ivec3 DIRECTIONS[] = {glm::ivec3(0, 1, 0),  glm::ivec3(0, 0, 1),

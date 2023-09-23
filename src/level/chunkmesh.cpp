@@ -5,10 +5,11 @@ void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
 }
 
 void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
-                         glm::vec2 texture_offset) {
+                         glm::vec2 texture_offset, RenderType render_type) {
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
   auto face_direction = DIRECTIONS[cube_face.direction];
+  face_direction.y *= -1;
 
   float minTX = texture.tile_size * texture_offset.x / texture.width;
   float maxTX = texture.tile_size * (texture_offset.x + 1) / texture.width;
@@ -27,5 +28,5 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
                          {V[3] * cube_face.position + f_pos, face_direction,
                           glm::vec2(maxTX, maxTY)}}};
 
-  primitive->push(v, QUAD_FACE_INDICES[cube_face.direction]);
+  primitive->push(v, QUAD_FACE_INDICES[cube_face.direction], render_type);
 }

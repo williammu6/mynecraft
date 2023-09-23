@@ -308,6 +308,30 @@ src/gfx/camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/camera.cpp.s
 .PHONY : src/gfx/camera.cpp.s
 
+src/gfx/primitive.o: src/gfx/primitive.cpp.o
+.PHONY : src/gfx/primitive.o
+
+# target to build an object file
+src/gfx/primitive.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.o
+.PHONY : src/gfx/primitive.cpp.o
+
+src/gfx/primitive.i: src/gfx/primitive.cpp.i
+.PHONY : src/gfx/primitive.i
+
+# target to preprocess a source file
+src/gfx/primitive.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.i
+.PHONY : src/gfx/primitive.cpp.i
+
+src/gfx/primitive.s: src/gfx/primitive.cpp.s
+.PHONY : src/gfx/primitive.s
+
+# target to generate assembly for a file
+src/gfx/primitive.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.s
+.PHONY : src/gfx/primitive.cpp.s
+
 src/gfx/shader.o: src/gfx/shader.cpp.o
 .PHONY : src/gfx/shader.o
 
@@ -622,6 +646,9 @@ help:
 	@echo "... src/gfx/camera.o"
 	@echo "... src/gfx/camera.i"
 	@echo "... src/gfx/camera.s"
+	@echo "... src/gfx/primitive.o"
+	@echo "... src/gfx/primitive.i"
+	@echo "... src/gfx/primitive.s"
 	@echo "... src/gfx/shader.o"
 	@echo "... src/gfx/shader.i"
 	@echo "... src/gfx/shader.s"

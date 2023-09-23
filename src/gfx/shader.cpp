@@ -69,27 +69,51 @@ std::string Shader::read_file(std::string path) {
   return code;
 }
 
-void Shader::use() const { glUseProgram(program); }
+void Shader::use() const {
+  glUseProgram(program);
+}
 
-void Shader::destroy() const { glDeleteProgram(program); }
+void Shader::destroy() const {
+  glDeleteProgram(program);
+}
 
 void BlockShader::setUniforms(glm::vec3 position) {
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(state.camera.model, position);
   setUniform("model", model);
-  setUniform("light.position", state.sun_position);
-  setUniform("viewPos", state.camera.position);
   setUniform("view", state.camera.view);
   setUniform("projection", state.camera.projection);
+
+  setUniform("light.direction", glm::vec3(-0.2f, -0.5f, 0.0f));
+  // setUniform("light.position", glm::vec3(0, 100, 0));
+  // setUniform("light.position", state.camera.position);
+  setUniform("light.ambient", glm::vec3(0.2));
+  setUniform("light.diffuse", glm::vec3(0.5f));
+  setUniform("light.specular", glm::vec3(1.0f));
+  setUniform("light.color", glm::vec3(1.0f));
+
+  // setUniform("viewPos", state.camera.position);
+  /*
+  setUniform("light.direction", glm::vec3(-1.0f, 0.0f, -1.0f));
+  // setUniform("viewPos", state.camera.position);
+
+  // light properties
+  */
+
+  // material properties
+  /*
+  setUniform("material.shininess", 32.0f);
+  setUniform("light.position", state.sun_position);
   setUniform("material.diffuse", 0);
   setUniform("material.specular", 1);
   setUniform("material.shininess", 32.0f);
   setUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
   setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
   setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-  setUniform("light.constant", state.sun_position.y < 0 ? 5.0f : 0.5f);
+  setUniform("light.constant", state.sun_position.y < 0 ? 5.0f : 0.3f);
   setUniform("light.linear", 0.09f);
   setUniform("light.quadratic", 0.32f);
+  */
 }
 
 void SkyShader::setUniforms(glm::vec3 position) {

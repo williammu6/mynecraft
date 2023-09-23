@@ -2,12 +2,16 @@
 #include <cmath>
 #include <iostream>
 
-Params get_params(char **argv) { return {.seed = std::atoi(argv[1])}; }
+Params get_params(char **argv) {
+  return {.seed = std::atoi(argv[1])};
+}
 
 struct State global_state;
 State &state = global_state;
 
-Application::Application(char **argv) { params = get_params(argv); }
+Application::Application(char **argv) {
+  params = get_params(argv);
+}
 
 void Application::run() {
   Renderer renderer;
@@ -49,7 +53,7 @@ void Application::tick() {
   state.window->clear();
   state.world->render();
   // state.world->sky->render();
-  // state.sun_position = state.camera.position; // TODO remove
+  // state.sun_position = state.camera.position;
   state.camera.update();
   state.window->update();
 }
@@ -79,4 +83,6 @@ void Application::input_handler(GLFWwindow *window, double delta_time) {
     state.camera.position += glm::vec3(0, 1, 0) * cameraSpeed;
 }
 
-Application::~Application() { state.window->terminate(); }
+Application::~Application() {
+  state.window->terminate();
+}

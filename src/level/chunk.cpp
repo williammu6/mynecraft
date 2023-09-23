@@ -38,8 +38,14 @@ Block *Chunk::get_neighbor_block(Direction direction, glm::ivec3 pos) {
 bool should_draw_block_face(Chunk *chunk, Direction direction,
                             glm::vec3 position) {
   Block *neigh_block = chunk->get_neighbor_block(direction, position);
-  return !neigh_block || !neigh_block->type->solid ||
-         neigh_block->type->transparent;
+  if (!neigh_block)
+    return true;
+
+  if (strcmp(neigh_block->type->name, "water") == 0 &&
+      strcmp(chunk->get_block(position)->type->name, "water") != 0)
+    return true;
+
+  return !neigh_block->type->solid || neigh_block->type->transparent;
 }
 
 bool Chunk::is_border(int x, int z) {
@@ -54,19 +60,21 @@ void Chunk::render() {
 void Chunk::prepare_render() {
   delete this->mesh;
   this->mesh = new ChunkMesh();
-  
+
   for (const auto &[block_position, block] : blocks) {
     if (!block.type->solid)
       continue;
 
+    RenderType rt = strcmp(block.type->name, "water") == 0
+                        ? RenderType::TRANSPARENT
+                        : RenderType::NORMAL;
     for (const auto &cube_face : CUBE_FACES) {
       glm::vec2 texture_offset =
           block.type->texture_offset(cube_face.direction);
 
-      if (should_draw_block_face(this, cube_face.direction, block_position)) {
+      if (should_draw_block_face(this, cube_face.direction, block_position))
         this->mesh->add_face(CUBE_FACES[cube_face.direction], block_position,
-                             texture_offset);
-      }
+                             texture_offset, rt);
     }
   }
   this->mesh->setup();
