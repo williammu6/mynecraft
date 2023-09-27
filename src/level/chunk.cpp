@@ -78,6 +78,7 @@ void Chunk::prepare_render() {
     }
   }
   this->mesh->setup();
+
 }
 
 Block *Chunk::get_block(int x, int y, int z) {

@@ -31,8 +31,12 @@ uniform Material material;
 uniform Light light; // uniform vec3 viewPos;
 
 void main() {
+  vec4 tex = texture(material.diffuse, TexCoord);
+  if (tex.a < 0.1) discard;
+  FragColor = vec4(tex.rgb, material.opacity);
+  /*
   // ambient
-  vec3 ambient = light.ambient * texture(material.diffuse, TexCoord).rgb;
+  vec3 ambient = light.ambient * tex.rgb;
 
   // diffuse
   vec3 norm = normalize(Normal);
@@ -51,4 +55,5 @@ void main() {
   vec3 result = ambient + diffuse + specular;
 
   FragColor = vec4(result, material.opacity);
+  */
 }

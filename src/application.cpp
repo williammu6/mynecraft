@@ -17,7 +17,7 @@ void Application::run() {
   Renderer renderer;
   state.renderer = &renderer;
   state.running = true;
-  state.world = new World(16, this->params.seed);
+  state.world = new World(this->params.seed);
 
   setup_mouse_input();
 
@@ -51,7 +51,7 @@ void Application::loop() {
 
 void Application::tick() {
   state.window->clear();
-  state.world->render();
+  state.world->tick();
   // state.world->sky->render();
   // state.sun_position = state.camera.position;
   state.camera.update();

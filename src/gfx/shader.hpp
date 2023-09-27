@@ -53,9 +53,6 @@ public:
   template <typename T>
   void setUniform(const std::string &name, const T &value) {
     int location = getUniformLocation(name);
-    if (location == -1) {
-      std::cerr << "Location not found " << name << "\n";
-    }
     setUniformInternal(location, value);
   };
 };
@@ -63,8 +60,7 @@ public:
 class BlockShader : public Shader {
 public:
   BlockShader()
-      : Shader("res/shaders/basicTexture.vert",
-               "res/shaders/basic.frag"){};
+      : Shader("res/shaders/basicTexture.vert", "res/shaders/basic.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

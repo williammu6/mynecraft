@@ -17,6 +17,7 @@ struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
     this->world = world;
+    this->mesh = nullptr;
     this->init();
   };
   ~Chunk() {
@@ -30,8 +31,7 @@ struct Chunk {
   int SIZE = 16;
   glm::vec3 position;
 
-  ChunkMesh *mesh;
-  // std::unordered_map<Position, Block, Position::Hash> blocks;
+  ChunkMesh *mesh = nullptr;
   std::unordered_map<glm::ivec3, Block> blocks{};
   std::map<Direction, Chunk *> neighbor_chunk{};
   void init();
