@@ -46,6 +46,9 @@ void gen(Chunk *chunk, int world_seed) {
           chunk->set(position, new Water());
       }
 
+      if (height <= WATER_LEVEL)
+        continue;
+
       if (RANDCHANCE(0.01) && strcmp(block->name, "sand") == 0) {
         for (int cY = height; cY < height + RAND(3, 5); cY++) {
           glm::ivec3 cactus_position = {x, cY, z};

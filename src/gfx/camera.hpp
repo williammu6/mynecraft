@@ -10,7 +10,6 @@ struct Camera {
 
   glm::vec3 position = glm::vec3(0, 2, 10);
   glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
-  glm::vec3 cameraDirection = glm::normalize(position - target);
   glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::vec3 direction;
@@ -29,7 +28,6 @@ struct Camera {
   void mouse_callback(GLFWwindow *window, double xpos, double ypos);
   void look_at(double xpos, double ypos);
   void update() {
-    this->view = glm::lookAt(
-        this->position, this->position + this->front, this->up);
+    view = glm::lookAt(position, position + front, up);
   }
 };

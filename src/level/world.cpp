@@ -60,11 +60,11 @@ void World::load_and_unload_chunks() {
       newZ -= n_chunks;
     if (distanceZ < -distance)
       newZ += n_chunks;
-
+    auto new_chunk_position = glm::vec3(newX, 0, newZ);
     if (newX != chunk->position.x || newZ != chunk->position.z) {
       delete chunk;
       chunk_map.erase(it++);
-      Chunk *new_chunk = create_chunk(glm::vec3(newX, 0, newZ), this);
+      Chunk *new_chunk = create_chunk(new_chunk_position, this);
       chunk_map[{newX, 0, newZ}] = new_chunk;
       chunks_need_update.push_back(new_chunk);
       version++;

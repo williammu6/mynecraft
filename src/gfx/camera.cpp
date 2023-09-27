@@ -1,9 +1,7 @@
 #include "camera.hpp"
 
-Camera::Camera(int width, int height) {
-  this->width = width;
-  this->height = height;
-  lastX = (float)this->width / 2, lastY = (float)this->height / 2;
+Camera::Camera(int width, int height) : width(width), height(height) {
+  lastX = (float)width / 2, lastY = (float)height / 2;
 
   direction.x = cos(glm::radians(yaw));
   direction.z = sin(glm::radians(yaw));
@@ -21,25 +19,24 @@ Camera::Camera(int width, int height) {
 }
 
 void Camera::look_at(double xpos, double ypos) {
-  float xoffset = xpos - this->lastX;
-  float yoffset = this->lastY - ypos;
-  this->lastX = xpos;
-  this->lastY = ypos;
+  float xoffset = xpos - lastX;
+  float yoffset = lastY - ypos;
+  lastX = xpos;
+  lastY = ypos;
 
   xoffset *= sensitivity;
   yoffset *= sensitivity;
 
-  this->yaw += xoffset;
-  this->pitch += yoffset;
+  yaw += xoffset;
+  pitch += yoffset;
 
-  if (this->pitch > 89.0f)
-    this->pitch = 89.0f;
-  if (this->pitch < -89.0f)
-    this->pitch = -89.0f;
+  if (pitch > 89.0f)
+    pitch = 89.0f;
+  if (pitch < -89.0f)
+    pitch = -89.0f;
 
-  glm::vec3 direction;
   direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
   direction.y = sin(glm::radians(pitch));
   direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-  this->front = glm::normalize(direction);
+  front = glm::normalize(direction);
 }
