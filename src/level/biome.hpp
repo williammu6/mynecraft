@@ -1,3 +1,4 @@
+/*
 #include "blocks/block_type.hpp"
 #include "blocks/blocks.hpp"
 #include <unordered_map>
@@ -49,3 +50,4 @@ static std::unordered_map<BiomeType, Biome> biomes{
     {BiomeType::DESERT, desert},         {BiomeType::OCEAN, ocean},
     {BiomeType::SNOW_PEAKS, snow_peaks},
 };
+*/

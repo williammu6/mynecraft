@@ -3,7 +3,7 @@
 #include "gfx/camera.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
-#include "level/blocks/block_type.hpp"
+#include "level/blocks/block.hpp"
 
 struct State {
   int windowWidth;

@@ -3,11 +3,11 @@
 #include "../../gfx/direction.hpp"
 #include "../../gfx/gfx.hpp"
 
-struct BlockType {
+struct Block {
   const char *name;
   bool solid;
   bool transparent = false;
 
-  virtual ~BlockType(){};
+  ~Block(){};
   virtual glm::vec2 texture_offset(Direction direction) = 0;
 };

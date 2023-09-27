@@ -1,8 +1,8 @@
 #pragma once
 
-#include "block_type.hpp"
+#include "block.hpp"
 
-struct Leaves : BlockType {
+struct Leaves : Block {
   Leaves() {
     name = "leaves";
     solid = true;

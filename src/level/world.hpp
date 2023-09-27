@@ -12,7 +12,7 @@
 struct OutOfBoundsBlock {
   glm::ivec3 chunk_position;
   glm::ivec3 block_position;
-  Block block;
+  Block *block;
 };
 
 struct World {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "block_type.hpp"
+#include "block.hpp"
 
 enum class TreeType { NORMAL = 0, JUNGLE };
 
-struct Wood : BlockType {
+struct Wood : Block {
   TreeType wood_variant;
   Wood(TreeType _wood_variant) {
     name = "wood";

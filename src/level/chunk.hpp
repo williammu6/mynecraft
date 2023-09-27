@@ -9,32 +9,27 @@
 #include "chunkmesh.hpp"
 #include <unordered_map>
 
-struct Block {
-  BlockType *type;
-};
-
 struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
     this->world = world;
     this->mesh = nullptr;
-    this->init();
+    this->blocks = {};
   };
   ~Chunk() {
     this->neighbor_chunk = {};
     this->neighbor_chunk.clear();
     this->blocks = {};
-    delete this->mesh;
   }
-  struct World *world;
+
   int version = 1;
   int SIZE = 16;
   glm::vec3 position;
 
-  ChunkMesh *mesh = nullptr;
-  std::unordered_map<glm::ivec3, Block> blocks{};
+  std::unique_ptr<ChunkMesh> mesh;
+  struct World *world;
+  std::unordered_map<glm::ivec3, Block *> blocks{};
   std::map<Direction, Chunk *> neighbor_chunk{};
-  void init();
   void prepare_render();
   void prepare_render_borders();
 
@@ -44,7 +39,7 @@ struct Chunk {
   void add_face_to_mesh(CubeFace cf, glm::vec3 position);
   // TODO end should live somewhere else
 
-  void set(glm::ivec3 position, Block block);
+  void set(glm::ivec3 position, Block *block);
   void render();
   void update();
   void update_neighbors();

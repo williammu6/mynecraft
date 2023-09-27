@@ -4,7 +4,7 @@
 #include "perlin_noise.hpp"
 
 void gen(Chunk *chunk, int world_seed) {
-  BlockType *block_type = nullptr;
+  Block *block = new Sand();
 
   const siv::PerlinNoise::seed_type seed = world_seed;
   const siv::PerlinNoise perlin{seed};
@@ -24,41 +24,42 @@ void gen(Chunk *chunk, int world_seed) {
       int height =
           glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 2));
 
-      block_type = new Grass();
+      block = new Grass();
       if (height < WATER_LEVEL + 2) {
-        block_type = new Sand();
+        block = new Sand();
       } else if (height < MAX_WORLD_HEIGHT * 2 / 3) {
-        block_type = new Grass();
+        block = new Grass();
       } else {
-        block_type = new Snow();
+        block = new Snow();
       }
 
       for (int y = 0; y < height; y++) {
         glm::ivec3 position = {x, y, z};
-        chunk->set(position, {block_type});
+        chunk->set(position, block);
       }
 
       for (int y = height; y < WATER_LEVEL; y++) {
         glm::ivec3 position = {x, y, z};
         if (y == height)
-          chunk->set(position, {new Sand()});
+          chunk->set(position, new Sand());
         else
-          chunk->set(position, {new Water()});
+          chunk->set(position, new Water());
       }
 
-      if (RANDCHANCE(0.01) && strcmp(block_type->name, "sand") == 0) {
+      if (RANDCHANCE(0.01) && strcmp(block->name, "sand") == 0) {
         for (int cY = height; cY < height + RAND(3, 5); cY++) {
           glm::ivec3 cactus_position = {x, cY, z};
-          chunk->set(cactus_position, {new Cactus()});
+          chunk->set(cactus_position, new Cactus());
         }
       }
-      if (RANDCHANCE(0.01) && strcmp(block_type->name, "grass") == 0) {
+      if (RANDCHANCE(0.01) && strcmp(block->name, "grass") == 0) {
         create_tree(chunk, {x, height, z}, TreeType::JUNGLE);
       }
     }
   }
 }
 
+/*
 Biome get_biome(float temperature, float rainfall, float elevation) {
   if (temperature < 0.5f) { // COLD
     if (elevation > 0.6)
@@ -77,3 +78,4 @@ Biome get_biome(float temperature, float rainfall, float elevation) {
 
   return biomes.at(BiomeType::PLAINS);
 }
+*/

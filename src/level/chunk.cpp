@@ -10,11 +10,6 @@ std::map<Direction, glm::vec3> direction_offset{{SOUTH, {0, 0, 1}},
                                                 {WEST, {-1, 0, 0}},
                                                 {EAST, {1, 0, 0}}};
 
-void Chunk::init() {
-  this->mesh = new ChunkMesh();
-  this->blocks = {};
-}
-
 Block *Chunk::get_neighbor_block(Direction direction, glm::ivec3 pos) {
   if (in_bounds(pos + DIRECTIONS[direction])) {
     return this->get_block(pos + DIRECTIONS[direction]);
@@ -41,11 +36,11 @@ bool should_draw_block_face(Chunk *chunk, Direction direction,
   if (!neigh_block)
     return true;
 
-  if (strcmp(neigh_block->type->name, "water") == 0 &&
-      strcmp(chunk->get_block(position)->type->name, "water") != 0)
+  if (strcmp(neigh_block->name, "water") == 0 &&
+      strcmp(chunk->get_block(position)->name, "water") != 0)
     return true;
 
-  return !neigh_block->type->solid || neigh_block->type->transparent;
+  return !neigh_block->solid || neigh_block->transparent;
 }
 
 bool Chunk::is_border(int x, int z) {
@@ -58,19 +53,16 @@ void Chunk::render() {
 }
 
 void Chunk::prepare_render() {
-  delete this->mesh;
-  this->mesh = new ChunkMesh();
+  this->mesh = std::make_unique<ChunkMesh>();
 
   for (const auto &[block_position, block] : blocks) {
-    if (!block.type->solid)
+    if (!block->solid)
       continue;
 
-    RenderType rt = strcmp(block.type->name, "water") == 0
-                        ? RenderType::TRANSPARENT
-                        : RenderType::NORMAL;
+    RenderType rt = strcmp(block->name, "water") == 0 ? RenderType::TRANSPARENT
+                                                      : RenderType::NORMAL;
     for (const auto &cube_face : CUBE_FACES) {
-      glm::vec2 texture_offset =
-          block.type->texture_offset(cube_face.direction);
+      glm::vec2 texture_offset = block->texture_offset(cube_face.direction);
 
       if (should_draw_block_face(this, cube_face.direction, block_position))
         this->mesh->add_face(CUBE_FACES[cube_face.direction], block_position,
@@ -78,19 +70,18 @@ void Chunk::prepare_render() {
     }
   }
   this->mesh->setup();
-
 }
 
 Block *Chunk::get_block(int x, int y, int z) {
   glm::ivec3 block_position(x, y, z);
   return this->blocks.find(block_position) != this->blocks.end()
-             ? &this->blocks.at(block_position)
+             ? this->blocks.at(block_position)
              : nullptr;
 }
 
 Block *Chunk::get_block(glm::ivec3 block_position) {
   return this->blocks.find(block_position) != this->blocks.end()
-             ? &this->blocks.at(block_position)
+             ? this->blocks.at(block_position)
              : nullptr;
 }
 
@@ -99,7 +90,7 @@ bool Chunk::in_bounds(glm::ivec3 p) {
          p.y < MAX_WORLD_HEIGHT;
 }
 
-void Chunk::set(glm::ivec3 block_position, Block block) {
+void Chunk::set(glm::ivec3 block_position, Block *block) {
   if (in_bounds(block_position))
     blocks[block_position] = block;
   else {
