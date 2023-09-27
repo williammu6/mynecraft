@@ -5,9 +5,13 @@
 
 struct Block {
   const char *name;
-  bool solid;
+  bool solid = true;
   bool transparent = false;
+  bool liquid = false;
 
   ~Block(){};
   virtual glm::vec2 texture_offset(Direction direction) = 0;
+  bool drawable() {
+    return solid || liquid;
+  }
 };

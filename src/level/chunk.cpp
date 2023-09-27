@@ -36,11 +36,10 @@ bool should_draw_block_face(Chunk *chunk, Direction direction,
   if (!neigh_block)
     return true;
 
-  if (strcmp(neigh_block->name, "water") == 0 &&
-      strcmp(chunk->get_block(position)->name, "water") != 0)
+  if (neigh_block->liquid && !chunk->get_block(position)->liquid)
     return true;
 
-  return !neigh_block->solid || neigh_block->transparent;
+  return !neigh_block->drawable() || neigh_block->transparent;
 }
 
 bool Chunk::is_border(int x, int z) {
@@ -56,11 +55,12 @@ void Chunk::prepare_render() {
   this->mesh = std::make_unique<ChunkMesh>();
 
   for (const auto &[block_position, block] : blocks) {
-    if (!block->solid)
+    if (!block->drawable())
       continue;
 
-    RenderType rt = strcmp(block->name, "water") == 0 ? RenderType::TRANSPARENT
-                                                      : RenderType::NORMAL;
+    RenderType rt =
+        block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
+
     for (const auto &cube_face : CUBE_FACES) {
       glm::vec2 texture_offset = block->texture_offset(cube_face.direction);
 

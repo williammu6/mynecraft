@@ -7,7 +7,7 @@
 #include "tree.hpp"
 
 constexpr int MAX_WORLD_HEIGHT = 128;
-constexpr int WATER_LEVEL = 64;
+constexpr int WATER_LEVEL = 32;
 
 void gen(Chunk *chunk, int world_seed);
 
