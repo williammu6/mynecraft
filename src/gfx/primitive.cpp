@@ -1,4 +1,5 @@
 #include "primitive.hpp"
+#include <memory>
 
 struct VertexAttrib {
   GLenum type;
@@ -6,7 +7,7 @@ struct VertexAttrib {
   GLboolean normalized;
 };
 
-inline static std::vector<VertexAttrib> vertex_attribs{
+std::vector<VertexAttrib> vertex_attribs{
     {GL_FLOAT, 3, GL_FALSE}, // Position
     {GL_FLOAT, 3, GL_FALSE}, // Normal
     {GL_FLOAT, 2, GL_FALSE}, // Texture
@@ -53,12 +54,6 @@ Primitive::Primitive() {
 };
 Primitive::~Primitive() {
   glDeleteVertexArrays(1, &VAO);
-  delete ib;
-  delete vb;
-  clean();
-}
-
-void Primitive::clean() {
   indices_map.clear();
   ib_map.clear();
   vertices.clear();
@@ -66,15 +61,16 @@ void Primitive::clean() {
 }
 
 void Primitive::prepare() {
-  vb = new VertexBuffer(static_cast<void *>(vertices.data()),
-                        4 * vertices.size() * sizeof(Vertex));
+  vb = std::make_unique<VertexBuffer>(static_cast<void *>(vertices.data()),
+                                      4 * vertices.size() * sizeof(Vertex));
+
   glBindVertexArray(VAO);
   vb->bind();
 
   for (const auto type : {RenderType::NORMAL, RenderType::TRANSPARENT}) {
-    ib_map[type] =
-        new IndexBuffer(static_cast<void *>(indices_map[type].data()),
-                        indices_map[type].size());
+    ib_map[type] = std::make_unique<IndexBuffer>(
+        static_cast<void *>(indices_map[type].data()),
+        indices_map[type].size());
 
     for (int vertex_idx = 0; vertex_idx < vertex_attribs.size(); vertex_idx++) {
       VertexAttrib vertex_attrib = vertex_attribs[vertex_idx];

@@ -51,12 +51,11 @@ public:
 class Primitive {
 private:
   unsigned int VAO;
-  VertexBuffer *vb;
-  IndexBuffer *ib;
+  std::unique_ptr<VertexBuffer> vb;
 
   std::vector<Vertex> vertices;
   std::map<RenderType, std::vector<unsigned int>> indices_map;
-  std::map<RenderType, IndexBuffer *> ib_map;
+  std::map<RenderType, std::unique_ptr<IndexBuffer>> ib_map;
 
   int n_faces = 0;
 
@@ -64,7 +63,6 @@ public:
   Primitive();
   ~Primitive();
 
-  void clean();
   void prepare();
   void draw(const glm::vec3 &position, Shader *shader, const Texture &texture);
   void push(const std::vector<Vertex> &v, std::vector<unsigned int> _indices,
