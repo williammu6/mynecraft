@@ -11,13 +11,13 @@ void World::tick() {
   delete_far_chunks();
 }
 
-float squared_distance(const glm::vec3 &a, const glm::vec3 &b) {
+float squared_distance(const glm::ivec3 &a, const glm::ivec3 &b) {
   glm::vec3 diff = b - a;
   return glm::dot(diff, diff);
 }
 
-bool sortByDistance(const glm::vec3 &a, const glm::vec3 &b,
-                    const glm::vec3 &reference) {
+bool sortByDistance(const glm::ivec3 &a, const glm::ivec3 &b,
+                    const glm::ivec3 &reference) {
   return squared_distance(a, reference) > squared_distance(b, reference);
 }
 
@@ -29,12 +29,16 @@ glm::ivec3 get_current_chunk_position() {
   return glm::ivec3(currX, 0, currZ);
 }
 
-void World::delete_far_chunks() {
+bool World::is_chunk_far(glm::ivec3 chunk_position) {
   glm::ivec3 cc = get_current_chunk_position();
+  auto diff = chunk_position - cc;
+  return std::abs(diff.x) > n_chunks || std::abs(diff.z) > n_chunks;
+}
+
+void World::delete_far_chunks() {
   auto it = chunks.begin();
   while (it != chunks.end()) {
-    if (std::abs(it->first.x - cc.x) > n_chunks ||
-        std::abs(it->first.z - cc.z) > n_chunks) {
+    if (is_chunk_far(it->first)) {
       delete it->second;
       chunks.erase(it);
     }
@@ -42,6 +46,10 @@ void World::delete_far_chunks() {
   }
 }
 
+/**
+ * renders chunks from furthest to closer
+ * so water transparency works correclty
+ */
 void World::render() {
   glm::ivec3 cc = get_current_chunk_position();
 
@@ -51,24 +59,26 @@ void World::render() {
   }
 
   std::sort(positions.begin(), positions.end(),
-            [&](const glm::vec3 &a, const glm::vec3 &b) {
+            [&](const glm::ivec3 &a, const glm::ivec3 &b) {
               return sortByDistance(a, b, cc);
             });
 
   for (const auto position : positions) {
-    if (chunks.find(position) != chunks.end()) {
-      chunks[position]->render();
-    }
+    chunks[position]->render();
   }
 }
 
+/**
+ * update chunk mesh (vertices and indices)
+ * this happens every time a chunk changes or one of its neighbors change
+ * it is important so block faces between chunks aren't rendered
+ */
 void World::prepare_new_chunks(unsigned int max_throttle) {
-  for (int i = 0; i < chunks_need_update.size() && i < max_throttle; i++) {
+  for (int i = 0; i < chunks_need_update.size() && max_throttle-- >= 0; i++) {
     Chunk *chunk = chunks_need_update[i];
     chunk->update();
-    for (const auto c : chunk->neighbors()) {
-      if (c->version != this->version)
-        c->update();
+    for (const auto neighbor_chunk : chunk->neighbors()) {
+      neighbor_chunk->update();
     }
     chunks_need_update.erase(chunks_need_update.begin() + i);
     i--;
@@ -103,12 +113,12 @@ Chunk *World::get_chunk_at(glm::ivec3 position) {
 }
 
 void World::put_pending_blocks(Chunk *chunk) {
-  for (int i = 0; i < out_bounds_blocks.size(); i++) {
-    OutOfBoundsBlock outtabounds = out_bounds_blocks[i];
-    if (outtabounds.chunk_position.x == chunk->position.x &&
-        outtabounds.chunk_position.z == chunk->position.z) {
-      chunk->set(outtabounds.block_position, outtabounds.block);
-      out_bounds_blocks.erase(out_bounds_blocks.begin() + i);
+  for (int i = 0; i < pending_blocks.size(); i++) {
+    PendingBlock pending_block = pending_blocks[i];
+    if (pending_block.chunk_position.x == chunk->position.x &&
+        pending_block.chunk_position.z == chunk->position.z) {
+      chunk->set(pending_block.block_position, pending_block.block);
+      pending_blocks.erase(pending_blocks.begin() + i);
     }
   }
 }

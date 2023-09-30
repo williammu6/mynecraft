@@ -58,7 +58,7 @@ void Chunk::prepare_render() {
     if (!block->drawable())
       continue;
 
-    RenderType rt =
+    RenderType render_type =
         block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
 
     for (const auto &cube_face : CUBE_FACES) {
@@ -66,20 +66,13 @@ void Chunk::prepare_render() {
 
       if (should_draw_block_face(this, cube_face.direction, block_position))
         this->mesh->add_face(CUBE_FACES[cube_face.direction], block_position,
-                             texture_offset, rt);
+                             texture_offset, render_type);
     }
   }
   this->mesh->setup();
 }
 
-Block *Chunk::get_block(int x, int y, int z) {
-  glm::ivec3 block_position(x, y, z);
-  return this->blocks.find(block_position) != this->blocks.end()
-             ? this->blocks.at(block_position)
-             : nullptr;
-}
-
-Block *Chunk::get_block(glm::ivec3 block_position) {
+Block *Chunk::get_block(const glm::ivec3 block_position) {
   return this->blocks.find(block_position) != this->blocks.end()
              ? this->blocks.at(block_position)
              : nullptr;
@@ -94,7 +87,6 @@ void Chunk::set(glm::ivec3 block_position, Block *block) {
   if (in_bounds(block_position))
     blocks[block_position] = block;
   else {
-    /*
     glm::ivec3 out_bounds_chunk_position = this->position;
     glm::ivec3 out_bounds_block_position = block_position;
 
@@ -115,12 +107,11 @@ void Chunk::set(glm::ivec3 block_position, Block *block) {
       out_bounds_chunk_position.z++;
     }
 
-    OutOfBoundsBlock outta_bounds_block = {.chunk_position =
-    out_bounds_chunk_position, .block_position = out_bounds_block_position,
-                                           .block = block};
+    PendingBlock pending_block = {.chunk_position = out_bounds_chunk_position,
+                                  .block_position = out_bounds_block_position,
+                                  .block = block};
 
-    this->world->out_bounds_blocks.push_back(outta_bounds_block);
-    */
+    this->world->pending_blocks.push_back(pending_block);
   }
 }
 

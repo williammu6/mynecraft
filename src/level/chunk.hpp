@@ -49,8 +49,7 @@ struct Chunk {
   bool is_border(int x, int z);
 
   Block *get_neighbor_block(Direction direction, glm::ivec3 position);
-  Block *get_block(int x, int y, int z);
-  Block *get_block(glm::ivec3 position);
+  Block *get_block(const glm::ivec3 position);
 };
 
 Chunk *create_chunk(glm::vec3 position, struct World *world);

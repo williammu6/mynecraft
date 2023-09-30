@@ -9,7 +9,7 @@
 #include "sky.hpp"
 #include "chunk.hpp"
 
-struct OutOfBoundsBlock {
+struct PendingBlock {
   glm::ivec3 chunk_position;
   glm::ivec3 block_position;
   Block *block;
@@ -23,11 +23,11 @@ struct World {
     state.camera.position = glm::vec3(center.x, 40, center.z);
   }
 
-  int n_chunks = 16;
+  int n_chunks = 12;
   int version = 1;
   int seed;
 
-  std::vector<OutOfBoundsBlock> out_bounds_blocks{};
+  std::vector<PendingBlock> pending_blocks{};
   std::unordered_map<glm::ivec3, Chunk *> chunks;
   std::vector<Chunk*> chunks_need_update;
 
@@ -38,7 +38,7 @@ struct World {
   void put_pending_blocks(Chunk *chunk);
   void new_chunk_at(glm::ivec3 chunk_position);
   void delete_far_chunks();
-  Chunk *get_chunk_at(glm::ivec3 position);
+  Chunk *get_chunk_at(const glm::ivec3 position);
   bool is_chunk_far(glm::ivec3 chunk_position);
 };
 

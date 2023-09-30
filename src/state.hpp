@@ -20,7 +20,7 @@ struct State {
 
   State() {
     windowWidth = 1400;
-    windowHeight = 1200;
+    windowHeight = 1000;
     window = Window::create();
     camera = Camera(windowWidth, windowHeight);
   }

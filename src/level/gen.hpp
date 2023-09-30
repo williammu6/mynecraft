@@ -5,8 +5,8 @@
 #include "perlin_noise.hpp"
 #include "tree.hpp"
 
-constexpr int MAX_WORLD_HEIGHT = 64;
-constexpr int WATER_LEVEL = 24;
+constexpr int MAX_WORLD_HEIGHT = 96;
+constexpr int WATER_LEVEL = 32;
 
 void gen(Chunk *chunk, int world_seed);
 
