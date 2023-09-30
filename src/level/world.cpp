@@ -1,17 +1,64 @@
 #include "world.hpp"
 #include "../utils/math.hpp"
 #include "blocks/blocks.hpp"
+#include "chunk.hpp"
 #include "glm/common.hpp"
 
 void World::tick() {
+  load_and_unload_chunks();
   prepare_new_chunks(1);
   render();
-  load_and_unload_chunks();
+  delete_far_chunks();
+}
+
+float squared_distance(const glm::vec3 &a, const glm::vec3 &b) {
+  glm::vec3 diff = b - a;
+  return glm::dot(diff, diff);
+}
+
+bool sortByDistance(const glm::vec3 &a, const glm::vec3 &b,
+                    const glm::vec3 &reference) {
+  return squared_distance(a, reference) > squared_distance(b, reference);
+}
+
+glm::ivec3 get_current_chunk_position() {
+  int currX = state.camera.position.x < 0 ? state.camera.position.x / 16 - 1
+                                          : state.camera.position.x / 16;
+  int currZ = state.camera.position.z < 0 ? state.camera.position.z / 16 - 1
+                                          : state.camera.position.z / 16;
+  return glm::ivec3(currX, 0, currZ);
+}
+
+void World::delete_far_chunks() {
+  glm::ivec3 cc = get_current_chunk_position();
+  auto it = chunks.begin();
+  while (it != chunks.end()) {
+    if (std::abs(it->first.x - cc.x) > n_chunks ||
+        std::abs(it->first.z - cc.z) > n_chunks) {
+      delete it->second;
+      chunks.erase(it);
+    }
+    it++;
+  }
 }
 
 void World::render() {
-  for (const auto &[position, chunk] : chunk_map) {
-    chunk->render();
+  glm::ivec3 cc = get_current_chunk_position();
+
+  std::vector<glm::ivec3> positions;
+  for (const auto &[position, _] : chunks) {
+    positions.push_back(position);
+  }
+
+  std::sort(positions.begin(), positions.end(),
+            [&](const glm::vec3 &a, const glm::vec3 &b) {
+              return sortByDistance(a, b, cc);
+            });
+
+  for (const auto position : positions) {
+    if (chunks.find(position) != chunks.end()) {
+      chunks[position]->render();
+    }
   }
 }
 
@@ -20,64 +67,37 @@ void World::prepare_new_chunks(unsigned int max_throttle) {
     Chunk *chunk = chunks_need_update[i];
     chunk->update();
     for (const auto c : chunk->neighbors()) {
-      c->update();
+      if (c->version != this->version)
+        c->update();
     }
     chunks_need_update.erase(chunks_need_update.begin() + i);
     i--;
   }
 }
 
+void World::new_chunk_at(glm::ivec3 chunk_position) {
+  Chunk *new_chunk = create_chunk(chunk_position, this);
+  chunks[chunk_position] = new_chunk;
+  chunks_need_update.push_back(new_chunk);
+  version++;
+}
+
 void World::load_and_unload_chunks() {
-  auto it = chunk_map.begin();
-  while (it != chunk_map.end()) {
-    Chunk *chunk = it->second;
-    auto xyChunk = glm::vec3(chunk->position.x, 0, chunk->position.z);
-    auto xyCamera =
-        glm::vec3(state.camera.position.x, 0, state.camera.position.z);
-
-    float distance = (float)n_chunks * chunk->SIZE / 2;
-    float tooFar = distance * 4;
-
-    float distanceX =
-        chunk->position.x * (float)chunk->SIZE - state.camera.position.x;
-    float distanceZ =
-        chunk->position.z * (float)chunk->SIZE - state.camera.position.z;
-
-    if (distanceX <= distance && distanceX >= -distance &&
-        distanceZ <= distance && distanceZ >= -distance) {
-      it++;
-      continue;
-    }
-
-    int newX = it->first.x;
-    int newZ = it->first.z;
-
-    if (distanceX > distance)
-      newX -= n_chunks;
-    if (distanceX < -distance)
-      newX += n_chunks;
-    if (distanceZ > distance)
-      newZ -= n_chunks;
-    if (distanceZ < -distance)
-      newZ += n_chunks;
-    auto new_chunk_position = glm::vec3(newX, 0, newZ);
-    if (newX != chunk->position.x || newZ != chunk->position.z) {
-      delete chunk;
-      chunk_map.erase(it++);
-      Chunk *new_chunk = create_chunk(new_chunk_position, this);
-      chunk_map[{newX, 0, newZ}] = new_chunk;
-      chunks_need_update.push_back(new_chunk);
-      version++;
-      break;
-    } else {
-      it++;
+  glm::ivec3 cc = get_current_chunk_position();
+  for (int x = cc.x - n_chunks; x < cc.x + n_chunks; x++) {
+    for (int z = cc.z - n_chunks; z < cc.z + n_chunks; z++) {
+      auto new_chunk_position = glm::ivec3(x, 0, z);
+      if (chunks.find(new_chunk_position) == chunks.end()) {
+        new_chunk_at(new_chunk_position);
+        return;
+      }
     }
   }
 }
 
-Chunk *World::get_chunk_at(int x, int z) {
-  if (chunk_map.find({x, 0, z}) != chunk_map.end()) {
-    return chunk_map.at({x, 0, z});
+Chunk *World::get_chunk_at(glm::ivec3 position) {
+  if (chunks.find(position) != chunks.end()) {
+    return chunks.at(position);
   }
   return nullptr;
 }

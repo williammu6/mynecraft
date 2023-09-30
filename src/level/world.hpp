@@ -19,19 +19,7 @@ struct World {
   World(int seed) {
     srand(seed);
     this->seed = seed;
-    for (int x = 0; x < n_chunks; x++) {
-      for (int z = 0; z < n_chunks; z++) {
-        Chunk *chunk = create_chunk(glm::ivec3(x, 0, z), this);
-        this->chunk_map[{x, 0, z}] = chunk;
-      }
-    }
-
-    for (const auto &[position, chunk] : chunk_map) {
-      chunk->update();
-    }
-
-    glm::vec3 center =
-      chunk_map[{n_chunks - 1, 0, n_chunks - 1}]->position * 16.0f * 0.5f;
+    glm::vec3 center(0.0f);
     state.camera.position = glm::vec3(center.x, 40, center.z);
   }
 
@@ -40,18 +28,18 @@ struct World {
   int seed;
 
   std::vector<OutOfBoundsBlock> out_bounds_blocks{};
-  std::unordered_map<glm::ivec3, Chunk *> chunk_map;
+  std::unordered_map<glm::ivec3, Chunk *> chunks;
   std::vector<Chunk*> chunks_need_update;
 
   void tick();
   void render();
   void load_and_unload_chunks();
   void prepare_new_chunks(unsigned int max_throttle);
-
-
   void put_pending_blocks(Chunk *chunk);
-
-  Chunk *get_chunk_at(int x, int z);
+  void new_chunk_at(glm::ivec3 chunk_position);
+  void delete_far_chunks();
+  Chunk *get_chunk_at(glm::ivec3 position);
+  bool is_chunk_far(glm::ivec3 chunk_position);
 };
 
 #endif

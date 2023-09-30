@@ -136,7 +136,7 @@ void Chunk::update_neighbors() {
     int newX = (int)this->position.x + (int)direction_offset[dir].x;
     int newZ = (int)this->position.z + (int)direction_offset[dir].z;
 
-    Chunk *chunk = this->world->get_chunk_at(newX, newZ);
+    Chunk *chunk = this->world->get_chunk_at({newX, 0, newZ});
     if (!chunk)
       continue;
 
@@ -157,7 +157,7 @@ std::vector<Chunk *> Chunk::neighbors() {
     int newX = (int)this->position.x + (int)direction_offset[dir].x;
     int newZ = (int)this->position.z + (int)direction_offset[dir].z;
 
-    Chunk *chunk = this->world->get_chunk_at(newX, newZ);
+    Chunk *chunk = this->world->get_chunk_at({newX, 0, newZ});
     if (chunk)
       neighbor_chunks.push_back(chunk);
   }
