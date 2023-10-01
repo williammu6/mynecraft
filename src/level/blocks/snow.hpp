@@ -8,11 +8,14 @@ struct Snow : Block {
     solid = true;
   }
   glm::vec2 texture_offset(Direction direction) {
+    rotation = TextureRotation::DEGREES_0;
     switch (direction) {
     case WEST:
     case EAST:
+      return glm::vec2(6, 1);
     case NORTH:
     case SOUTH:
+      rotation = TextureRotation::DEGREES_270;
       return glm::vec2(6, 1);
     case TOP:
       return glm::vec2(5, 1);

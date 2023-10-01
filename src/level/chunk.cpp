@@ -66,7 +66,7 @@ void Chunk::prepare_render() {
 
       if (should_draw_block_face(this, cube_face.direction, block_position))
         this->mesh->add_face(CUBE_FACES[cube_face.direction], block_position,
-                             texture_offset, render_type);
+                             texture_offset, render_type, block->rotation);
     }
   }
   this->mesh->setup();

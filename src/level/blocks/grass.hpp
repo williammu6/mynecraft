@@ -8,6 +8,7 @@ struct Grass : Block {
     solid = true;
   }
   glm::vec2 texture_offset(Direction direction) {
+    rotation = TextureRotation::DEGREES_0;
     switch (direction) {
     case DOWN:
       return glm::vec2(0, 0);
@@ -18,7 +19,8 @@ struct Grass : Block {
       return glm::vec2(1, 0);
     case NORTH:
     case SOUTH:
-      return glm::vec2(0, 1);
+      rotation = TextureRotation::DEGREES_270;
+      return glm::vec2(1, 0);
     }
   }
 };

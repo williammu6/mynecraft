@@ -96,7 +96,7 @@ void Primitive::draw(const glm::vec3 &position, Shader *shader,
     ib_map[type]->bind();
 
     shader->setUniform("material.opacity",
-                       type == RenderType::TRANSPARENT ? 0.75f : 1.0f);
+                       type == RenderType::TRANSPARENT ? 0.6f : 1.0f);
 
     glDrawElements(GL_TRIANGLES, indices_map[type].size(), GL_UNSIGNED_INT,
                    (void *)0);

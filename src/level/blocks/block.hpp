@@ -1,13 +1,17 @@
-#pragma once
+#ifndef BLOCK_H
+#define BLOCK_H
 
 #include "../../gfx/direction.hpp"
 #include "../../gfx/gfx.hpp"
+
+enum class TextureRotation { DEGREES_0, DEGREES_90, DEGREES_180, DEGREES_270 };
 
 struct Block {
   const char *name;
   bool solid = true;
   bool transparent = false;
   bool liquid = false;
+  TextureRotation rotation = TextureRotation::DEGREES_0;
 
   ~Block(){};
   virtual glm::vec2 texture_offset(Direction direction) = 0;
@@ -15,3 +19,5 @@ struct Block {
     return solid || liquid;
   }
 };
+
+#endif

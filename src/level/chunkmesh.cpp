@@ -4,8 +4,37 @@ void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
   primitive->draw(position, state.renderer->block_shader, *texture);
 }
 
+constexpr std::array<int, 4> degrees_0_drawing_order = {0, 1, 2, 3};
+constexpr std::array<int, 4> degrees_90_drawing_order{1, 3, 0, 2};
+constexpr std::array<int, 4> degrees_180_drawing_order{3, 1, 2, 0};
+constexpr std::array<int, 4> degrees_270_drawing_order{2, 0, 3, 1};
+
+std::vector<glm::vec2>
+getRotatedTexCoordinates(const std::vector<glm::vec2> texCoords,
+                         TextureRotation rotation) {
+  std::vector<glm::vec2> rotatedTexCoordinates;
+  switch (rotation) {
+  case TextureRotation::DEGREES_90:
+    for (const int i : degrees_90_drawing_order)
+      rotatedTexCoordinates.push_back(texCoords[i]);
+    break;
+  case TextureRotation::DEGREES_180:
+    for (const int i : degrees_180_drawing_order)
+      rotatedTexCoordinates.push_back(texCoords[i]);
+    break;
+  case TextureRotation::DEGREES_270:
+    for (const int i : degrees_270_drawing_order)
+      rotatedTexCoordinates.push_back(texCoords[i]);
+    break;
+  default:
+    return texCoords;
+  }
+  return rotatedTexCoordinates;
+}
+
 void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
-                         glm::vec2 texture_offset, RenderType render_type) {
+                         glm::vec2 texture_offset, RenderType render_type,
+                         TextureRotation rotation) {
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
   auto face_direction = DIRECTIONS[cube_face.direction];
@@ -16,17 +45,20 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
   float minTY = texture.tile_size * texture_offset.y / texture.height;
   float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
 
-  std::vector<glm::vec3> V = cube_face.vertices();
+  std::vector<glm::vec2> texCoords = getRotatedTexCoordinates(
+      {{minTX, minTY}, {maxTX, minTY}, {minTX, maxTY}, {maxTX, maxTY}},
+      rotation);
+
   glm::vec3 f_pos = position;
 
-  std::vector<Vertex> v{{{V[0] * cube_face.position + f_pos, face_direction,
-                          glm::vec2(minTX, minTY)},
-                         {V[1] * cube_face.position + f_pos, face_direction,
-                          glm::vec2(maxTX, minTY)},
-                         {V[2] * cube_face.position + f_pos, face_direction,
-                          glm::vec2(minTX, maxTY)},
-                         {V[3] * cube_face.position + f_pos, face_direction,
-                          glm::vec2(maxTX, maxTY)}}};
+  std::vector<glm::vec3> V = cube_face.vertices();
 
-  primitive->push(v, QUAD_FACE_INDICES[cube_face.direction], render_type);
+  std::vector<Vertex> vertices;
+  for (int i = 0; i < 4; i++) {
+    vertices.push_back((struct Vertex){V[i] * cube_face.position + f_pos,
+                                       face_direction, texCoords[i]});
+  }
+
+  primitive->push(vertices, QUAD_FACE_INDICES[cube_face.direction],
+                  render_type);
 }

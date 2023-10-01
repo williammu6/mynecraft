@@ -23,7 +23,7 @@ struct World {
     state.camera.position = glm::vec3(center.x, 40, center.z);
   }
 
-  int n_chunks = 12;
+  int n_chunks = 4;
   int version = 1;
   int seed;
 

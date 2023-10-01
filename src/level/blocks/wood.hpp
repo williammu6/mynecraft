@@ -12,21 +12,26 @@ struct Wood : Block {
     wood_variant = _wood_variant;
   }
   glm::vec2 texture_offset(Direction direction) {
+    rotation = TextureRotation::DEGREES_0;
     switch (direction) {
     case TOP:
     case DOWN:
-      if (wood_variant == TreeType::NORMAL)
+      if (wood_variant == TreeType::NORMAL) {
         return glm::vec2(4, 0);
-      return glm::vec2(2, 7);
+      }
+      return glm::vec2(1, 7);
     case WEST:
     case EAST:
-      if (wood_variant == TreeType::NORMAL)
-        return glm::vec2(3, 2);
+      if (wood_variant == TreeType::NORMAL) {
+        rotation = TextureRotation::DEGREES_270;
+        return glm::vec2(3, 1);
+      }
       return glm::vec2(1, 7);
     default:
-      if (wood_variant == TreeType::NORMAL)
+      if (wood_variant == TreeType::NORMAL) {
         return glm::vec2(3, 1);
-      return glm::vec2(0, 7);
+      }
+      return glm::vec2(1, 7);
     }
   }
 };

@@ -5,8 +5,7 @@
 #include "../gfx/gfx.hpp"
 #include "../gfx/primitive.hpp"
 #include "../state.hpp"
-
-struct Block;
+#include "blocks/block.hpp"
 
 class ChunkMesh {
 private:
@@ -22,7 +21,8 @@ public:
 
   void draw(glm::vec3 position, struct Texture *texture);
   void add_face(CubeFace cube_face, glm::ivec3 position,
-                glm::vec2 texture_offset, RenderType render_type);
+                glm::vec2 texture_offset, RenderType render_type,
+                TextureRotation texture_rotations);
   void setup() {
     this->primitive->prepare();
   };

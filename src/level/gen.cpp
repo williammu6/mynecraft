@@ -56,7 +56,7 @@ void gen(Chunk *chunk, int world_seed) {
         }
       }
       if (RANDCHANCE(0.01) && strcmp(block->name, "grass") == 0) {
-        create_tree(chunk, {x, height, z}, TreeType::JUNGLE);
+        create_tree(chunk, {x, height, z}, TreeType::NORMAL);
       }
     }
   }

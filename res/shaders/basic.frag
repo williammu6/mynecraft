@@ -34,7 +34,9 @@ void main() {
   vec4 tex = texture(material.diffuse, TexCoord);
   // if (tex.a < 0.1) discard;
   // ambient
-  vec3 ambient = light.ambient * tex.rgb;
+  vec3 ambient = 0.7 * tex.rgb;
+  FragColor = vec4(ambient, material.opacity);
+  return;
 
   // diffuse
   vec3 norm = normalize(Normal);
