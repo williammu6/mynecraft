@@ -3,10 +3,10 @@
 #include "blocks/wood.hpp"
 #include "perlin_noise.hpp"
 
-void gen(Chunk *chunk, int world_seed) {
+void gen(Chunk *chunk, int worldSeed) {
   Block *block = new Sand();
 
-  const siv::PerlinNoise::seed_type seed = world_seed;
+  const siv::PerlinNoise::seed_type seed = worldSeed;
   const siv::PerlinNoise perlin{seed};
 
   for (int x = 0; x < chunk->SIZE; x++) {
@@ -51,12 +51,12 @@ void gen(Chunk *chunk, int world_seed) {
 
       if (RANDCHANCE(0.01) && strcmp(block->name, "sand") == 0) {
         for (int cY = height; cY < height + RAND(3, 5); cY++) {
-          glm::ivec3 cactus_position = {x, cY, z};
-          chunk->set(cactus_position, new Cactus());
+          glm::ivec3 cactusPosition = {x, cY, z};
+          chunk->set(cactusPosition, new Cactus());
         }
       }
       if (RANDCHANCE(0.01) && strcmp(block->name, "grass") == 0) {
-        create_tree(chunk, {x, height, z}, TreeType::NORMAL);
+        createTree(chunk, {x, height, z}, TreeType::NORMAL);
       }
     }
   }

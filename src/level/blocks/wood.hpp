@@ -11,7 +11,7 @@ struct Wood : Block {
     solid = true;
     wood_variant = _wood_variant;
   }
-  glm::vec2 texture_offset(Direction direction) {
+  glm::vec2 textureOffset(Direction direction) {
     rotation = TextureRotation::DEGREES_0;
     switch (direction) {
     case TOP:

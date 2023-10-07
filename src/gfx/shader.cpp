@@ -50,18 +50,18 @@ GLuint Shader::compile(std::string path, GLenum shader_type) {
 
 std::string Shader::read_file(std::string path) {
   std::string code;
-  std::ifstream shader_file;
+  std::ifstream shaderFile;
 
-  shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+  shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
   try {
-    shader_file.open(path);
-    std::stringstream shader_stream;
+    shaderFile.open(path);
+    std::stringstream shaderStream;
 
-    shader_stream << shader_file.rdbuf();
+    shaderStream << shaderFile.rdbuf();
 
-    shader_file.close();
+    shaderFile.close();
 
-    code = shader_stream.str();
+    code = shaderStream.str();
   } catch (std::ifstream::failure e) {
     std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
   }
@@ -84,8 +84,9 @@ void BlockShader::setUniforms(glm::vec3 position) {
   setUniform("view", state.camera.view);
   setUniform("projection", state.camera.projection);
 
-  setUniform("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-  setUniform("light.ambient", glm::vec3(0.2));
+  setUniform("light.direction", glm::vec3(-0.2f, 1.0f, 0.3f));
+  // setUniform("light.position", glm::vec3(0, 100, 0));
+  setUniform("light.ambient", glm::vec3(0.3));
   setUniform("light.diffuse", glm::vec3(0.5f));
   setUniform("light.specular", glm::vec3(1.0f));
   setUniform("light.color", glm::vec3(1.0f));

@@ -8,6 +8,6 @@
 constexpr int MAX_WORLD_HEIGHT = 96;
 constexpr int WATER_LEVEL = 32;
 
-void gen(Chunk *chunk, int world_seed);
+void gen(Chunk *chunk, int worldSeed);
 
 #endif

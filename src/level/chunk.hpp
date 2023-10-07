@@ -17,8 +17,8 @@ struct Chunk {
     this->blocks = {};
   };
   ~Chunk() {
-    this->neighbor_chunk = {};
-    this->neighbor_chunk.clear();
+    this->neighborChunk = {};
+    this->neighborChunk.clear();
     this->blocks = {};
   }
 
@@ -29,29 +29,29 @@ struct Chunk {
   std::unique_ptr<ChunkMesh> mesh;
   struct World *world;
   std::unordered_map<glm::ivec3, Block *> blocks{};
-  std::map<Direction, Chunk *> neighbor_chunk{};
-  void prepare_render();
-  void prepare_render_borders();
+  std::map<Direction, Chunk *> neighborChunk{};
+  void prepareRender();
+  void prepareRenderBorders();
 
   // TODO should live somewhere else
-  void prepare_block(Block &block);
-  void prepare_face(CubeFace cf, Block element);
-  void add_face_to_mesh(CubeFace cf, glm::vec3 position);
+  void prepareBlock(Block &block);
+  void prepareFace(CubeFace cf, Block element);
+  void addFaceToMesh(CubeFace cf, glm::vec3 position);
   // TODO end should live somewhere else
 
   void set(glm::ivec3 position, Block *block);
   void render();
   void update();
-  void update_neighbors();
+  void updateNeighbors();
   std::vector<Chunk *> neighbors();
 
-  bool in_bounds(glm::ivec3 position);
-  bool is_border(int x, int z);
+  bool inBounds(glm::ivec3 position);
+  bool isBorder(int x, int z);
 
-  Block *get_neighbor_block(Direction direction, glm::ivec3 position);
-  Block *get_block(const glm::ivec3 position);
+  Block *getNeighborBlock(Direction direction, glm::ivec3 position);
+  Block *getBlock(const glm::ivec3 position);
 };
 
-Chunk *create_chunk(glm::vec3 position, struct World *world);
+Chunk *createChunk(glm::vec3 position, struct World *world);
 
 #endif

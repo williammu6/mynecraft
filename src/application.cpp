@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-Params get_params(char **argv) {
+Params getParams(char **argv) {
   return {.seed = std::atoi(argv[1])};
 }
 
@@ -10,7 +10,7 @@ struct State global_state;
 State &state = global_state;
 
 Application::Application(char **argv) {
-  params = get_params(argv);
+  params = getParams(argv);
 }
 
 void Application::run() {
@@ -19,7 +19,7 @@ void Application::run() {
   state.running = true;
   state.world = new World(this->params.seed);
 
-  setup_mouse_input();
+  setupMouseInput();
 
   this->loop();
 
@@ -30,18 +30,18 @@ void Application::loop() {
   GLFWwindow *window = state.window->p_getWindow();
 
   int frames = 0;
-  double delta_time, last_frame, current_time;
-  double previous_time = glfwGetTime();
+  double deltaTime, lastFrame, currentTime;
+  double previousTime = glfwGetTime();
 
   while (state.running) {
-    current_time = glfwGetTime();
+    currentTime = glfwGetTime();
     frames++;
-    delta_time = current_time - last_frame;
-    last_frame = current_time;
-    this->input_handler(window, delta_time);
-    if (current_time - previous_time >= 1.0) {
+    deltaTime = currentTime - lastFrame;
+    lastFrame = currentTime;
+    this->inputHandler(window, deltaTime);
+    if (currentTime - previousTime >= 1.0) {
       DEBUG(frames);
-      previous_time = current_time;
+      previousTime = currentTime;
       frames = 0;
     }
 
@@ -58,7 +58,7 @@ void Application::tick() {
   state.window->update();
 }
 
-void Application::input_handler(GLFWwindow *window, double delta_time) {
+void Application::inputHandler(GLFWwindow *window, double delta_time) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     state.running = false;
 

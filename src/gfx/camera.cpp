@@ -18,7 +18,7 @@ Camera::Camera(int width, int height) : width(width), height(height) {
   model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
-void Camera::look_at(double xpos, double ypos) {
+void Camera::lookAt(double xpos, double ypos) {
   float xoffset = xpos - lastX;
   float yoffset = lastY - ypos;
   lastX = xpos;

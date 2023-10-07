@@ -7,5 +7,5 @@ struct Stone : Block {
     name = "stone";
     solid = true;
   }
-  glm::vec2 texture_offset(Direction direction) { return glm::vec2(2, 1); }
+  glm::vec2 textureOffset(Direction direction) { return glm::vec2(2, 1); }
 };

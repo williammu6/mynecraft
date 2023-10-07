@@ -26,7 +26,7 @@ struct Camera {
   Camera(int width, int height);
 
   void mouse_callback(GLFWwindow *window, double xpos, double ypos);
-  void look_at(double xpos, double ypos);
+  void lookAt(double xpos, double ypos);
   void update() {
     view = glm::lookAt(position, position + front, up);
   }

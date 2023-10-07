@@ -14,7 +14,7 @@ struct Block {
   TextureRotation rotation = TextureRotation::DEGREES_0;
 
   ~Block(){};
-  virtual glm::vec2 texture_offset(Direction direction) = 0;
+  virtual glm::vec2 textureOffset(Direction direction) = 0;
   bool drawable() {
     return solid || liquid;
   }

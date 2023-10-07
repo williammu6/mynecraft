@@ -6,12 +6,12 @@
 #include "../gfx/shader.hpp"
 #include "../state.hpp"
 #include "../utils/position.hpp"
-#include "sky.hpp"
 #include "chunk.hpp"
+#include "sky.hpp"
 
 struct PendingBlock {
-  glm::ivec3 chunk_position;
-  glm::ivec3 block_position;
+  glm::ivec3 chunkPosition;
+  glm::ivec3 blockPosition;
   Block *block;
 };
 
@@ -23,23 +23,23 @@ struct World {
     state.camera.position = glm::vec3(center.x, 40, center.z);
   }
 
-  int n_chunks = 4;
+  int nChunks = 6;
   int version = 1;
   int seed;
 
-  std::vector<PendingBlock> pending_blocks{};
+  std::vector<PendingBlock> pendingBlocks{};
   std::unordered_map<glm::ivec3, Chunk *> chunks;
-  std::vector<Chunk*> chunks_need_update;
+  std::vector<Chunk *> chunksNeedUpdate;
 
   void tick();
   void render();
-  void load_and_unload_chunks();
-  void prepare_new_chunks(unsigned int max_throttle);
-  void put_pending_blocks(Chunk *chunk);
-  void new_chunk_at(glm::ivec3 chunk_position);
-  void delete_far_chunks();
-  Chunk *get_chunk_at(const glm::ivec3 position);
-  bool is_chunk_far(glm::ivec3 chunk_position);
+  void loadAndUnloadChunks();
+  void prepareNewChunks(unsigned int maxThrottle);
+  void putPendingBlocks(Chunk *chunk);
+  void newChunkAt(glm::ivec3 chunkPosition);
+  void deleteFarChunks();
+  Chunk *getChunkAt(const glm::ivec3 position);
+  bool isChunkFar(glm::ivec3 chunkPosition);
 };
 
 #endif

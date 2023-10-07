@@ -15,7 +15,7 @@ struct Params {
   int seed;
 };
 
-Params get_params(char **argv);
+Params getParams(char **argv);
 
 class Application {
 public:
@@ -26,7 +26,8 @@ public:
   void update();
   void loop();
   void tick();
-  void input_handler(GLFWwindow *window, double delta_time);
+  void inputHandler(GLFWwindow *window, double delta_time);
+
 private:
   struct Params params;
 };

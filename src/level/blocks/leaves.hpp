@@ -8,7 +8,7 @@ struct Leaves : Block {
     solid = true;
     transparent = true;
   }
-  glm::vec2 texture_offset(Direction direction) {
+  glm::vec2 textureOffset(Direction direction) {
     return glm::vec2(5, 0);
   }
 };

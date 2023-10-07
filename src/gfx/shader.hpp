@@ -60,7 +60,7 @@ public:
 class BlockShader : public Shader {
 public:
   BlockShader()
-      : Shader("res/shaders/basicTexture.vert", "res/shaders/basic.frag"){};
+      : Shader("res/shaders/basicTexture.vert", "res/shaders/basicTexture.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

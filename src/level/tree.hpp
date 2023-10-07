@@ -4,6 +4,6 @@
 #include "blocks/wood.hpp"
 #include "chunk.hpp"
 
-void create_tree(struct Chunk *chunk, glm::ivec3 position, TreeType tree_type);
+void createTree(struct Chunk *chunk, glm::ivec3 position, TreeType treeType);
 
 #endif

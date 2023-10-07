@@ -5,20 +5,20 @@
 #include "glm/common.hpp"
 
 void World::tick() {
-  load_and_unload_chunks();
-  prepare_new_chunks(1);
+  loadAndUnloadChunks();
+  prepareNewChunks(1);
   render();
-  delete_far_chunks();
+  deleteFarChunks();
 }
 
-float squared_distance(const glm::ivec3 &a, const glm::ivec3 &b) {
+float squaredDistance(const glm::ivec3 &a, const glm::ivec3 &b) {
   glm::vec3 diff = b - a;
   return glm::dot(diff, diff);
 }
 
 bool sortByDistance(const glm::ivec3 &a, const glm::ivec3 &b,
                     const glm::ivec3 &reference) {
-  return squared_distance(a, reference) > squared_distance(b, reference);
+  return squaredDistance(a, reference) > squaredDistance(b, reference);
 }
 
 glm::ivec3 get_current_chunk_position() {
@@ -29,16 +29,16 @@ glm::ivec3 get_current_chunk_position() {
   return glm::ivec3(currX, 0, currZ);
 }
 
-bool World::is_chunk_far(glm::ivec3 chunk_position) {
+bool World::isChunkFar(glm::ivec3 chunkPosition) {
   glm::ivec3 cc = get_current_chunk_position();
-  auto diff = chunk_position - cc;
-  return std::abs(diff.x) > n_chunks || std::abs(diff.z) > n_chunks;
+  auto diff = chunkPosition - cc;
+  return std::abs(diff.x) > nChunks || std::abs(diff.z) > nChunks;
 }
 
-void World::delete_far_chunks() {
+void World::deleteFarChunks() {
   auto it = chunks.begin();
   while (it != chunks.end()) {
-    if (is_chunk_far(it->first)) {
+    if (isChunkFar(it->first)) {
       delete it->second;
       chunks.erase(it);
     }
@@ -73,52 +73,52 @@ void World::render() {
  * this happens every time a chunk changes or one of its neighbors change
  * it is important so block faces between chunks aren't rendered
  */
-void World::prepare_new_chunks(unsigned int max_throttle) {
-  for (int i = 0; i < chunks_need_update.size() && max_throttle-- >= 0; i++) {
-    Chunk *chunk = chunks_need_update[i];
+void World::prepareNewChunks(unsigned int max_throttle) {
+  for (int i = 0; i < chunksNeedUpdate.size() && max_throttle-- >= 0; i++) {
+    Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
-    for (const auto neighbor_chunk : chunk->neighbors()) {
-      neighbor_chunk->update();
+    for (const auto neighborChunk : chunk->neighbors()) {
+      neighborChunk->update();
     }
-    chunks_need_update.erase(chunks_need_update.begin() + i);
+    chunksNeedUpdate.erase(chunksNeedUpdate.begin() + i);
     i--;
   }
 }
 
-void World::new_chunk_at(glm::ivec3 chunk_position) {
-  Chunk *new_chunk = create_chunk(chunk_position, this);
-  chunks[chunk_position] = new_chunk;
-  chunks_need_update.push_back(new_chunk);
+void World::newChunkAt(glm::ivec3 chunkPosition) {
+  Chunk *newChunk = createChunk(chunkPosition, this);
+  chunks[chunkPosition] = newChunk;
+  chunksNeedUpdate.push_back(newChunk);
   version++;
 }
 
-void World::load_and_unload_chunks() {
+void World::loadAndUnloadChunks() {
   glm::ivec3 cc = get_current_chunk_position();
-  for (int x = cc.x - n_chunks; x < cc.x + n_chunks; x++) {
-    for (int z = cc.z - n_chunks; z < cc.z + n_chunks; z++) {
-      auto new_chunk_position = glm::ivec3(x, 0, z);
-      if (chunks.find(new_chunk_position) == chunks.end()) {
-        new_chunk_at(new_chunk_position);
+  for (int x = cc.x - nChunks; x < cc.x + nChunks; x++) {
+    for (int z = cc.z - nChunks; z < cc.z + nChunks; z++) {
+      auto newChunkPosition = glm::ivec3(x, 0, z);
+      if (chunks.find(newChunkPosition) == chunks.end()) {
+        newChunkAt(newChunkPosition);
         return;
       }
     }
   }
 }
 
-Chunk *World::get_chunk_at(glm::ivec3 position) {
+Chunk *World::getChunkAt(glm::ivec3 position) {
   if (chunks.find(position) != chunks.end()) {
     return chunks.at(position);
   }
   return nullptr;
 }
 
-void World::put_pending_blocks(Chunk *chunk) {
-  for (int i = 0; i < pending_blocks.size(); i++) {
-    PendingBlock pending_block = pending_blocks[i];
-    if (pending_block.chunk_position.x == chunk->position.x &&
-        pending_block.chunk_position.z == chunk->position.z) {
-      chunk->set(pending_block.block_position, pending_block.block);
-      pending_blocks.erase(pending_blocks.begin() + i);
+void World::putPendingBlocks(Chunk *chunk) {
+  for (int i = 0; i < pendingBlocks.size(); i++) {
+    PendingBlock pendingBlock = pendingBlocks[i];
+    if (pendingBlock.chunkPosition.x == chunk->position.x &&
+        pendingBlock.chunkPosition.z == chunk->position.z) {
+      chunk->set(pendingBlock.blockPosition, pendingBlock.block);
+      pendingBlocks.erase(pendingBlocks.begin() + i);
     }
   }
 }
