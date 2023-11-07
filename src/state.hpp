@@ -6,21 +6,26 @@
 #include "level/blocks/block.hpp"
 
 struct State {
-  int windowWidth;
-  int windowHeight;
-  std::shared_ptr<Window> window;
   Camera camera;
-  struct World *world;
-  bool wireframe_mode = false;
-  bool running = false;
   Renderer *renderer;
-  glm::vec3 sun_position = {0, 50, 0};
+  bool running = false;
+  bool wireframe_mode = false;
+  float aspectRatio;
   float tick;
+  glm::vec3 sun_position = {0, 50, 0};
   int frames = 0;
+  int windowHeight;
+  int windowWidth;
+  std::shared_ptr<Window> window;
+  struct World *world;
 
   State() {
     windowWidth = 1400;
     windowHeight = 1000;
+
+    aspectRatio =
+        static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+
     window = std::make_unique<Window>();
     camera = Camera(windowWidth, windowHeight);
   }
