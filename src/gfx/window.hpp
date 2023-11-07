@@ -14,11 +14,12 @@ private:
 
 public:
   Window();
-  static Window *create();
   void terminate();
   void processInput();
   void update();
   void clear();
   int shouldClose();
   GLFWwindow *p_getWindow();
+  void prepareRender2d();
+  void prepareRender3d();
 };

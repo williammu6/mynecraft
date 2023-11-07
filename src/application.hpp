@@ -10,6 +10,7 @@
 #include "input.hpp"
 #include "level/world.hpp"
 #include "state.hpp"
+#include "gfx/crosshair.hpp"
 
 struct Params {
   int seed;

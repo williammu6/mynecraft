@@ -51,10 +51,19 @@ void Application::loop() {
 
 void Application::tick() {
   state.window->clear();
+  state.window->prepareRender3d();
   state.world->tick();
+
   // state.world->sky->render();
   // state.sun_position = state.camera.position;
   state.camera.update();
+
+  state.window->prepareRender2d();
+
+  Crosshair *crosshair = new Crosshair(state.windowWidth, state.windowHeight);
+  crosshair->prepare();
+  crosshair->render();
+
   state.window->update();
 }
 

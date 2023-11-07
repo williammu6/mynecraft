@@ -6,7 +6,7 @@
 struct Camera {
   int width, height;
 
-  Window *window;
+  std::unique_ptr<Window> window;
 
   glm::vec3 position = glm::vec3(0, 100, 0);
   glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -25,7 +25,7 @@ struct Camera {
   Camera() = default;
   Camera(int width, int height);
 
-  void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+  void mouseCallback(GLFWwindow *window, double xpos, double ypos);
   void lookAt(double xpos, double ypos);
   void update() {
     view = glm::lookAt(position, position + front, up);

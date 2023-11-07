@@ -4,7 +4,7 @@
 #include "gfx.hpp"
 #include "vendor/stb_image.h"
 
-enum class TextureID { ATLAS = 0, SUN };
+enum class TextureID { ATLAS = 0, SUN, CROSSHAIR };
 
 struct Texture {
   TextureID id;

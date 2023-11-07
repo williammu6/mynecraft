@@ -10,7 +10,7 @@ class Sky {
 private:
   GLuint VAO, VBO, EBO;
   SkyShader *sky_shader;
-  Primitive *primitive;
+  std::unique_ptr<Primitive> primitive;
 
 public:
   Sky() {
@@ -18,6 +18,8 @@ public:
     // primitive = new Primitive();
     this->sky_shader = &_sky_shader;
     prepare_render();
+  }
+  ~Sky() {
   }
   void prepare_render();
   void render();

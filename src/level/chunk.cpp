@@ -47,8 +47,7 @@ bool Chunk::isBorder(int x, int z) {
 }
 
 void Chunk::render() {
-  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE,
-                   &state.renderer->textures[TextureID::ATLAS]);
+  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE, &state.renderer->textures[TextureID::ATLAS]);
 }
 
 void Chunk::prepareRender() {

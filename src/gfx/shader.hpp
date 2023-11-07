@@ -60,7 +60,8 @@ public:
 class BlockShader : public Shader {
 public:
   BlockShader()
-      : Shader("res/shaders/basicTexture.vert", "res/shaders/basicTexture.frag"){};
+      : Shader("res/shaders/basicTexture.vert",
+               "res/shaders/basicTexture.frag"){};
 
   void setUniforms(glm::vec3) override;
 };
@@ -72,6 +73,14 @@ public:
 
   void setUniforms(glm::vec3) override;
 };
-class WaterShader : public Shader {};
+
+class CrosshairShader : public Shader {
+public:
+  CrosshairShader()
+      : Shader("res/shaders/crosshair.vert", "res/shaders/crosshair.frag") {
+  }
+
+  void setUniforms(glm::vec3) override;
+};
 
 #endif

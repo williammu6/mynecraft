@@ -8,7 +8,7 @@
 struct State {
   int windowWidth;
   int windowHeight;
-  Window *window;
+  std::shared_ptr<Window> window;
   Camera camera;
   struct World *world;
   bool wireframe_mode = false;
@@ -21,7 +21,7 @@ struct State {
   State() {
     windowWidth = 1400;
     windowHeight = 1000;
-    window = Window::create();
+    window = std::make_unique<Window>();
     camera = Camera(windowWidth, windowHeight);
   }
 };

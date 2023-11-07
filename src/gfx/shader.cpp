@@ -92,6 +92,21 @@ void BlockShader::setUniforms(glm::vec3 position) {
   setUniform("light.color", glm::vec3(1.0f));
 }
 
+void CrosshairShader::setUniforms(glm::vec3 position) {
+  glm::mat4 model = glm::mat4(1.0f);
+
+  model = glm::scale(model, glm::vec3(0.05f));
+
+  float aspectRatio = static_cast<float>(state.windowWidth) /
+                      static_cast<float>(state.windowHeight);
+
+  glm::mat4 projection =
+      glm::ortho(-aspectRatio, aspectRatio, -1.0f, 1.0f, -1.0f, 1.0f);
+
+  setUniform("projection", projection);
+  setUniform("model", model);
+}
+
 void SkyShader::setUniforms(glm::vec3 position) {
   glm::mat4 model = glm::mat4(1.0f);
 

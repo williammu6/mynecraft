@@ -9,14 +9,13 @@
 
 class ChunkMesh {
 private:
-  Primitive *primitive;
+  std::unique_ptr<Primitive> primitive;
 
 public:
   ChunkMesh() {
-    this->primitive = new Primitive();
+    primitive = std::make_unique<Primitive>();
   };
   ~ChunkMesh() {
-    delete this->primitive;
   }
 
   void draw(glm::vec3 position, struct Texture *texture);
