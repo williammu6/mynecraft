@@ -24,7 +24,6 @@ void gen(Chunk *chunk, int worldSeed) {
       int height =
           glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 2));
 
-      height = x + 1;
       block = new Grass();
       if (height < WATER_LEVEL + 2) {
         block = new Sand();

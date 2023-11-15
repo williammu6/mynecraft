@@ -10,7 +10,9 @@
 
 struct Intersection {
   glm::vec3 position;
-  glm::ivec3 faceDirection;
+  glm::ivec3 blockPosition;
+  Chunk *placeBlockChunk;
+  glm::ivec3 placeBlockPosition;
 };
 
 class Ray {

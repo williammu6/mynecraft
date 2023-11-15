@@ -1,5 +1,4 @@
 #include "ray.hpp"
-#include "gfx/primitive.hpp"
 #include "level/blocks/block.hpp"
 
 std::optional<Intersection> Ray::intersection(const struct World &world,
@@ -7,19 +6,63 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
   glm::vec3 rayPosition = _origin;
   glm::vec3 distanceTraveled = glm::vec3(0);
   glm::vec3 maxReachPosition = _origin + _direction * reach;
-  Direction direction;
+  glm::vec3 faceSide;
 
+  bool success = false;
   float halfBlock = 0.5f;
+  glm::vec3 stepSize = _direction / 5.0f;
   int steps = reach;
 
   while (glm::distance(_origin, rayPosition) <= reach) {
-    std::optional<Block *> block =
+    std::optional<Block *> blockOpt =
         state.world->globalPositionToBlock(rayPosition + halfBlock);
-    if (block.has_value()) {
-      return (Intersection){.position = rayPosition + halfBlock,
-                            .faceDirection = DIRECTIONS[direction]};
+
+    if (blockOpt.has_value()) {
+      success = true;
+      break;
     }
-    rayPosition += _direction / 5.0f;
+
+    rayPosition.x += stepSize.x;
+    blockOpt = state.world->globalPositionToBlock(rayPosition + halfBlock);
+    if (blockOpt.has_value()) {
+      faceSide = _direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST];
+      success = true;
+      break;
+    } else {
+      rayPosition.x -= stepSize.x;
+    }
+
+    rayPosition.z += stepSize.z;
+    if (blockOpt.has_value()) {
+      faceSide = _direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH];
+      success = true;
+      break;
+    } else {
+      rayPosition.z -= stepSize.z;
+    }
+
+    rayPosition.y += stepSize.y;
+    blockOpt = state.world->globalPositionToBlock(rayPosition + halfBlock);
+    if (blockOpt.has_value()) {
+      faceSide = _direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN];
+      success = true;
+      break;
+    } else {
+      rayPosition.y -= stepSize.y;
+    }
+
+    rayPosition += stepSize;
+  }
+
+  if (success) {
+    return (Intersection){
+        .position = rayPosition,
+        .blockPosition =
+            state.world->globalPositionToBlockPosition(rayPosition + halfBlock),
+        .placeBlockChunk = state.world->globalPositionToChunk(
+            rayPosition + (glm::vec3)faceSide + halfBlock),
+        .placeBlockPosition = state.world->globalPositionToBlockPosition(
+            rayPosition + (glm::vec3)faceSide + halfBlock)};
   }
   printf("Out of reach\n");
 

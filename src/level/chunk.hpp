@@ -9,7 +9,7 @@
 #include "chunkmesh.hpp"
 #include <unordered_map>
 
-#define CHUNK_SIZE 4
+#define CHUNK_SIZE 16
 
 struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {

@@ -4,6 +4,7 @@
 #include "gfx/camera.hpp"
 #include "ray.hpp"
 #include "state.hpp"
+#include "./gfx/primitive.hpp"
 
 class Player {
 public:
@@ -16,6 +17,8 @@ public:
     _ray = std::make_unique<Ray>();
   };
   ~Player(){};
+
+  std::optional<Intersection> blockIntersection;
   void tick();
   void keyboardCallback(float deltaTime);
   static void mousePosCallback(GLFWwindow *window, double xpos, double ypos);
@@ -24,7 +27,7 @@ public:
 
 private:
   float _speed = 0.25f;
-  float _reach = 7.5f;
+  float _reach = 200.5f;
   GLFWwindow *_window;
   struct Camera *_camera;
   std::unique_ptr<Ray> _ray;

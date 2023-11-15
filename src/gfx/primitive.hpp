@@ -127,6 +127,28 @@ public:
     }
   };
 
+  void drawOpaque(const glm::vec3 &position, Shader *shader) {
+    printf("drawOpaque %zu Vertices %d faces \n", vertices.size(), n_faces);
+    RenderType type = RenderType::NORMAL;
+    shader->use();
+    shader->setUniforms(position);
+    glBindVertexArray(VAO);
+    vb->bind();
+    ib_map[type]->bind();
+    glDrawElements(GL_TRIANGLES, indices_map[type].size(), GL_UNSIGNED_INT,
+                   (void *)0);
+  }
+  void drawTransparent(const glm::vec3 &position, Shader *shader) {
+    RenderType type = RenderType::TRANSPARENT;
+    shader->use();
+    shader->setUniforms(position);
+    glBindVertexArray(VAO);
+    vb->bind();
+    ib_map[type]->bind();
+    glDrawElements(GL_TRIANGLES, indices_map[type].size(), GL_UNSIGNED_INT,
+                   (void *)0);
+  }
+
   void push(const std::vector<Vertex> &v, std::vector<unsigned int> _indices,
             RenderType render_type) {
     vertices.insert(vertices.end(), v.begin(), v.end());
@@ -134,6 +156,11 @@ public:
       indices_map[render_type].push_back(i + n_faces * 4);
     n_faces++;
   };
+
+  void reset() {
+    vertices.erase(vertices.begin(), vertices.end());
+    vertices.shrink_to_fit();
+  }
 };
 
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {

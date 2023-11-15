@@ -1,5 +1,6 @@
 #include "application.hpp"
 #include "GLFW/glfw3.h"
+#include "gfx/blockOutline.hpp"
 #include "glad/glad.h"
 #include "glm/ext/quaternion_common.hpp"
 #include "glm/ext/quaternion_geometric.hpp"
@@ -54,13 +55,24 @@ void Application::loop() {
 }
 
 void Application::tick() {
-  player->tick();
   state.window->clear();
 
   // 3d pass
   state.window->prepareRender3d();
   state.world->tick();
   state.camera.update();
+  player->tick();
+
+  if (player->blockIntersection.has_value()) {
+    glDisable(GL_DEPTH_CLAMP);
+    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_CULL_FACE);
+    BlockOutline blockOutline;
+    glm::vec3 p = glm::round(player->blockIntersection.value().position);
+    blockOutline.setup(p);
+    blockOutline.draw(p);
+    printf("Drawing Outline %.1f %.1f %.1f\n", p.x, p.y, p.z);
+  }
 
   // 2d pass
   state.window->prepareRender2d();

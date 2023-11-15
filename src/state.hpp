@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STATE_H
+#define STATE_H
 
 #include "gfx/camera.hpp"
 #include "gfx/renderer.hpp"
@@ -34,3 +35,5 @@ struct State {
 };
 
 extern State &state;
+
+#endif

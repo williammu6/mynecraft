@@ -65,6 +65,16 @@ struct World {
     return glm::ivec3(localX, glm::floor(gp.y), localZ);
   }
 
+  glm::vec3 globalPositionToFloatBlockPosition(glm::vec3 globalPosition) {
+    float localX = std::fmodf(globalPosition.x, CHUNK_SIZE);
+    float localZ = std::fmodf(globalPosition.z, CHUNK_SIZE);
+
+    localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
+    localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
+
+    return glm::vec3(localX, globalPosition.y, localZ);
+  }
+
   std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition) {
     Chunk *chunk = globalPositionToChunk(globalPosition);
     if (chunk == nullptr)

@@ -6,9 +6,9 @@
 
 enum class Shaders {
   BLOCK = 0,
-  SKY,
   CROSSHAIR,
   RAY,
+  BLOCK_OUTLINE
 };
 
 class Shader {
@@ -66,9 +66,7 @@ public:
 
 class BlockShader : public Shader {
 public:
-  BlockShader()
-      : Shader("res/shaders/basicTexture.vert",
-               "res/shaders/basicTexture.frag"){};
+  BlockShader() : Shader("res/shaders/block.vert", "res/shaders/block.frag"){};
 
   void setUniforms(glm::vec3) override;
 };
@@ -85,6 +83,15 @@ public:
 class RayShader : public Shader {
 public:
   RayShader() : Shader("res/shaders/ray.vert", "res/shaders/ray.frag"){};
+
+  void setUniforms(glm::vec3) override;
+};
+
+class BlockOutlineShader : public Shader {
+public:
+  BlockOutlineShader()
+      : Shader("res/shaders/blockOutline.vert",
+               "res/shaders/blockOutline.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

@@ -40,32 +40,28 @@ void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
 void Player::tick() {
   _ray->setOrigin(state.camera.position);
   _ray->setDirection(state.camera.direction);
-
-  std::optional<Intersection> maybeIntersection =
-      _ray->intersection(*state.world, _reach);
+  blockIntersection = _ray->intersection(*state.world, _reach);
 
   if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
     state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
-    if (maybeIntersection.has_value()) {
-      Intersection intersection = maybeIntersection.value();
+    if (blockIntersection.has_value()) {
+      Intersection intersection = blockIntersection.value();
       Chunk *chunk = state.world->globalPositionToChunk(intersection.position);
-      chunk->blocks.erase(
-          state.world->globalPositionToBlockPosition(intersection.position));
+      chunk->blocks.erase(intersection.blockPosition);
       state.world->chunksNeedUpdate.push_back(chunk);
     }
   }
 
   if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
     state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
-    if (maybeIntersection.has_value()) {
-      Intersection intersection = maybeIntersection.value();
-      Chunk *chunk = state.world->globalPositionToChunk(intersection.position);
-      glm::ivec3 blockPosition =
-          state.world->globalPositionToBlockPosition(intersection.position) +
-          intersection.faceDirection;
-
-      chunk->set(blockPosition, new Cobblestone());
-      state.world->chunksNeedUpdate.push_back(chunk);
+    if (blockIntersection.has_value()) {
+      Intersection intersection = blockIntersection.value();
+      intersection.placeBlockChunk->set(intersection.placeBlockPosition,
+                                        new Cobblestone());
+      state.world->chunksNeedUpdate.push_back(intersection.placeBlockChunk);
+      printf("placing block at %d %d %df\n", intersection.placeBlockPosition.x,
+             intersection.placeBlockPosition.y,
+             intersection.placeBlockPosition.z);
     }
   }
 }
