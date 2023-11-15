@@ -9,7 +9,7 @@ struct State {
   Camera camera;
   Renderer *renderer;
   bool running = false;
-  bool wireframe_mode = false;
+  bool wireframeMode = false;
   float aspectRatio;
   float tick;
   glm::vec3 sun_position = {0, 50, 0};
@@ -18,10 +18,12 @@ struct State {
   int windowWidth;
   std::shared_ptr<Window> window;
   struct World *world;
+  struct Crosshair *crosshair;
+  std::unordered_map<int, bool> pressed;
 
   State() {
-    windowWidth = 1400;
-    windowHeight = 1000;
+    windowWidth = 1000;
+    windowHeight = 700;
 
     aspectRatio =
         static_cast<float>(windowWidth) / static_cast<float>(windowHeight);

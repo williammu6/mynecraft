@@ -1,7 +1,7 @@
 #include "chunkmesh.hpp"
 
 void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
-  primitive->draw(position, state.renderer->block_shader, *texture);
+  primitive->draw(position, state.renderer->shaders[Shaders::BLOCK], *texture);
 }
 
 constexpr std::array<int, 4> degrees_0_drawing_order = {0, 1, 2, 3};

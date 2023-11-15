@@ -53,12 +53,12 @@ void Window::prepareRender3d() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glPolygonMode(GL_FRONT_AND_BACK, state.wireframe_mode ? GL_LINE : GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, state.wireframeMode ? GL_LINE : GL_FILL);
   glDepthFunc(GL_LESS);
   glCullFace(GL_BACK);
 }
 
-void Window::terminate() {
+Window::~Window() {
   glfwDestroyWindow(window);
   glfwTerminate();
 }

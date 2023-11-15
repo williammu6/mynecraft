@@ -104,16 +104,10 @@ void CrosshairShader::setUniforms(glm::vec3 position) {
   setUniform("model", model);
 }
 
-void SkyShader::setUniforms(glm::vec3 position) {
+void RayShader::setUniforms(glm::vec3 position) {
   glm::mat4 model = glm::mat4(1.0f);
 
-  float r = glm::radians(-45.0f);
-
   model = glm::translate(state.camera.model, position);
-  model = glm::scale(model, glm::vec3(25.0f));
-  model = glm::rotate(model, state.tick, glm::vec3({1, 0, 0}));
-  model = glm::rotate(model, 0.0f, glm::vec3({0, 1, 0}));
-  model = glm::rotate(model, 0.0f, glm::vec3({0, 0, 1}));
 
   setUniform("view", state.camera.view);
   setUniform("projection", state.camera.projection);

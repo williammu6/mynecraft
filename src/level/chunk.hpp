@@ -9,6 +9,8 @@
 #include "chunkmesh.hpp"
 #include <unordered_map>
 
+#define CHUNK_SIZE 4
+
 struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
@@ -23,7 +25,7 @@ struct Chunk {
   }
 
   int version = 1;
-  int SIZE = 16;
+  int SIZE = CHUNK_SIZE;
   glm::vec3 position;
 
   std::unique_ptr<ChunkMesh> mesh;
@@ -33,11 +35,9 @@ struct Chunk {
   void prepareRender();
   void prepareRenderBorders();
 
-  // TODO should live somewhere else
   void prepareBlock(Block &block);
   void prepareFace(CubeFace cf, Block element);
   void addFaceToMesh(CubeFace cf, glm::vec3 position);
-  // TODO end should live somewhere else
 
   void set(glm::ivec3 position, Block *block);
   void render();

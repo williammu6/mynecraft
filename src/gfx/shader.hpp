@@ -4,6 +4,13 @@
 #include "../common.hpp"
 #include "gfx.hpp"
 
+enum class Shaders {
+  BLOCK = 0,
+  SKY,
+  CROSSHAIR,
+  RAY,
+};
+
 class Shader {
 private:
   unsigned int program;
@@ -66,19 +73,18 @@ public:
   void setUniforms(glm::vec3) override;
 };
 
-class SkyShader : public Shader {
-public:
-  SkyShader() : Shader("res/shaders/sun.vert", "res/shaders/sun.frag") {
-  }
-
-  void setUniforms(glm::vec3) override;
-};
-
 class CrosshairShader : public Shader {
 public:
   CrosshairShader()
       : Shader("res/shaders/crosshair.vert", "res/shaders/crosshair.frag") {
   }
+
+  void setUniforms(glm::vec3) override;
+};
+
+class RayShader : public Shader {
+public:
+  RayShader() : Shader("res/shaders/ray.vert", "res/shaders/ray.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

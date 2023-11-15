@@ -40,7 +40,7 @@ public:
   };
 
   void render() {
-    primitive->draw(position, state.renderer->crosshair_shader,
+    primitive->draw(position, state.renderer->shaders[Shaders::CROSSHAIR],
                     state.renderer->textures[TextureID::CROSSHAIR]);
   }
 };

@@ -1,22 +1,22 @@
-#pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
 
 #include "shader.hpp"
 #include "texture.hpp"
 
-// TODO delete this
 struct Renderer {
-  BlockShader *block_shader;
-  CrosshairShader *crosshair_shader;
-  SkyShader *sky_shader;
   std::map<TextureID, Texture> textures;
+  std::map<Shaders, Shader *> shaders;
 
   Renderer() {
-    this->textures[TextureID::ATLAS] = texture_from_path("res/textures.png");
-    this->textures[TextureID::SUN] = texture_from_path("res/sun.png");
-    this->textures[TextureID::CROSSHAIR] = texture_from_path("res/crosshair.png");
+    textures[TextureID::ATLAS] = texture_from_path("res/textures.png");
+    textures[TextureID::SUN] = texture_from_path("res/sun.png");
+    textures[TextureID::CROSSHAIR] = texture_from_path("res/crosshair.png");
 
-    this->block_shader = new BlockShader();
-    this->crosshair_shader = new CrosshairShader();
-    // this->sun_shader = new Shader("res/shaders/sun.vert", "res/shaders/sun.frag");
+    shaders[Shaders::CROSSHAIR] = new CrosshairShader();
+    shaders[Shaders::BLOCK] = new BlockShader();
+    shaders[Shaders::RAY] = new RayShader();
   }
 };
+
+#endif

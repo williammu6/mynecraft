@@ -31,8 +31,10 @@ uniform Light light;
 uniform Material material;
 
 void main() {
+  vec4 tex = texture(material.diffuse, TexCoord);
+  if (tex.a < 0.1) discard;
   // ambient
-  vec3 ambient = light.ambient * texture(material.diffuse, TexCoord).rgb;
+  vec3 ambient = light.ambient * tex.rgb;
 
   // diffuse
   vec3 norm = normalize(Normal);
@@ -49,5 +51,6 @@ void main() {
       light.specular * spec * texture(material.specular, TexCoord).rgb;
 
   vec3 result = ambient + diffuse + specular;
-  FragColor = vec4(result, material.opacity);
+  // FragColor = vec4(result, material.opacity);
+  FragColor = vec4(tex.rgb, material.opacity);
 }

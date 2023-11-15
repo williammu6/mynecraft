@@ -1,5 +1,7 @@
-#pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
 
+#include "../common.hpp"
 #include "gfx.hpp"
 #include "window.hpp"
 
@@ -31,3 +33,5 @@ struct Camera {
     view = glm::lookAt(position, position + front, up);
   }
 };
+
+#endif

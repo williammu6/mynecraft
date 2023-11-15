@@ -3,14 +3,14 @@
 
 #include "common.hpp"
 #include "gfx/camera.hpp"
+#include "gfx/crosshair.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/shader.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/window.hpp"
-#include "input.hpp"
 #include "level/world.hpp"
+#include "player.hpp"
 #include "state.hpp"
-#include "gfx/crosshair.hpp"
 
 struct Params {
   int seed;
@@ -22,7 +22,7 @@ class Application {
 public:
   World *world;
   Application(char **argv);
-  ~Application();
+  ~Application() {};
   void run();
   void update();
   void loop();
@@ -31,6 +31,8 @@ public:
 
 private:
   struct Params params;
+  struct Crosshair *crosshair;
+  std::shared_ptr<Player> player;
 };
 
 #endif

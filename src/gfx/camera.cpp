@@ -42,5 +42,5 @@ void Camera::lookAt(double xpos, double ypos) {
 }
 
 void Camera::mouseCallback(GLFWwindow *window, double xpos, double ypos) {
-
+  printf("%.2f %.2f\n", xpos, ypos);
 }

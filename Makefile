@@ -428,30 +428,6 @@ src/gfx/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/window.cpp.s
 .PHONY : src/gfx/window.cpp.s
 
-src/input.o: src/input.cpp.o
-.PHONY : src/input.o
-
-# target to build an object file
-src/input.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.o
-.PHONY : src/input.cpp.o
-
-src/input.i: src/input.cpp.i
-.PHONY : src/input.i
-
-# target to preprocess a source file
-src/input.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.i
-.PHONY : src/input.cpp.i
-
-src/input.s: src/input.cpp.s
-.PHONY : src/input.s
-
-# target to generate assembly for a file
-src/input.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/input.cpp.s
-.PHONY : src/input.cpp.s
-
 src/level/chunk.o: src/level/chunk.cpp.o
 .PHONY : src/level/chunk.o
 
@@ -523,30 +499,6 @@ src/level/gen.s: src/level/gen.cpp.s
 src/level/gen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.s
 .PHONY : src/level/gen.cpp.s
-
-src/level/sky.o: src/level/sky.cpp.o
-.PHONY : src/level/sky.o
-
-# target to build an object file
-src/level/sky.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.o
-.PHONY : src/level/sky.cpp.o
-
-src/level/sky.i: src/level/sky.cpp.i
-.PHONY : src/level/sky.i
-
-# target to preprocess a source file
-src/level/sky.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.i
-.PHONY : src/level/sky.cpp.i
-
-src/level/sky.s: src/level/sky.cpp.s
-.PHONY : src/level/sky.s
-
-# target to generate assembly for a file
-src/level/sky.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/sky.cpp.s
-.PHONY : src/level/sky.cpp.s
 
 src/level/tree.o: src/level/tree.cpp.o
 .PHONY : src/level/tree.o
@@ -620,6 +572,54 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/player.o: src/player.cpp.o
+.PHONY : src/player.o
+
+# target to build an object file
+src/player.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/player.cpp.o
+.PHONY : src/player.cpp.o
+
+src/player.i: src/player.cpp.i
+.PHONY : src/player.i
+
+# target to preprocess a source file
+src/player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/player.cpp.i
+.PHONY : src/player.cpp.i
+
+src/player.s: src/player.cpp.s
+.PHONY : src/player.s
+
+# target to generate assembly for a file
+src/player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/player.cpp.s
+.PHONY : src/player.cpp.s
+
+src/ray.o: src/ray.cpp.o
+.PHONY : src/ray.o
+
+# target to build an object file
+src/ray.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.o
+.PHONY : src/ray.cpp.o
+
+src/ray.i: src/ray.cpp.i
+.PHONY : src/ray.i
+
+# target to preprocess a source file
+src/ray.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.i
+.PHONY : src/ray.cpp.i
+
+src/ray.s: src/ray.cpp.s
+.PHONY : src/ray.s
+
+# target to generate assembly for a file
+src/ray.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.s
+.PHONY : src/ray.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -661,9 +661,6 @@ help:
 	@echo "... src/gfx/window.o"
 	@echo "... src/gfx/window.i"
 	@echo "... src/gfx/window.s"
-	@echo "... src/input.o"
-	@echo "... src/input.i"
-	@echo "... src/input.s"
 	@echo "... src/level/chunk.o"
 	@echo "... src/level/chunk.i"
 	@echo "... src/level/chunk.s"
@@ -673,9 +670,6 @@ help:
 	@echo "... src/level/gen.o"
 	@echo "... src/level/gen.i"
 	@echo "... src/level/gen.s"
-	@echo "... src/level/sky.o"
-	@echo "... src/level/sky.i"
-	@echo "... src/level/sky.s"
 	@echo "... src/level/tree.o"
 	@echo "... src/level/tree.i"
 	@echo "... src/level/tree.s"
@@ -685,6 +679,12 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/player.o"
+	@echo "... src/player.i"
+	@echo "... src/player.s"
+	@echo "... src/ray.o"
+	@echo "... src/ray.i"
+	@echo "... src/ray.s"
 .PHONY : help
 
 

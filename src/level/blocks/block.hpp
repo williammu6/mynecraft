@@ -11,6 +11,7 @@ struct Block {
   bool solid = true;
   bool transparent = false;
   bool liquid = false;
+  bool rendered = false;
   TextureRotation rotation = TextureRotation::DEGREES_0;
 
   ~Block(){};

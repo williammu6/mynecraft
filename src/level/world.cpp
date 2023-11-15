@@ -11,22 +11,16 @@ void World::tick() {
   deleteFarChunks();
 }
 
-float squaredDistance(const glm::ivec3 &a, const glm::ivec3 &b) {
-  glm::vec3 diff = b - a;
-  return glm::dot(diff, diff);
-}
-
-bool sortByDistance(const glm::ivec3 &a, const glm::ivec3 &b,
-                    const glm::ivec3 &reference) {
-  return squaredDistance(a, reference) > squaredDistance(b, reference);
-}
-
 glm::ivec3 get_current_chunk_position() {
   int currX = state.camera.position.x < 0 ? state.camera.position.x / 16 - 1
                                           : state.camera.position.x / 16;
   int currZ = state.camera.position.z < 0 ? state.camera.position.z / 16 - 1
                                           : state.camera.position.z / 16;
   return glm::ivec3(currX, 0, currZ);
+}
+
+Chunk *World::currentChunk() {
+  return getChunkAt(get_current_chunk_position());
 }
 
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
@@ -40,7 +34,7 @@ void World::deleteFarChunks() {
   while (it != chunks.end()) {
     if (isChunkFar(it->first)) {
       delete it->second;
-      chunks.erase(it);
+      chunks.erase(it++);
     }
     it++;
   }
@@ -60,7 +54,8 @@ void World::render() {
 
   std::sort(positions.begin(), positions.end(),
             [&](const glm::ivec3 &a, const glm::ivec3 &b) {
-              return sortByDistance(a, b, cc);
+              glm::vec3 diff = b - a;
+              return glm::dot(diff, diff);
             });
 
   for (const auto position : positions) {
@@ -73,8 +68,8 @@ void World::render() {
  * this happens every time a chunk changes or one of its neighbors change
  * it is important so block faces between chunks aren't rendered
  */
-void World::prepareNewChunks(unsigned int max_throttle) {
-  for (int i = 0; i < chunksNeedUpdate.size() && max_throttle-- >= 0; i++) {
+void World::prepareNewChunks(unsigned int maxThrottle) {
+  for (int i = 0; i < chunksNeedUpdate.size() && maxThrottle-- >= 0; i++) {
     Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {
@@ -121,4 +116,44 @@ void World::putPendingBlocks(Chunk *chunk) {
       pendingBlocks.erase(pendingBlocks.begin() + i);
     }
   }
+}
+
+Block *World::blockAt(glm::vec3 p) {
+  glm::vec3 chunkPos = glm::floor(p) / (float)CHUNK_SIZE;
+  chunkPos.y = 0;
+  Chunk *chunk = getChunkAt(chunkPos);
+  if (chunk == nullptr)
+    return nullptr;
+
+  glm::ivec3 localBlockPosition = {(int)glm::floor(p.x) % CHUNK_SIZE,
+                                   glm::floor(p.y),
+                                   (int)glm::floor(p.z) % CHUNK_SIZE};
+
+  if (localBlockPosition.x < 0)
+    localBlockPosition.x = CHUNK_SIZE + localBlockPosition.x;
+  if (localBlockPosition.z < 0)
+    localBlockPosition.z = CHUNK_SIZE + localBlockPosition.z;
+  // printf("Local block position %d %d %d\n", localBlockPosition.x, localBlockPosition.y, localBlockPosition.z);
+
+  return chunk->getBlock(localBlockPosition);
+}
+
+void World::updateBlockAt(glm::vec3 globalPosition) {
+  glm::ivec3 chunkPosition = (glm::ivec3)globalPosition / CHUNK_SIZE;
+  chunkPosition.y = 0;
+  Chunk *chunk = getChunkAt(chunkPosition);
+  if (chunk == nullptr)
+    return;
+
+  glm::ivec3 blockPosition = glm::floor(globalPosition);
+
+  blockPosition.x = blockPosition.x % CHUNK_SIZE;
+  if (blockPosition.x < 0)
+    blockPosition.x += CHUNK_SIZE;
+  blockPosition.z = blockPosition.z % CHUNK_SIZE;
+  if (blockPosition.z < 0)
+    blockPosition.z += CHUNK_SIZE;
+
+  chunk->set(blockPosition, new Water());
+  chunk->update();
 }

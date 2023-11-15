@@ -6,9 +6,9 @@
 std::vector<Direction> directions{SOUTH, EAST, WEST, NORTH};
 
 std::map<Direction, glm::vec3> directionOffset{{SOUTH, {0, 0, 1}},
-                                                {NORTH, {0, 0, -1}},
-                                                {WEST, {-1, 0, 0}},
-                                                {EAST, {1, 0, 0}}};
+                                               {NORTH, {0, 0, -1}},
+                                               {WEST, {-1, 0, 0}},
+                                               {EAST, {1, 0, 0}}};
 
 Block *Chunk::getNeighborBlock(Direction direction, glm::ivec3 pos) {
   if (inBounds(pos + DIRECTIONS[direction])) {
@@ -31,7 +31,7 @@ Block *Chunk::getNeighborBlock(Direction direction, glm::ivec3 pos) {
 }
 
 bool shouldDrawBlockFace(Chunk *chunk, Direction direction,
-                            glm::vec3 position) {
+                         glm::vec3 position) {
   Block *neigh_block = chunk->getNeighborBlock(direction, position);
   if (!neigh_block)
     return true;
@@ -47,13 +47,15 @@ bool Chunk::isBorder(int x, int z) {
 }
 
 void Chunk::render() {
-  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE, &state.renderer->textures[TextureID::ATLAS]);
+  this->mesh->draw((glm::vec3)this->position * (float)this->SIZE,
+                   &state.renderer->textures[TextureID::ATLAS]);
 }
 
 void Chunk::prepareRender() {
   this->mesh = std::make_unique<ChunkMesh>();
 
   for (const auto &[blockPosition, block] : blocks) {
+    block->rendered = false;
     if (!block->drawable())
       continue;
 
@@ -66,6 +68,7 @@ void Chunk::prepareRender() {
       if (shouldDrawBlockFace(this, cube_face.direction, blockPosition))
         this->mesh->add_face(CUBE_FACES[cube_face.direction], blockPosition,
                              textureOffset, render_type, block->rotation);
+      block->rendered = true;
     }
   }
   this->mesh->setup();

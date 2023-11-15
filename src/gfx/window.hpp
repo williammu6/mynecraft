@@ -1,8 +1,7 @@
-#pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
-#include "functional"
 #include "gfx.hpp"
-#include <stdlib.h>
 
 struct WindowProps {
   int width, height;
@@ -14,7 +13,7 @@ private:
 
 public:
   Window();
-  void terminate();
+  ~Window();
   void processInput();
   void update();
   void clear();
@@ -23,3 +22,5 @@ public:
   void prepareRender2d();
   void prepareRender3d();
 };
+
+#endif
