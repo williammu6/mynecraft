@@ -1,20 +1,19 @@
 #include "blockOutline.hpp"
 
-void BlockOutline::setup(glm::vec3 position) {
+void BlockOutline::setup() {
   primitive->reset();
 
   for (const auto &cubeFace : CUBE_FACES) {
     std::vector<Vertex> vertices;
 
-    CubeFace realCubeFace = CUBE_FACES[cubeFace.direction];
-    std::vector<glm::vec3> V = realCubeFace.vertices();
+    std::vector<glm::vec3> V = cubeFace.vertices();
+
     for (int i = 0; i < 4; i++) {
-      vertices.push_back({.Position = V[i] * realCubeFace.position,
-                          .FaceDirection = DIRECTIONS[realCubeFace.direction],
+      vertices.push_back({.Position = V[i] * cubeFace.position,
+                          .FaceDirection = DIRECTIONS[cubeFace.direction],
                           .TexCoords = glm::vec2(0)});
     }
-    printf("Adding %zu\n", vertices.size());
-    primitive->push(vertices, QUAD_FACE_INDICES[realCubeFace.direction],
+    primitive->push(vertices, QUAD_FACE_INDICES[cubeFace.direction],
                     RenderType::NORMAL);
   }
 

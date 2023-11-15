@@ -59,9 +59,6 @@ void Player::tick() {
       intersection.placeBlockChunk->set(intersection.placeBlockPosition,
                                         new Cobblestone());
       state.world->chunksNeedUpdate.push_back(intersection.placeBlockChunk);
-      printf("placing block at %d %d %df\n", intersection.placeBlockPosition.x,
-             intersection.placeBlockPosition.y,
-             intersection.placeBlockPosition.z);
     }
   }
 }

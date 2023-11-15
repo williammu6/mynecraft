@@ -2,7 +2,7 @@
 #define BLOCK_OUTLINE_H
 
 #include "../common.hpp"
-#include "../state.hpp"
+#include "../level/world.hpp"
 #include "./primitive.hpp"
 
 class BlockOutline {
@@ -16,7 +16,7 @@ public:
                           state.renderer->shaders[Shaders::BLOCK_OUTLINE]);
   }
 
-  void setup(glm::vec3 position);
+  void setup();
 
 private:
   std::unique_ptr<Primitive> primitive;

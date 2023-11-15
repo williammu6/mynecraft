@@ -128,7 +128,6 @@ public:
   };
 
   void drawOpaque(const glm::vec3 &position, Shader *shader) {
-    printf("drawOpaque %zu Vertices %d faces \n", vertices.size(), n_faces);
     RenderType type = RenderType::NORMAL;
     shader->use();
     shader->setUniforms(position);

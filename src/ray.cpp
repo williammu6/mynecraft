@@ -6,7 +6,7 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
   glm::vec3 rayPosition = _origin;
   glm::vec3 distanceTraveled = glm::vec3(0);
   glm::vec3 maxReachPosition = _origin + _direction * reach;
-  glm::vec3 faceSide;
+  glm::vec3 faceSide(0);
 
   bool success = false;
   float halfBlock = 0.5f;
@@ -16,10 +16,14 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
   while (glm::distance(_origin, rayPosition) <= reach) {
     std::optional<Block *> blockOpt =
         state.world->globalPositionToBlock(rayPosition + halfBlock);
-
+    
+    rayPosition.z += stepSize.z;
     if (blockOpt.has_value()) {
+      faceSide = _direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH];
       success = true;
       break;
+    } else {
+      rayPosition.z -= stepSize.z;
     }
 
     rayPosition.x += stepSize.x;
@@ -30,15 +34,6 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
       break;
     } else {
       rayPosition.x -= stepSize.x;
-    }
-
-    rayPosition.z += stepSize.z;
-    if (blockOpt.has_value()) {
-      faceSide = _direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH];
-      success = true;
-      break;
-    } else {
-      rayPosition.z -= stepSize.z;
     }
 
     rayPosition.y += stepSize.y;
@@ -64,7 +59,6 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
         .placeBlockPosition = state.world->globalPositionToBlockPosition(
             rayPosition + (glm::vec3)faceSide + halfBlock)};
   }
-  printf("Out of reach\n");
 
   return std::nullopt;
 }

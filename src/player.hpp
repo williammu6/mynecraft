@@ -26,8 +26,8 @@ public:
                                  int mods);
 
 private:
-  float _speed = 0.25f;
-  float _reach = 200.5f;
+  float _speed = 0.125f;
+  float _reach = 7.5f;
   GLFWwindow *_window;
   struct Camera *_camera;
   std::unique_ptr<Ray> _ray;

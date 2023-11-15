@@ -11,6 +11,7 @@
 #include "level/world.hpp"
 #include "player.hpp"
 #include "state.hpp"
+#include "gfx/blockOutline.hpp"
 
 struct Params {
   int seed;
@@ -21,6 +22,7 @@ Params getParams(char **argv);
 class Application {
 public:
   World *world;
+  std::unique_ptr<BlockOutline> blockOutline;
   Application(char **argv);
   ~Application() {};
   void run();
