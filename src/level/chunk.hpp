@@ -19,9 +19,8 @@ struct Chunk {
     this->blocks = {};
   };
   ~Chunk() {
-    this->neighborChunk = {};
     this->neighborChunk.clear();
-    this->blocks = {};
+    this->blocks.clear();
   }
 
   int version = 1;

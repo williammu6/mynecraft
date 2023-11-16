@@ -89,6 +89,7 @@ void Chunk::set(glm::ivec3 blockPosition, Block *block) {
   if (inBounds(blockPosition))
     blocks[blockPosition] = block;
   else {
+    /*
     glm::ivec3 outBoundsChunkPosition = this->position;
     glm::ivec3 outBoundsBlockPosition = blockPosition;
 
@@ -114,6 +115,7 @@ void Chunk::set(glm::ivec3 blockPosition, Block *block) {
                                   .block = block};
 
     this->world->pendingBlocks.push_back(pending_block);
+    */
   }
 }
 

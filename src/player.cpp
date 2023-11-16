@@ -42,8 +42,8 @@ void Player::tick() {
   _ray->setDirection(state.camera.direction);
   blockIntersection = _ray->intersection(*state.world, _reach);
 
-  if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
-    state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
+  if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
+    state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
     if (blockIntersection.has_value()) {
       Intersection intersection = blockIntersection.value();
       Chunk *chunk = state.world->globalPositionToChunk(intersection.position);
@@ -52,8 +52,8 @@ void Player::tick() {
     }
   }
 
-  if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
-    state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
+  if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
+    state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
     if (blockIntersection.has_value()) {
       Intersection intersection = blockIntersection.value();
       intersection.placeBlockChunk->set(intersection.placeBlockPosition,

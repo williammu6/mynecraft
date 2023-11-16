@@ -12,15 +12,13 @@ void World::tick() {
 }
 
 glm::ivec3 get_current_chunk_position() {
-  int currX = state.camera.position.x < 0 ? state.camera.position.x / 16 - 1
-                                          : state.camera.position.x / 16;
-  int currZ = state.camera.position.z < 0 ? state.camera.position.z / 16 - 1
-                                          : state.camera.position.z / 16;
+  int currX = state.camera.position.x < 0
+                  ? state.camera.position.x / CHUNK_SIZE - 1
+                  : state.camera.position.x / CHUNK_SIZE;
+  int currZ = state.camera.position.z < 0
+                  ? state.camera.position.z / CHUNK_SIZE - 1
+                  : state.camera.position.z / CHUNK_SIZE;
   return glm::ivec3(currX, 0, currZ);
-}
-
-Chunk *World::currentChunk() {
-  return getChunkAt(get_current_chunk_position());
 }
 
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
@@ -72,9 +70,8 @@ void World::prepareNewChunks(unsigned int maxThrottle) {
   for (int i = 0; i < chunksNeedUpdate.size() && maxThrottle-- >= 0; i++) {
     Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
-    for (const auto neighborChunk : chunk->neighbors()) {
+    for (const auto neighborChunk : chunk->neighbors())
       neighborChunk->update();
-    }
     chunksNeedUpdate.erase(chunksNeedUpdate.begin() + i);
     i--;
   }
@@ -133,7 +130,8 @@ Block *World::blockAt(glm::vec3 p) {
     localBlockPosition.x = CHUNK_SIZE + localBlockPosition.x;
   if (localBlockPosition.z < 0)
     localBlockPosition.z = CHUNK_SIZE + localBlockPosition.z;
-  // printf("Local block position %d %d %d\n", localBlockPosition.x, localBlockPosition.y, localBlockPosition.z);
+  // printf("Local block position %d %d %d\n", localBlockPosition.x,
+  // localBlockPosition.y, localBlockPosition.z);
 
   return chunk->getBlock(localBlockPosition);
 }
@@ -156,4 +154,48 @@ void World::updateBlockAt(glm::vec3 globalPosition) {
 
   chunk->set(blockPosition, new Water());
   chunk->update();
+}
+
+Chunk *World::globalPositionToChunk(glm::vec3 p) {
+  glm::ivec3 chunkPosition = {
+      p.x < 0 ? p.x / CHUNK_SIZE - 1 : p.x / CHUNK_SIZE,
+      0,
+      p.z < 0 ? p.z / CHUNK_SIZE - 1 : p.z / CHUNK_SIZE,
+  };
+  chunkPosition.y = 0;
+  return getChunkAt(chunkPosition);
+}
+
+glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 gp) {
+  float localX = std::fmodf(glm::floor(gp.x), CHUNK_SIZE);
+  float localZ = std::fmodf(glm::floor(gp.z), CHUNK_SIZE);
+
+  localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
+  localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
+
+  return glm::ivec3(localX, glm::floor(gp.y), localZ);
+}
+
+glm::vec3 World::globalPositionToFloatBlockPosition(glm::vec3 globalPosition) {
+  float localX = std::fmodf(globalPosition.x, CHUNK_SIZE);
+  float localZ = std::fmodf(globalPosition.z, CHUNK_SIZE);
+
+  localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
+  localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
+
+  return glm::vec3(localX, globalPosition.y, localZ);
+}
+
+std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
+  Chunk *chunk = globalPositionToChunk(globalPosition);
+  if (chunk == nullptr)
+    return std::nullopt;
+
+  glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
+
+  Block *block = chunk->getBlock(blockPosition);
+  if (block != nullptr)
+    return block;
+
+  return std::nullopt;
 }

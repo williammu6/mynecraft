@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include "common.hpp"
+#include "gfx/blockOutline.hpp"
 #include "gfx/camera.hpp"
 #include "gfx/crosshair.hpp"
 #include "gfx/renderer.hpp"
@@ -11,7 +12,6 @@
 #include "level/world.hpp"
 #include "player.hpp"
 #include "state.hpp"
-#include "gfx/blockOutline.hpp"
 
 struct Params {
   int seed;
@@ -24,7 +24,7 @@ public:
   World *world;
   std::unique_ptr<BlockOutline> blockOutline;
   Application(char **argv);
-  ~Application() {};
+  ~Application(){};
   void run();
   void update();
   void loop();

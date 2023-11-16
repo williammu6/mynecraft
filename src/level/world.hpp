@@ -41,53 +41,13 @@ struct World {
   void deleteFarChunks();
   Chunk *getChunkAt(const glm::ivec3 position);
   bool isChunkFar(glm::ivec3 chunkPosition);
-  Chunk *currentChunk();
   Block *blockAt(glm::vec3 globalPosition);
   void updateBlockAt(glm::vec3 globalPosition);
 
-  Chunk *globalPositionToChunk(glm::vec3 p) {
-    glm::ivec3 chunkPosition = {
-        p.x < 0 ? p.x / CHUNK_SIZE - 1 : p.x / CHUNK_SIZE,
-        0,
-        p.z < 0 ? p.z / CHUNK_SIZE - 1 : p.z / CHUNK_SIZE,
-    };
-    chunkPosition.y = 0;
-    return getChunkAt(chunkPosition);
-  }
-
-  glm::ivec3 globalPositionToBlockPosition(glm::vec3 gp) {
-    float localX = std::fmodf(glm::floor(gp.x), CHUNK_SIZE);
-    float localZ = std::fmodf(glm::floor(gp.z), CHUNK_SIZE);
-
-    localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
-    localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
-
-    return glm::ivec3(localX, glm::floor(gp.y), localZ);
-  }
-
-  glm::vec3 globalPositionToFloatBlockPosition(glm::vec3 globalPosition) {
-    float localX = std::fmodf(globalPosition.x, CHUNK_SIZE);
-    float localZ = std::fmodf(globalPosition.z, CHUNK_SIZE);
-
-    localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
-    localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
-
-    return glm::vec3(localX, globalPosition.y, localZ);
-  }
-
-  std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition) {
-    Chunk *chunk = globalPositionToChunk(globalPosition);
-    if (chunk == nullptr)
-      return std::nullopt;
-
-    glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
-
-    Block *block = chunk->getBlock(blockPosition);
-    if (block != nullptr)
-      return block;
-
-    return std::nullopt;
-  }
+  Chunk *globalPositionToChunk(glm::vec3 p);
+  glm::ivec3 globalPositionToBlockPosition(glm::vec3 gp);
+  glm::vec3 globalPositionToFloatBlockPosition(glm::vec3 globalPosition);
+  std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition);
 };
 
 #endif
