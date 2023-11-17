@@ -38,26 +38,17 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
   auto face_direction = DIRECTIONS[cube_face.direction];
-  face_direction.y *= -1;
 
   float minTX = texture.tile_size * texture_offset.x / texture.width;
   float maxTX = texture.tile_size * (texture_offset.x + 1) / texture.width;
   float minTY = texture.tile_size * texture_offset.y / texture.height;
   float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
 
-  std::vector<glm::vec2> texCoords = getRotatedTexCoordinates(
+  std::vector<glm::vec2> uvs = getRotatedTexCoordinates(
       {{minTX, minTY}, {maxTX, minTY}, {minTX, maxTY}, {maxTX, maxTY}},
       rotation);
 
-  glm::vec3 f_pos = position;
-
-  std::vector<glm::vec3> V = cube_face.vertices();
-
-  std::vector<Vertex> vertices;
-  for (int i = 0; i < 4; i++) {
-    vertices.push_back((struct Vertex){V[i] * cube_face.position + f_pos,
-                                       face_direction, texCoords[i]});
-  }
+  std::vector<CubeVertex> vertices = cube_face.blockVertex(position, uvs);
 
   primitive->push(vertices, QUAD_FACE_INDICES[cube_face.direction],
                   render_type);

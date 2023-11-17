@@ -7,8 +7,10 @@
 
 class BlockOutline {
 public:
+  using VertexType = CubeVertex;
+
   BlockOutline() {
-    primitive = std::make_unique<Primitive>();
+    primitive = std::make_unique<Primitive<VertexType>>();
   }
 
   void draw(glm::vec3 position) {
@@ -19,7 +21,7 @@ public:
   void setup();
 
 private:
-  std::unique_ptr<Primitive> primitive;
+  std::unique_ptr<Primitive<VertexType>> primitive;
 };
 
 #endif

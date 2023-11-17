@@ -8,12 +8,14 @@
 #include "blocks/block.hpp"
 
 class ChunkMesh {
+  using VertexType = CubeVertex;
+
 private:
-  std::unique_ptr<Primitive> primitive;
+  std::unique_ptr<Primitive<VertexType>> primitive;
 
 public:
   ChunkMesh() {
-    primitive = std::make_unique<Primitive>();
+    primitive = std::make_unique<Primitive<VertexType>>();
   };
   ~ChunkMesh() {
   }

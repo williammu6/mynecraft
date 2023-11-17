@@ -4,14 +4,11 @@
 std::optional<Intersection> Ray::intersection(const struct World &world,
                                               float reach) {
   glm::vec3 rayPosition = _origin;
-  glm::vec3 distanceTraveled = glm::vec3(0);
-  glm::vec3 maxReachPosition = _origin + _direction * reach;
   glm::vec3 faceSide(0);
 
   bool success = false;
   float halfBlock = 0.5f;
   glm::vec3 stepSize = _direction / 5.0f;
-  int steps = reach;
 
   while (glm::distance(_origin, rayPosition) <= reach) {
     std::optional<Block *> maybeBlock =

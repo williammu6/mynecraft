@@ -6,8 +6,6 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoord;
 
-uniform sampler2D ourTexture;
-
 struct Material {
   sampler2D diffuse;
   sampler2D specular;

@@ -5,7 +5,6 @@ out vec4 FragColor;
 uniform sampler2D ourTexture;
 
 in vec3 FragPos;
-in vec3 Normal;
 in vec2 TexCoord;
 
 void main() {
