@@ -19,7 +19,7 @@ void Player::keyboardCallback(float deltaTime) {
   if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
     _camera->position +=
         glm::normalize(glm::cross(_camera->front, _camera->up)) * _speed;
-  if (glfwGetKey(_window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+  if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     _camera->position -= glm::vec3(0, 1, 0) * _speed;
   if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
     _camera->position += glm::vec3(0, 1, 0) * _speed;
