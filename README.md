@@ -2,18 +2,6 @@
 
 ![mynecraft](screenshots/mynecraft.png)
 
-## Table Of Contents
-
-- [Introduction](#introduction)
-
-- [Features](#features)
-- [Requirements](#requirements)
-- [Getting Started](#getting-started)
-  - [Dependencies](#dependencies)
-  - [Building](#building)
-  - [Running](#running)
-
-
 ## Introduction
 
 The goal of this project is to learn more about "modern" C++ and OpenGL, while creating a basic Minecraft-inspired game.
