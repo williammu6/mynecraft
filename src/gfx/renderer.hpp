@@ -9,13 +9,11 @@ struct Renderer {
   std::map<Shaders, Shader *> shaders;
 
   Renderer() {
-    textures[TextureID::ATLAS] = texture_from_path("res/textures.png");
-    textures[TextureID::SUN] = texture_from_path("res/sun.png");
-    textures[TextureID::CROSSHAIR] = texture_from_path("res/crosshair.png");
+    textures[TextureID::ATLAS] = texture_from_path("assets/textures/atlas.png");
+    textures[TextureID::CROSSHAIR] = texture_from_path("assets/textures/crosshair.png");
 
     shaders[Shaders::CROSSHAIR] = new CrosshairShader();
     shaders[Shaders::BLOCK] = new BlockShader();
-    shaders[Shaders::RAY] = new RayShader();
     shaders[Shaders::BLOCK_OUTLINE] = new BlockOutlineShader();
   }
 };

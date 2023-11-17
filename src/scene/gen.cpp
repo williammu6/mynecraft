@@ -3,11 +3,8 @@
 #include "blocks/wood.hpp"
 #include "perlin_noise.hpp"
 
-void gen(Chunk *chunk, int worldSeed) {
+void WorldGenerator::generateChunk(Chunk *chunk) {
   Block *block = new Sand();
-
-  const siv::PerlinNoise::seed_type seed = worldSeed;
-  const siv::PerlinNoise perlin{seed};
 
   for (int x = 0; x < chunk->SIZE; x++) {
     int nX = (x + 1) + chunk->position.x * chunk->SIZE;

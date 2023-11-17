@@ -1,5 +1,5 @@
 #include "ray.hpp"
-#include "level/blocks/block.hpp"
+#include "../scene/blocks/block.hpp"
 
 std::optional<Intersection> Ray::intersection(const struct World &world,
                                               float reach) {
@@ -14,11 +14,11 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
   int steps = reach;
 
   while (glm::distance(_origin, rayPosition) <= reach) {
-    std::optional<Block *> blockOpt =
+    std::optional<Block *> maybeBlock =
         state.world->globalPositionToBlock(rayPosition + halfBlock);
-    
+
     rayPosition.z += stepSize.z;
-    if (blockOpt.has_value()) {
+    if (maybeBlock.has_value()) {
       faceSide = _direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH];
       success = true;
       break;
@@ -27,8 +27,8 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
     }
 
     rayPosition.x += stepSize.x;
-    blockOpt = state.world->globalPositionToBlock(rayPosition + halfBlock);
-    if (blockOpt.has_value()) {
+    maybeBlock = state.world->globalPositionToBlock(rayPosition + halfBlock);
+    if (maybeBlock.has_value()) {
       faceSide = _direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST];
       success = true;
       break;
@@ -37,8 +37,8 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
     }
 
     rayPosition.y += stepSize.y;
-    blockOpt = state.world->globalPositionToBlock(rayPosition + halfBlock);
-    if (blockOpt.has_value()) {
+    maybeBlock = state.world->globalPositionToBlock(rayPosition + halfBlock);
+    if (maybeBlock.has_value()) {
       faceSide = _direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN];
       success = true;
       break;

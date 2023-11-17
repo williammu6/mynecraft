@@ -404,30 +404,6 @@ src/gfx/texture.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/texture.cpp.s
 .PHONY : src/gfx/texture.cpp.s
 
-src/gfx/vendor/stb_image.o: src/gfx/vendor/stb_image.cpp.o
-.PHONY : src/gfx/vendor/stb_image.o
-
-# target to build an object file
-src/gfx/vendor/stb_image.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.o
-.PHONY : src/gfx/vendor/stb_image.cpp.o
-
-src/gfx/vendor/stb_image.i: src/gfx/vendor/stb_image.cpp.i
-.PHONY : src/gfx/vendor/stb_image.i
-
-# target to preprocess a source file
-src/gfx/vendor/stb_image.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.i
-.PHONY : src/gfx/vendor/stb_image.cpp.i
-
-src/gfx/vendor/stb_image.s: src/gfx/vendor/stb_image.cpp.s
-.PHONY : src/gfx/vendor/stb_image.s
-
-# target to generate assembly for a file
-src/gfx/vendor/stb_image.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/vendor/stb_image.cpp.s
-.PHONY : src/gfx/vendor/stb_image.cpp.s
-
 src/gfx/window.o: src/gfx/window.cpp.o
 .PHONY : src/gfx/window.o
 
@@ -451,126 +427,6 @@ src/gfx/window.s: src/gfx/window.cpp.s
 src/gfx/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/window.cpp.s
 .PHONY : src/gfx/window.cpp.s
-
-src/level/chunk.o: src/level/chunk.cpp.o
-.PHONY : src/level/chunk.o
-
-# target to build an object file
-src/level/chunk.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.o
-.PHONY : src/level/chunk.cpp.o
-
-src/level/chunk.i: src/level/chunk.cpp.i
-.PHONY : src/level/chunk.i
-
-# target to preprocess a source file
-src/level/chunk.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.i
-.PHONY : src/level/chunk.cpp.i
-
-src/level/chunk.s: src/level/chunk.cpp.s
-.PHONY : src/level/chunk.s
-
-# target to generate assembly for a file
-src/level/chunk.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunk.cpp.s
-.PHONY : src/level/chunk.cpp.s
-
-src/level/chunkmesh.o: src/level/chunkmesh.cpp.o
-.PHONY : src/level/chunkmesh.o
-
-# target to build an object file
-src/level/chunkmesh.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.o
-.PHONY : src/level/chunkmesh.cpp.o
-
-src/level/chunkmesh.i: src/level/chunkmesh.cpp.i
-.PHONY : src/level/chunkmesh.i
-
-# target to preprocess a source file
-src/level/chunkmesh.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.i
-.PHONY : src/level/chunkmesh.cpp.i
-
-src/level/chunkmesh.s: src/level/chunkmesh.cpp.s
-.PHONY : src/level/chunkmesh.s
-
-# target to generate assembly for a file
-src/level/chunkmesh.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/chunkmesh.cpp.s
-.PHONY : src/level/chunkmesh.cpp.s
-
-src/level/gen.o: src/level/gen.cpp.o
-.PHONY : src/level/gen.o
-
-# target to build an object file
-src/level/gen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.o
-.PHONY : src/level/gen.cpp.o
-
-src/level/gen.i: src/level/gen.cpp.i
-.PHONY : src/level/gen.i
-
-# target to preprocess a source file
-src/level/gen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.i
-.PHONY : src/level/gen.cpp.i
-
-src/level/gen.s: src/level/gen.cpp.s
-.PHONY : src/level/gen.s
-
-# target to generate assembly for a file
-src/level/gen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/gen.cpp.s
-.PHONY : src/level/gen.cpp.s
-
-src/level/tree.o: src/level/tree.cpp.o
-.PHONY : src/level/tree.o
-
-# target to build an object file
-src/level/tree.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.o
-.PHONY : src/level/tree.cpp.o
-
-src/level/tree.i: src/level/tree.cpp.i
-.PHONY : src/level/tree.i
-
-# target to preprocess a source file
-src/level/tree.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.i
-.PHONY : src/level/tree.cpp.i
-
-src/level/tree.s: src/level/tree.cpp.s
-.PHONY : src/level/tree.s
-
-# target to generate assembly for a file
-src/level/tree.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/tree.cpp.s
-.PHONY : src/level/tree.cpp.s
-
-src/level/world.o: src/level/world.cpp.o
-.PHONY : src/level/world.o
-
-# target to build an object file
-src/level/world.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.o
-.PHONY : src/level/world.cpp.o
-
-src/level/world.i: src/level/world.cpp.i
-.PHONY : src/level/world.i
-
-# target to preprocess a source file
-src/level/world.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.i
-.PHONY : src/level/world.cpp.i
-
-src/level/world.s: src/level/world.cpp.s
-.PHONY : src/level/world.s
-
-# target to generate assembly for a file
-src/level/world.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/level/world.cpp.s
-.PHONY : src/level/world.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -620,29 +476,173 @@ src/player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/player.cpp.s
 .PHONY : src/player.cpp.s
 
-src/ray.o: src/ray.cpp.o
-.PHONY : src/ray.o
+src/scene/chunk.o: src/scene/chunk.cpp.o
+.PHONY : src/scene/chunk.o
 
 # target to build an object file
-src/ray.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.o
-.PHONY : src/ray.cpp.o
+src/scene/chunk.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunk.cpp.o
+.PHONY : src/scene/chunk.cpp.o
 
-src/ray.i: src/ray.cpp.i
-.PHONY : src/ray.i
+src/scene/chunk.i: src/scene/chunk.cpp.i
+.PHONY : src/scene/chunk.i
 
 # target to preprocess a source file
-src/ray.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.i
-.PHONY : src/ray.cpp.i
+src/scene/chunk.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunk.cpp.i
+.PHONY : src/scene/chunk.cpp.i
 
-src/ray.s: src/ray.cpp.s
-.PHONY : src/ray.s
+src/scene/chunk.s: src/scene/chunk.cpp.s
+.PHONY : src/scene/chunk.s
 
 # target to generate assembly for a file
-src/ray.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/ray.cpp.s
-.PHONY : src/ray.cpp.s
+src/scene/chunk.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunk.cpp.s
+.PHONY : src/scene/chunk.cpp.s
+
+src/scene/chunkmesh.o: src/scene/chunkmesh.cpp.o
+.PHONY : src/scene/chunkmesh.o
+
+# target to build an object file
+src/scene/chunkmesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunkmesh.cpp.o
+.PHONY : src/scene/chunkmesh.cpp.o
+
+src/scene/chunkmesh.i: src/scene/chunkmesh.cpp.i
+.PHONY : src/scene/chunkmesh.i
+
+# target to preprocess a source file
+src/scene/chunkmesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunkmesh.cpp.i
+.PHONY : src/scene/chunkmesh.cpp.i
+
+src/scene/chunkmesh.s: src/scene/chunkmesh.cpp.s
+.PHONY : src/scene/chunkmesh.s
+
+# target to generate assembly for a file
+src/scene/chunkmesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunkmesh.cpp.s
+.PHONY : src/scene/chunkmesh.cpp.s
+
+src/scene/gen.o: src/scene/gen.cpp.o
+.PHONY : src/scene/gen.o
+
+# target to build an object file
+src/scene/gen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.o
+.PHONY : src/scene/gen.cpp.o
+
+src/scene/gen.i: src/scene/gen.cpp.i
+.PHONY : src/scene/gen.i
+
+# target to preprocess a source file
+src/scene/gen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.i
+.PHONY : src/scene/gen.cpp.i
+
+src/scene/gen.s: src/scene/gen.cpp.s
+.PHONY : src/scene/gen.s
+
+# target to generate assembly for a file
+src/scene/gen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.s
+.PHONY : src/scene/gen.cpp.s
+
+src/scene/tree.o: src/scene/tree.cpp.o
+.PHONY : src/scene/tree.o
+
+# target to build an object file
+src/scene/tree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/tree.cpp.o
+.PHONY : src/scene/tree.cpp.o
+
+src/scene/tree.i: src/scene/tree.cpp.i
+.PHONY : src/scene/tree.i
+
+# target to preprocess a source file
+src/scene/tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/tree.cpp.i
+.PHONY : src/scene/tree.cpp.i
+
+src/scene/tree.s: src/scene/tree.cpp.s
+.PHONY : src/scene/tree.s
+
+# target to generate assembly for a file
+src/scene/tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/tree.cpp.s
+.PHONY : src/scene/tree.cpp.s
+
+src/scene/world.o: src/scene/world.cpp.o
+.PHONY : src/scene/world.o
+
+# target to build an object file
+src/scene/world.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world.cpp.o
+.PHONY : src/scene/world.cpp.o
+
+src/scene/world.i: src/scene/world.cpp.i
+.PHONY : src/scene/world.i
+
+# target to preprocess a source file
+src/scene/world.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world.cpp.i
+.PHONY : src/scene/world.cpp.i
+
+src/scene/world.s: src/scene/world.cpp.s
+.PHONY : src/scene/world.s
+
+# target to generate assembly for a file
+src/scene/world.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world.cpp.s
+.PHONY : src/scene/world.cpp.s
+
+src/utils/ray.o: src/utils/ray.cpp.o
+.PHONY : src/utils/ray.o
+
+# target to build an object file
+src/utils/ray.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/utils/ray.cpp.o
+.PHONY : src/utils/ray.cpp.o
+
+src/utils/ray.i: src/utils/ray.cpp.i
+.PHONY : src/utils/ray.i
+
+# target to preprocess a source file
+src/utils/ray.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/utils/ray.cpp.i
+.PHONY : src/utils/ray.cpp.i
+
+src/utils/ray.s: src/utils/ray.cpp.s
+.PHONY : src/utils/ray.s
+
+# target to generate assembly for a file
+src/utils/ray.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/utils/ray.cpp.s
+.PHONY : src/utils/ray.cpp.s
+
+src/vendor/stb_image.o: src/vendor/stb_image.cpp.o
+.PHONY : src/vendor/stb_image.o
+
+# target to build an object file
+src/vendor/stb_image.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/vendor/stb_image.cpp.o
+.PHONY : src/vendor/stb_image.cpp.o
+
+src/vendor/stb_image.i: src/vendor/stb_image.cpp.i
+.PHONY : src/vendor/stb_image.i
+
+# target to preprocess a source file
+src/vendor/stb_image.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/vendor/stb_image.cpp.i
+.PHONY : src/vendor/stb_image.cpp.i
+
+src/vendor/stb_image.s: src/vendor/stb_image.cpp.s
+.PHONY : src/vendor/stb_image.s
+
+# target to generate assembly for a file
+src/vendor/stb_image.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/vendor/stb_image.cpp.s
+.PHONY : src/vendor/stb_image.cpp.s
 
 # Help Target
 help:
@@ -682,36 +682,36 @@ help:
 	@echo "... src/gfx/texture.o"
 	@echo "... src/gfx/texture.i"
 	@echo "... src/gfx/texture.s"
-	@echo "... src/gfx/vendor/stb_image.o"
-	@echo "... src/gfx/vendor/stb_image.i"
-	@echo "... src/gfx/vendor/stb_image.s"
 	@echo "... src/gfx/window.o"
 	@echo "... src/gfx/window.i"
 	@echo "... src/gfx/window.s"
-	@echo "... src/level/chunk.o"
-	@echo "... src/level/chunk.i"
-	@echo "... src/level/chunk.s"
-	@echo "... src/level/chunkmesh.o"
-	@echo "... src/level/chunkmesh.i"
-	@echo "... src/level/chunkmesh.s"
-	@echo "... src/level/gen.o"
-	@echo "... src/level/gen.i"
-	@echo "... src/level/gen.s"
-	@echo "... src/level/tree.o"
-	@echo "... src/level/tree.i"
-	@echo "... src/level/tree.s"
-	@echo "... src/level/world.o"
-	@echo "... src/level/world.i"
-	@echo "... src/level/world.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
 	@echo "... src/player.o"
 	@echo "... src/player.i"
 	@echo "... src/player.s"
-	@echo "... src/ray.o"
-	@echo "... src/ray.i"
-	@echo "... src/ray.s"
+	@echo "... src/scene/chunk.o"
+	@echo "... src/scene/chunk.i"
+	@echo "... src/scene/chunk.s"
+	@echo "... src/scene/chunkmesh.o"
+	@echo "... src/scene/chunkmesh.i"
+	@echo "... src/scene/chunkmesh.s"
+	@echo "... src/scene/gen.o"
+	@echo "... src/scene/gen.i"
+	@echo "... src/scene/gen.s"
+	@echo "... src/scene/tree.o"
+	@echo "... src/scene/tree.i"
+	@echo "... src/scene/tree.s"
+	@echo "... src/scene/world.o"
+	@echo "... src/scene/world.i"
+	@echo "... src/scene/world.s"
+	@echo "... src/utils/ray.o"
+	@echo "... src/utils/ray.i"
+	@echo "... src/utils/ray.s"
+	@echo "... src/vendor/stb_image.o"
+	@echo "... src/vendor/stb_image.i"
+	@echo "... src/vendor/stb_image.s"
 .PHONY : help
 
 

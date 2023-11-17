@@ -9,7 +9,7 @@
 #include "gfx/shader.hpp"
 #include "gfx/texture.hpp"
 #include "gfx/window.hpp"
-#include "level/world.hpp"
+#include "scene/world.hpp"
 #include "player.hpp"
 #include "state.hpp"
 

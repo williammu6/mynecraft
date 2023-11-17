@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "gfx/camera.hpp"
-#include "ray.hpp"
+#include "utils/ray.hpp"
 #include "state.hpp"
 #include "./gfx/primitive.hpp"
 

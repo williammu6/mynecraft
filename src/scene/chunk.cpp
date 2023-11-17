@@ -10,7 +10,8 @@ std::map<Direction, glm::vec3> directionOffset{{SOUTH, {0, 0, 1}},
                                                {WEST, {-1, 0, 0}},
                                                {EAST, {1, 0, 0}}};
 
-Block *Chunk::getNeighborBlock(Direction direction, glm::ivec3 pos) {
+std::optional<Block *> Chunk::getNeighborBlock(Direction direction,
+                                               glm::ivec3 pos) {
   if (inBounds(pos + DIRECTIONS[direction])) {
     return this->getBlock(pos + DIRECTIONS[direction]);
   }
@@ -24,22 +25,27 @@ Block *Chunk::getNeighborBlock(Direction direction, glm::ivec3 pos) {
   else if (direction == WEST)
     pos.x = SIZE - 1;
 
-  if (neighborChunk[direction])
-    return neighborChunk[direction]->getBlock(pos);
-
-  return NULL;
+  if (neighborChunk[direction].has_value())
+    return neighborChunk[direction].value()->getBlock(pos);
+  return std::nullopt;
 }
 
 bool shouldDrawBlockFace(Chunk *chunk, Direction direction,
                          glm::vec3 position) {
-  Block *neigh_block = chunk->getNeighborBlock(direction, position);
-  if (!neigh_block)
+  auto maybeNeighborBlock = chunk->getNeighborBlock(direction, position);
+  if (!maybeNeighborBlock.has_value())
     return true;
 
-  if (neigh_block->liquid && !chunk->getBlock(position)->liquid)
+  auto neighborBlock = maybeNeighborBlock.value();
+
+  auto maybeBlock = chunk->getBlock(position);
+  if (!maybeBlock.has_value())
     return true;
 
-  return !neigh_block->drawable() || neigh_block->transparent;
+  if (neighborBlock->liquid && !maybeBlock.value()->liquid)
+    return true;
+
+  return !neighborBlock->drawable() || neighborBlock->transparent;
 }
 
 bool Chunk::isBorder(int x, int z) {
@@ -74,10 +80,11 @@ void Chunk::prepareRender() {
   this->mesh->setup();
 }
 
-Block *Chunk::getBlock(const glm::ivec3 blockPosition) {
-  return this->blocks.find(blockPosition) != this->blocks.end()
-             ? this->blocks.at(blockPosition)
-             : nullptr;
+std::optional<Block *> Chunk::getBlock(const glm::ivec3 blockPosition) {
+  if (this->blocks.find(blockPosition) != this->blocks.end())
+    return this->blocks.at(blockPosition);
+
+  return std::nullopt;
 }
 
 bool Chunk::inBounds(glm::ivec3 p) {
@@ -88,40 +95,11 @@ bool Chunk::inBounds(glm::ivec3 p) {
 void Chunk::set(glm::ivec3 blockPosition, Block *block) {
   if (inBounds(blockPosition))
     blocks[blockPosition] = block;
-  else {
-    /*
-    glm::ivec3 outBoundsChunkPosition = this->position;
-    glm::ivec3 outBoundsBlockPosition = blockPosition;
-
-    outBoundsBlockPosition.y = blockPosition.y;
-    outBoundsChunkPosition.y = this->position.y;
-    if (blockPosition.x < 0) {
-      outBoundsBlockPosition.x = SIZE - abs(blockPosition.x);
-      outBoundsChunkPosition.x--;
-    } else if (blockPosition.x >= SIZE) {
-      outBoundsBlockPosition.x = blockPosition.x % SIZE;
-      outBoundsChunkPosition.x++;
-    }
-    if (blockPosition.z < 0) {
-      outBoundsBlockPosition.z = SIZE - abs(blockPosition.z);
-      outBoundsChunkPosition.z--;
-    } else if (blockPosition.z >= SIZE) {
-      outBoundsBlockPosition.z = blockPosition.z % SIZE;
-      outBoundsChunkPosition.z++;
-    }
-
-    PendingBlock pending_block = {.chunkPosition = outBoundsChunkPosition,
-                                  .blockPosition = outBoundsBlockPosition,
-                                  .block = block};
-
-    this->world->pendingBlocks.push_back(pending_block);
-    */
-  }
 }
 
-Chunk *createChunk(glm::vec3 position, struct World *world) {
+Chunk *createChunk(glm::vec3 position, World *world) {
   Chunk *chunk = new Chunk(position, world);
-  gen(chunk, world->seed);
+  state.world->generator->generateChunk(chunk);
   return chunk;
 }
 
@@ -130,12 +108,7 @@ void Chunk::updateNeighbors() {
   for (Direction dir : directions) {
     int newX = (int)this->position.x + (int)directionOffset[dir].x;
     int newZ = (int)this->position.z + (int)directionOffset[dir].z;
-
-    Chunk *chunk = this->world->getChunkAt({newX, 0, newZ});
-    if (!chunk)
-      continue;
-
-    this->neighborChunk[dir] = chunk;
+    this->neighborChunk[dir] = this->world->getChunkAt({newX, 0, newZ});
   }
 }
 
@@ -145,16 +118,13 @@ void Chunk::update() {
   this->version = this->world->version;
 }
 
-std::vector<Chunk *> Chunk::neighbors() {
-  std::vector<Chunk *> neighborChunks;
+std::vector<std::optional<Chunk *>> Chunk::neighbors() {
+  std::vector<std::optional<Chunk *>> neighborChunks;
 
   for (Direction dir : directions) {
     int newX = (int)this->position.x + (int)directionOffset[dir].x;
     int newZ = (int)this->position.z + (int)directionOffset[dir].z;
-
-    Chunk *chunk = this->world->getChunkAt({newX, 0, newZ});
-    if (chunk)
-      neighborChunks.push_back(chunk);
+    neighborChunks.push_back(this->world->getChunkAt({newX, 0, newZ}));
   }
 
   return neighborChunks;

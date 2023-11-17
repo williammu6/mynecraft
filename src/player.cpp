@@ -46,9 +46,12 @@ void Player::tick() {
     state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
     if (blockIntersection.has_value()) {
       Intersection intersection = blockIntersection.value();
-      Chunk *chunk = state.world->globalPositionToChunk(intersection.position);
-      chunk->blocks.erase(intersection.blockPosition);
-      state.world->chunksNeedUpdate.push_back(chunk);
+      auto maybeChunk =
+          state.world->globalPositionToChunk(intersection.position);
+      if (maybeChunk.has_value()) {
+        maybeChunk.value()->blocks.erase(intersection.blockPosition);
+        state.world->chunksNeedUpdate.push_back(maybeChunk.value());
+      }
     }
   }
 
@@ -56,9 +59,13 @@ void Player::tick() {
     state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
     if (blockIntersection.has_value()) {
       Intersection intersection = blockIntersection.value();
-      intersection.placeBlockChunk->set(intersection.placeBlockPosition,
-                                        new Cobblestone());
-      state.world->chunksNeedUpdate.push_back(intersection.placeBlockChunk);
+      if (intersection.placeBlockChunk.has_value()) {
+        intersection.placeBlockChunk.value()->set(
+            intersection.placeBlockPosition, new Cobblestone());
+
+        state.world->chunksNeedUpdate.push_back(
+            intersection.placeBlockChunk.value());
+      }
     }
   }
 }

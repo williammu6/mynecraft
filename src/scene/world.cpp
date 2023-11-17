@@ -71,7 +71,8 @@ void World::prepareNewChunks(unsigned int maxThrottle) {
     Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors())
-      neighborChunk->update();
+      if (neighborChunk.has_value())
+        neighborChunk.value()->update();
     chunksNeedUpdate.erase(chunksNeedUpdate.begin() + i);
     i--;
   }
@@ -97,11 +98,11 @@ void World::loadAndUnloadChunks() {
   }
 }
 
-Chunk *World::getChunkAt(glm::ivec3 position) {
+std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {
   if (chunks.find(position) != chunks.end()) {
     return chunks.at(position);
   }
-  return nullptr;
+  return std::nullopt;
 }
 
 void World::putPendingBlocks(Chunk *chunk) {
@@ -115,48 +116,7 @@ void World::putPendingBlocks(Chunk *chunk) {
   }
 }
 
-Block *World::blockAt(glm::vec3 p) {
-  glm::vec3 chunkPos = glm::floor(p) / (float)CHUNK_SIZE;
-  chunkPos.y = 0;
-  Chunk *chunk = getChunkAt(chunkPos);
-  if (chunk == nullptr)
-    return nullptr;
-
-  glm::ivec3 localBlockPosition = {(int)glm::floor(p.x) % CHUNK_SIZE,
-                                   glm::floor(p.y),
-                                   (int)glm::floor(p.z) % CHUNK_SIZE};
-
-  if (localBlockPosition.x < 0)
-    localBlockPosition.x = CHUNK_SIZE + localBlockPosition.x;
-  if (localBlockPosition.z < 0)
-    localBlockPosition.z = CHUNK_SIZE + localBlockPosition.z;
-  // printf("Local block position %d %d %d\n", localBlockPosition.x,
-  // localBlockPosition.y, localBlockPosition.z);
-
-  return chunk->getBlock(localBlockPosition);
-}
-
-void World::updateBlockAt(glm::vec3 globalPosition) {
-  glm::ivec3 chunkPosition = (glm::ivec3)globalPosition / CHUNK_SIZE;
-  chunkPosition.y = 0;
-  Chunk *chunk = getChunkAt(chunkPosition);
-  if (chunk == nullptr)
-    return;
-
-  glm::ivec3 blockPosition = glm::floor(globalPosition);
-
-  blockPosition.x = blockPosition.x % CHUNK_SIZE;
-  if (blockPosition.x < 0)
-    blockPosition.x += CHUNK_SIZE;
-  blockPosition.z = blockPosition.z % CHUNK_SIZE;
-  if (blockPosition.z < 0)
-    blockPosition.z += CHUNK_SIZE;
-
-  chunk->set(blockPosition, new Water());
-  chunk->update();
-}
-
-Chunk *World::globalPositionToChunk(glm::vec3 p) {
+std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
   glm::ivec3 chunkPosition = {
       p.x < 0 ? p.x / CHUNK_SIZE - 1 : p.x / CHUNK_SIZE,
       0,
@@ -176,26 +136,11 @@ glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 gp) {
   return glm::ivec3(localX, glm::floor(gp.y), localZ);
 }
 
-glm::vec3 World::globalPositionToFloatBlockPosition(glm::vec3 globalPosition) {
-  float localX = std::fmodf(globalPosition.x, CHUNK_SIZE);
-  float localZ = std::fmodf(globalPosition.z, CHUNK_SIZE);
-
-  localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
-  localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
-
-  return glm::vec3(localX, globalPosition.y, localZ);
-}
-
 std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
-  Chunk *chunk = globalPositionToChunk(globalPosition);
-  if (chunk == nullptr)
+  std::optional<Chunk *> maybeChunk = globalPositionToChunk(globalPosition);
+  if (!maybeChunk.has_value())
     return std::nullopt;
 
   glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
-
-  Block *block = chunk->getBlock(blockPosition);
-  if (block != nullptr)
-    return block;
-
-  return std::nullopt;
+  return maybeChunk.value()->getBlock(blockPosition);
 }

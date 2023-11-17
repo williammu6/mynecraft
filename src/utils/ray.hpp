@@ -1,17 +1,17 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "gfx/direction.hpp"
+#include "../gfx/direction.hpp"
+#include "../scene/blocks/block.hpp"
+#include "../scene/world.hpp"
+#include "../state.hpp"
 #include "glm/glm.hpp"
-#include "level/blocks/block.hpp"
-#include "level/world.hpp"
-#include "state.hpp"
 #include <optional>
 
 struct Intersection {
   glm::vec3 position;
   glm::ivec3 blockPosition;
-  Chunk *placeBlockChunk;
+  std::optional<Chunk *>placeBlockChunk;
   glm::ivec3 placeBlockPosition;
 };
 

@@ -2,7 +2,7 @@
 #define BLOCK_OUTLINE_H
 
 #include "../common.hpp"
-#include "../level/world.hpp"
+#include "../scene/world.hpp"
 #include "./primitive.hpp"
 
 class BlockOutline {

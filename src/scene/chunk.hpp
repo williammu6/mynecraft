@@ -30,7 +30,7 @@ struct Chunk {
   std::unique_ptr<ChunkMesh> mesh;
   struct World *world;
   std::unordered_map<glm::ivec3, Block *> blocks{};
-  std::map<Direction, Chunk *> neighborChunk{};
+  std::map<Direction, std::optional<Chunk *>> neighborChunk{};
   void prepareRender();
   void prepareRenderBorders();
 
@@ -42,13 +42,13 @@ struct Chunk {
   void render();
   void update();
   void updateNeighbors();
-  std::vector<Chunk *> neighbors();
+  std::vector<std::optional<Chunk *>> neighbors();
 
   bool inBounds(glm::ivec3 position);
   bool isBorder(int x, int z);
 
-  Block *getNeighborBlock(Direction direction, glm::ivec3 position);
-  Block *getBlock(const glm::ivec3 position);
+  std::optional<Block *> getNeighborBlock(Direction direction, glm::ivec3 pos);
+  std::optional<Block *> getBlock(const glm::ivec3 blockPosition);
 };
 
 Chunk *createChunk(glm::vec3 position, struct World *world);

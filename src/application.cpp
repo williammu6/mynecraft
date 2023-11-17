@@ -5,7 +5,7 @@
 #include "glm/ext/quaternion_common.hpp"
 #include "glm/ext/quaternion_geometric.hpp"
 #include "glm/fwd.hpp"
-#include "level/blocks/cobblestone.hpp"
+#include "scene/blocks/cobblestone.hpp"
 #include <cmath>
 #include <iostream>
 

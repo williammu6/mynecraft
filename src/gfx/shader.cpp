@@ -115,14 +115,3 @@ void BlockOutlineShader::setUniforms(glm::vec3 position) {
   setUniform("projection", state.camera.projection);
   setUniform("model", model);
 }
-
-void RayShader::setUniforms(glm::vec3 position) {
-  glm::mat4 model = glm::mat4(1.0f);
-
-  model = glm::translate(state.camera.model, position);
-  model = glm::scale(model, glm::vec3(1.2));
-
-  setUniform("view", state.camera.view);
-  setUniform("projection", state.camera.projection);
-  setUniform("model", model);
-}

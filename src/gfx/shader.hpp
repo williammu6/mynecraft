@@ -4,12 +4,7 @@
 #include "../common.hpp"
 #include "gfx.hpp"
 
-enum class Shaders {
-  BLOCK = 0,
-  CROSSHAIR,
-  RAY,
-  BLOCK_OUTLINE
-};
+enum class Shaders { BLOCK = 0, CROSSHAIR, RAY, BLOCK_OUTLINE };
 
 class Shader {
 private:
@@ -66,7 +61,8 @@ public:
 
 class BlockShader : public Shader {
 public:
-  BlockShader() : Shader("res/shaders/block.vert", "res/shaders/block.frag"){};
+  BlockShader()
+      : Shader("assets/shaders/block.vert", "assets/shaders/block.frag"){};
 
   void setUniforms(glm::vec3) override;
 };
@@ -74,15 +70,9 @@ public:
 class CrosshairShader : public Shader {
 public:
   CrosshairShader()
-      : Shader("res/shaders/crosshair.vert", "res/shaders/crosshair.frag") {
+      : Shader("assets/shaders/crosshair.vert",
+               "assets/shaders/crosshair.frag") {
   }
-
-  void setUniforms(glm::vec3) override;
-};
-
-class RayShader : public Shader {
-public:
-  RayShader() : Shader("res/shaders/ray.vert", "res/shaders/ray.frag"){};
 
   void setUniforms(glm::vec3) override;
 };
@@ -90,8 +80,8 @@ public:
 class BlockOutlineShader : public Shader {
 public:
   BlockOutlineShader()
-      : Shader("res/shaders/blockOutline.vert",
-               "res/shaders/blockOutline.frag"){};
+      : Shader("assets/shaders/blockOutline.vert",
+               "assets/shaders/blockOutline.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

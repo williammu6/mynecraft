@@ -4,7 +4,7 @@
 #include "gfx/camera.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
-#include "level/blocks/block.hpp"
+#include "scene/blocks/block.hpp"
 
 struct State {
   Camera camera;
