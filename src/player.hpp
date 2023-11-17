@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "gfx/camera.hpp"
-#include "utils/ray.hpp"
-#include "state.hpp"
 #include "./gfx/primitive.hpp"
+#include "gfx/camera.hpp"
+#include "state.hpp"
+#include "utils/debug.hpp"
+#include "utils/ray.hpp"
 
 class Player {
 public:

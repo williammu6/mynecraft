@@ -9,7 +9,7 @@
 #include "chunkmesh.hpp"
 #include <unordered_map>
 
-#define CHUNK_SIZE 16
+#define CHUNK_SIZE 8
 
 struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {
@@ -24,7 +24,6 @@ struct Chunk {
   }
 
   int version = 1;
-  int SIZE = CHUNK_SIZE;
   glm::vec3 position;
 
   std::unique_ptr<ChunkMesh> mesh;
@@ -45,7 +44,6 @@ struct Chunk {
   std::vector<std::optional<Chunk *>> neighbors();
 
   bool inBounds(glm::ivec3 position);
-  bool isBorder(int x, int z);
 
   std::optional<Block *> getNeighborBlock(Direction direction, glm::ivec3 pos);
   std::optional<Block *> getBlock(const glm::ivec3 blockPosition);

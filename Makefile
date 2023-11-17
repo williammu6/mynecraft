@@ -524,30 +524,6 @@ src/scene/chunkmesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/chunkmesh.cpp.s
 .PHONY : src/scene/chunkmesh.cpp.s
 
-src/scene/gen.o: src/scene/gen.cpp.o
-.PHONY : src/scene/gen.o
-
-# target to build an object file
-src/scene/gen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.o
-.PHONY : src/scene/gen.cpp.o
-
-src/scene/gen.i: src/scene/gen.cpp.i
-.PHONY : src/scene/gen.i
-
-# target to preprocess a source file
-src/scene/gen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.i
-.PHONY : src/scene/gen.cpp.i
-
-src/scene/gen.s: src/scene/gen.cpp.s
-.PHONY : src/scene/gen.s
-
-# target to generate assembly for a file
-src/scene/gen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/gen.cpp.s
-.PHONY : src/scene/gen.cpp.s
-
 src/scene/tree.o: src/scene/tree.cpp.o
 .PHONY : src/scene/tree.o
 
@@ -595,6 +571,30 @@ src/scene/world.s: src/scene/world.cpp.s
 src/scene/world.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world.cpp.s
 .PHONY : src/scene/world.cpp.s
+
+src/scene/world_generator.o: src/scene/world_generator.cpp.o
+.PHONY : src/scene/world_generator.o
+
+# target to build an object file
+src/scene/world_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world_generator.cpp.o
+.PHONY : src/scene/world_generator.cpp.o
+
+src/scene/world_generator.i: src/scene/world_generator.cpp.i
+.PHONY : src/scene/world_generator.i
+
+# target to preprocess a source file
+src/scene/world_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world_generator.cpp.i
+.PHONY : src/scene/world_generator.cpp.i
+
+src/scene/world_generator.s: src/scene/world_generator.cpp.s
+.PHONY : src/scene/world_generator.s
+
+# target to generate assembly for a file
+src/scene/world_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/scene/world_generator.cpp.s
+.PHONY : src/scene/world_generator.cpp.s
 
 src/utils/ray.o: src/utils/ray.cpp.o
 .PHONY : src/utils/ray.o
@@ -697,15 +697,15 @@ help:
 	@echo "... src/scene/chunkmesh.o"
 	@echo "... src/scene/chunkmesh.i"
 	@echo "... src/scene/chunkmesh.s"
-	@echo "... src/scene/gen.o"
-	@echo "... src/scene/gen.i"
-	@echo "... src/scene/gen.s"
 	@echo "... src/scene/tree.o"
 	@echo "... src/scene/tree.i"
 	@echo "... src/scene/tree.s"
 	@echo "... src/scene/world.o"
 	@echo "... src/scene/world.i"
 	@echo "... src/scene/world.s"
+	@echo "... src/scene/world_generator.o"
+	@echo "... src/scene/world_generator.i"
+	@echo "... src/scene/world_generator.s"
 	@echo "... src/utils/ray.o"
 	@echo "... src/utils/ray.i"
 	@echo "... src/utils/ray.s"

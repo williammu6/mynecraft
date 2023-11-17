@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "GLFW/glfw3.h"
+#include "utils/debug.hpp"
 
 void Player::keyboardCallback(float deltaTime) {
   if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -18,7 +19,7 @@ void Player::keyboardCallback(float deltaTime) {
   if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
     _camera->position +=
         glm::normalize(glm::cross(_camera->front, _camera->up)) * _speed;
-  if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+  if (glfwGetKey(_window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
     _camera->position -= glm::vec3(0, 1, 0) * _speed;
   if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
     _camera->position += glm::vec3(0, 1, 0) * _speed;
@@ -43,12 +44,14 @@ void Player::tick() {
   blockIntersection = _ray->intersection(*state.world, _reach);
 
   if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
+    // Delete the block
     state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
     if (blockIntersection.has_value()) {
       Intersection intersection = blockIntersection.value();
       auto maybeChunk =
-          state.world->globalPositionToChunk(intersection.position);
+          state.world->globalPositionToChunk(intersection.position + 0.5f);
       if (maybeChunk.has_value()) {
+        Chunk *chunk = maybeChunk.value();
         maybeChunk.value()->blocks.erase(intersection.blockPosition);
         state.world->chunksNeedUpdate.push_back(maybeChunk.value());
       }

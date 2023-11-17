@@ -1,4 +1,5 @@
 .DS_STORE
+build
 bin/**
 *psd
 
@@ -8,7 +9,7 @@ CPackSourceConfig.cmake
 CMakeCacheDoxyfile.in
 cmake_install.cmake
 CMakeFiles
-Makefile
+CMakeFile
 CMakeDoxygenDefaults.cmake
 CPackConfig.cmake
 Mynecraft

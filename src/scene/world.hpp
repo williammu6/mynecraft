@@ -7,13 +7,7 @@
 #include "../state.hpp"
 #include "../utils/position.hpp"
 #include "chunk.hpp"
-#include "gen.hpp"
-
-struct PendingBlock {
-  glm::ivec3 chunkPosition;
-  glm::ivec3 blockPosition;
-  Block *block;
-};
+#include "world_generator.hpp"
 
 class World {
 public:
@@ -41,16 +35,13 @@ public:
   std::vector<Chunk *> chunksNeedUpdate;
 
 private:
-  int nChunks = 12;
+  int nChunks = 20;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
-
-  std::vector<PendingBlock> pendingBlocks{};
 
   void deleteFarChunks();
   void loadAndUnloadChunks();
   void prepareNewChunks(unsigned int maxThrottle);
-  void putPendingBlocks(Chunk *chunk);
 };
 
 #endif

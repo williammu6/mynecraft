@@ -5,10 +5,10 @@
 #include "glm/common.hpp"
 
 void World::tick() {
+  deleteFarChunks();
   loadAndUnloadChunks();
   prepareNewChunks(1);
   render();
-  deleteFarChunks();
 }
 
 glm::ivec3 get_current_chunk_position() {
@@ -46,9 +46,8 @@ void World::render() {
   glm::ivec3 cc = get_current_chunk_position();
 
   std::vector<glm::ivec3> positions;
-  for (const auto &[position, _] : chunks) {
+  for (const auto &[position, _] : chunks)
     positions.push_back(position);
-  }
 
   std::sort(positions.begin(), positions.end(),
             [&](const glm::ivec3 &a, const glm::ivec3 &b) {
@@ -67,7 +66,7 @@ void World::render() {
  * it is important so block faces between chunks aren't rendered
  */
 void World::prepareNewChunks(unsigned int maxThrottle) {
-  for (int i = 0; i < chunksNeedUpdate.size() && maxThrottle-- >= 0; i++) {
+  for (int i = 0; i < chunksNeedUpdate.size(); i++) {
     Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors())
@@ -103,17 +102,6 @@ std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {
     return chunks.at(position);
   }
   return std::nullopt;
-}
-
-void World::putPendingBlocks(Chunk *chunk) {
-  for (int i = 0; i < pendingBlocks.size(); i++) {
-    PendingBlock pendingBlock = pendingBlocks[i];
-    if (pendingBlock.chunkPosition.x == chunk->position.x &&
-        pendingBlock.chunkPosition.z == chunk->position.z) {
-      chunk->set(pendingBlock.blockPosition, pendingBlock.block);
-      pendingBlocks.erase(pendingBlocks.begin() + i);
-    }
-  }
 }
 
 std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
