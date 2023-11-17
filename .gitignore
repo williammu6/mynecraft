@@ -3,6 +3,7 @@ build
 bin/**
 *psd
 
+Makefile
 CMakeCache.txt
 CMakeDoxyfile.in
 CPackSourceConfig.cmake
