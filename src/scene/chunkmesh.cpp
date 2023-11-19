@@ -1,9 +1,5 @@
 #include "chunkmesh.hpp"
 
-void ChunkMesh::draw(glm::vec3 position, struct Texture *texture) {
-  primitive->draw(position, state.renderer->shaders[Shaders::BLOCK], *texture);
-}
-
 constexpr std::array<int, 4> degrees_0_drawing_order = {0, 1, 2, 3};
 constexpr std::array<int, 4> degrees_90_drawing_order{1, 3, 0, 2};
 constexpr std::array<int, 4> degrees_180_drawing_order{3, 1, 2, 0};
@@ -50,6 +46,6 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
 
   std::vector<CubeVertex> vertices = cube_face.blockVertex(position, uvs);
 
-  primitive->push(vertices, QUAD_FACE_INDICES[cube_face.direction],
+  mesh->push(vertices, QUAD_FACE_INDICES[cube_face.direction],
                   render_type);
 }

@@ -284,29 +284,29 @@ src/application.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/application.cpp.s
 .PHONY : src/application.cpp.s
 
-src/gfx/blockOutline.o: src/gfx/blockOutline.cpp.o
-.PHONY : src/gfx/blockOutline.o
+src/gfx/Mesh/mesh.o: src/gfx/Mesh/mesh.cpp.o
+.PHONY : src/gfx/Mesh/mesh.o
 
 # target to build an object file
-src/gfx/blockOutline.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/blockOutline.cpp.o
-.PHONY : src/gfx/blockOutline.cpp.o
+src/gfx/Mesh/mesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/Mesh/mesh.cpp.o
+.PHONY : src/gfx/Mesh/mesh.cpp.o
 
-src/gfx/blockOutline.i: src/gfx/blockOutline.cpp.i
-.PHONY : src/gfx/blockOutline.i
+src/gfx/Mesh/mesh.i: src/gfx/Mesh/mesh.cpp.i
+.PHONY : src/gfx/Mesh/mesh.i
 
 # target to preprocess a source file
-src/gfx/blockOutline.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/blockOutline.cpp.i
-.PHONY : src/gfx/blockOutline.cpp.i
+src/gfx/Mesh/mesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/Mesh/mesh.cpp.i
+.PHONY : src/gfx/Mesh/mesh.cpp.i
 
-src/gfx/blockOutline.s: src/gfx/blockOutline.cpp.s
-.PHONY : src/gfx/blockOutline.s
+src/gfx/Mesh/mesh.s: src/gfx/Mesh/mesh.cpp.s
+.PHONY : src/gfx/Mesh/mesh.s
 
 # target to generate assembly for a file
-src/gfx/blockOutline.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/blockOutline.cpp.s
-.PHONY : src/gfx/blockOutline.cpp.s
+src/gfx/Mesh/mesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/Mesh/mesh.cpp.s
+.PHONY : src/gfx/Mesh/mesh.cpp.s
 
 src/gfx/camera.o: src/gfx/camera.cpp.o
 .PHONY : src/gfx/camera.o
@@ -331,30 +331,6 @@ src/gfx/camera.s: src/gfx/camera.cpp.s
 src/gfx/camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/camera.cpp.s
 .PHONY : src/gfx/camera.cpp.s
-
-src/gfx/primitive.o: src/gfx/primitive.cpp.o
-.PHONY : src/gfx/primitive.o
-
-# target to build an object file
-src/gfx/primitive.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.o
-.PHONY : src/gfx/primitive.cpp.o
-
-src/gfx/primitive.i: src/gfx/primitive.cpp.i
-.PHONY : src/gfx/primitive.i
-
-# target to preprocess a source file
-src/gfx/primitive.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.i
-.PHONY : src/gfx/primitive.cpp.i
-
-src/gfx/primitive.s: src/gfx/primitive.cpp.s
-.PHONY : src/gfx/primitive.s
-
-# target to generate assembly for a file
-src/gfx/primitive.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mynecraft.dir/build.make CMakeFiles/Mynecraft.dir/src/gfx/primitive.cpp.s
-.PHONY : src/gfx/primitive.cpp.s
 
 src/gfx/shader.o: src/gfx/shader.cpp.o
 .PHONY : src/gfx/shader.o
@@ -667,15 +643,12 @@ help:
 	@echo "... src/application.o"
 	@echo "... src/application.i"
 	@echo "... src/application.s"
-	@echo "... src/gfx/blockOutline.o"
-	@echo "... src/gfx/blockOutline.i"
-	@echo "... src/gfx/blockOutline.s"
+	@echo "... src/gfx/Mesh/mesh.o"
+	@echo "... src/gfx/Mesh/mesh.i"
+	@echo "... src/gfx/Mesh/mesh.s"
 	@echo "... src/gfx/camera.o"
 	@echo "... src/gfx/camera.i"
 	@echo "... src/gfx/camera.s"
-	@echo "... src/gfx/primitive.o"
-	@echo "... src/gfx/primitive.i"
-	@echo "... src/gfx/primitive.s"
 	@echo "... src/gfx/shader.o"
 	@echo "... src/gfx/shader.i"
 	@echo "... src/gfx/shader.s"

@@ -6,6 +6,12 @@
     std::cerr << #x << ": " << x << std::endl;                                 \
   } while (0)
 
+#define DEBUG2(x, y)                                                           \
+  do {                                                                         \
+    std::cerr << #x << ": " << x << " | ";                                     \
+    std::cerr << #y << ": " << y << std::endl;                                 \
+  } while (0)
+
 #include <fstream>
 #include <iostream>
 #include <map>

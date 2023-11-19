@@ -7,15 +7,14 @@
 #include "../utils/position.hpp"
 #include "blocks/blocks.hpp"
 #include "chunkmesh.hpp"
-#include <unordered_map>
 
-#define CHUNK_SIZE 8
+#define CHUNK_SIZE 16
 
 struct Chunk {
   Chunk(glm::vec3 position, struct World *world) {
     this->position = position;
     this->world = world;
-    this->mesh = nullptr;
+    this->chunkmesh = nullptr;
     this->blocks = {};
   };
   ~Chunk() {
@@ -26,7 +25,7 @@ struct Chunk {
   int version = 1;
   glm::vec3 position;
 
-  std::unique_ptr<ChunkMesh> mesh;
+  std::unique_ptr<ChunkMesh> chunkmesh;
   struct World *world;
   std::unordered_map<glm::ivec3, Block *> blocks{};
   std::map<Direction, std::optional<Chunk *>> neighborChunk{};

@@ -2,6 +2,7 @@
 #define CHUNKMESH_H
 
 #include "../common.hpp"
+#include "../gfx/Mesh/mesh.hpp"
 #include "../gfx/gfx.hpp"
 #include "../gfx/primitive.hpp"
 #include "../state.hpp"
@@ -11,22 +12,26 @@ class ChunkMesh {
   using VertexType = CubeVertex;
 
 private:
-  std::unique_ptr<Primitive<VertexType>> primitive;
+  std::unique_ptr<Mesh<VertexType>> mesh;
 
 public:
   ChunkMesh() {
-    primitive = std::make_unique<Primitive<VertexType>>();
+    mesh = std::make_unique<Mesh<VertexType>>();
   };
   ~ChunkMesh() {
   }
 
-  void draw(glm::vec3 position, struct Texture *texture);
   void add_face(CubeFace cube_face, glm::ivec3 position,
                 glm::vec2 texture_offset, RenderType render_type,
                 TextureRotation texture_rotations);
+
+  void draw(glm::vec3 position, struct Texture *texture) {
+    mesh->draw(position, state.renderer->shaders[Shaders::BLOCK], *texture);
+  }
+
   void setup() {
-    this->primitive->prepare();
-  };
+    mesh->addVertexBuffer({positionAttrib, normalAttrib, uvAttrib});
+  }
 };
 
 #endif

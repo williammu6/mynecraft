@@ -49,31 +49,33 @@ bool shouldDrawBlockFace(Chunk *chunk, Direction direction,
 }
 
 void Chunk::render() {
-  this->mesh->draw((glm::vec3)this->position * (float)CHUNK_SIZE,
+  this->chunkmesh->draw((glm::vec3)this->position * (float)CHUNK_SIZE,
                    &state.renderer->textures[TextureID::ATLAS]);
 }
 
 void Chunk::prepareRender() {
-  this->mesh = std::make_unique<ChunkMesh>();
+  this->chunkmesh = std::make_unique<ChunkMesh>();
 
   for (const auto &[blockPosition, block] : blocks) {
     block->rendered = false;
     if (!block->drawable())
       continue;
 
-    // RenderType renderType = block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
+    // RenderType renderType = block->liquid ? RenderType::TRANSPARENT :
+    // RenderType::NORMAL;
     RenderType renderType = RenderType::NORMAL;
 
     for (const auto &cube_face : CUBE_FACES) {
       glm::vec2 textureOffset = block->textureOffset(cube_face.direction);
 
       if (shouldDrawBlockFace(this, cube_face.direction, blockPosition))
-        this->mesh->add_face(CUBE_FACES[cube_face.direction], blockPosition,
+        this->chunkmesh->add_face(CUBE_FACES[cube_face.direction], blockPosition,
                              textureOffset, renderType, block->rotation);
       block->rendered = true;
     }
   }
-  this->mesh->setup();
+
+  this->chunkmesh->setup();
 }
 
 std::optional<Block *> Chunk::getBlock(const glm::ivec3 blockPosition) {
