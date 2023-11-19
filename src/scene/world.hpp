@@ -35,7 +35,7 @@ public:
   std::vector<Chunk *> chunksNeedUpdate;
 
 private:
-  int nChunks = 1;
+  int nChunks = 12;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 

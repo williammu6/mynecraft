@@ -21,9 +21,7 @@ Application::Application(char **argv) {
   player = std::make_shared<Player>(state.window->p_getWindow(), &state.camera);
   crosshair = new Crosshair(state.windowWidth, state.windowHeight);
   crosshair->prepare();
-
   blockOutline = std::make_unique<BlockOutline>();
-  ;
   blockOutline->setup();
 }
 
@@ -49,7 +47,7 @@ void Application::loop() {
     player->keyboardCallback(deltaTime);
 
     if (currentTime - previousTime >= 1.0) {
-      // DEBUG(frames);
+      DEBUG(frames);
       previousTime = currentTime;
       frames = 0;
     }

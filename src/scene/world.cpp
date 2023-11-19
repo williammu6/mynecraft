@@ -32,9 +32,10 @@ void World::deleteFarChunks() {
   while (it != chunks.end()) {
     if (isChunkFar(it->first)) {
       delete it->second;
-      chunks.erase(it++);
+      it = chunks.erase(it);
+    } else {
+      ++it;
     }
-    it++;
   }
 }
 
@@ -43,8 +44,6 @@ void World::deleteFarChunks() {
  * so water transparency works correclty
  */
 void World::render() {
-  glm::ivec3 cc = get_current_chunk_position();
-
   std::vector<glm::ivec3> positions;
   for (const auto &[position, _] : chunks)
     positions.push_back(position);
@@ -69,19 +68,14 @@ void World::prepareNewChunks(unsigned int maxThrottle) {
   for (int i = 0; i < chunksNeedUpdate.size(); i++) {
     Chunk *chunk = chunksNeedUpdate[i];
     chunk->update();
-    for (const auto neighborChunk : chunk->neighbors())
-      if (neighborChunk.has_value())
+    for (const auto neighborChunk : chunk->neighbors()) {
+      if (neighborChunk.has_value()) {
         neighborChunk.value()->update();
+      }
+    }
     chunksNeedUpdate.erase(chunksNeedUpdate.begin() + i);
     i--;
   }
-}
-
-void World::newChunkAt(glm::ivec3 chunkPosition) {
-  Chunk *newChunk = createChunk(chunkPosition, this);
-  chunks[chunkPosition] = newChunk;
-  chunksNeedUpdate.push_back(newChunk);
-  version++;
 }
 
 void World::loadAndUnloadChunks() {
@@ -95,6 +89,13 @@ void World::loadAndUnloadChunks() {
       }
     }
   }
+}
+
+void World::newChunkAt(glm::ivec3 chunkPosition) {
+  Chunk *newChunk = createChunk(chunkPosition, this);
+  chunks[chunkPosition] = newChunk;
+  chunksNeedUpdate.push_back(newChunk);
+  version++;
 }
 
 std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {

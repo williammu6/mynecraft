@@ -34,7 +34,7 @@ void Window::update() {
 }
 
 void Window::clear() {
-  glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 }
 
 void Window::prepareRender2d() {
