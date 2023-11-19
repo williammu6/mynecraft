@@ -1,5 +1,5 @@
-#ifndef PRIMITIVE_H
-#define PRIMITIVE_H
+#ifndef CUBE_FACE_H
+#define CUBE_FACE_H
 
 #include "../state.hpp"
 #include "Mesh/vertex.hpp"

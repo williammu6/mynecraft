@@ -3,8 +3,8 @@
 
 #include "../common.hpp"
 #include "../gfx/Mesh/mesh.hpp"
+#include "../gfx/cube_face.hpp"
 #include "../gfx/gfx.hpp"
-#include "../gfx/primitive.hpp"
 #include "../state.hpp"
 #include "blocks/block.hpp"
 

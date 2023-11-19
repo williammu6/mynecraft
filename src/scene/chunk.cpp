@@ -50,7 +50,7 @@ bool shouldDrawBlockFace(Chunk *chunk, Direction direction,
 
 void Chunk::render() {
   this->chunkmesh->draw((glm::vec3)this->position * (float)CHUNK_SIZE,
-                   &state.renderer->textures[TextureID::ATLAS]);
+                        &state.renderer->textures[TextureID::ATLAS]);
 }
 
 void Chunk::prepareRender() {
@@ -69,8 +69,9 @@ void Chunk::prepareRender() {
       glm::vec2 textureOffset = block->textureOffset(cube_face.direction);
 
       if (shouldDrawBlockFace(this, cube_face.direction, blockPosition))
-        this->chunkmesh->add_face(CUBE_FACES[cube_face.direction], blockPosition,
-                             textureOffset, renderType, block->rotation);
+        this->chunkmesh->add_face(CUBE_FACES[cube_face.direction],
+                                  blockPosition, textureOffset, renderType,
+                                  block->rotation);
       block->rendered = true;
     }
   }
