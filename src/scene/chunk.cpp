@@ -61,9 +61,8 @@ void Chunk::prepareRender() {
     if (!block->drawable())
       continue;
 
-    // RenderType renderType = block->liquid ? RenderType::TRANSPARENT :
-    // RenderType::NORMAL;
-    RenderType renderType = RenderType::NORMAL;
+    RenderType renderType =
+        block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
 
     for (const auto &cube_face : CUBE_FACES) {
       glm::vec2 textureOffset = block->textureOffset(cube_face.direction);

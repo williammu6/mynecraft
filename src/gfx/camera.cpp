@@ -39,6 +39,8 @@ void Camera::lookAt(double xpos, double ypos) {
   direction.y = sin(glm::radians(pitch));
   direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
   front = glm::normalize(direction);
+  right = glm::normalize(glm::cross(front, up));
+  horizontalFront = glm::normalize(glm::vec3(front.x, 0, front.z));
 }
 
 void Camera::mouseCallback(GLFWwindow *window, double xpos, double ypos) {

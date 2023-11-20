@@ -12,7 +12,7 @@
 class World {
 public:
   World(int seed) {
-    state.camera.position = glm::vec3(0.0f, 40, 0.0f);
+    state.camera.position = glm::vec3(0.0f, 100, 0.0f);
     generator = std::make_unique<WorldGenerator>(seed);
   }
   ~World() {
@@ -35,7 +35,7 @@ public:
   std::vector<Chunk *> chunksNeedUpdate;
 
 private:
-  int nChunks = 12;
+  int nChunks = 4;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 
