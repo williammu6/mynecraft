@@ -28,24 +28,26 @@ public:
                                  int mods);
 
 private:
-  float _speed = 0.055f;
-  float _reach = 7.5f;
-  bool grounded = false;
+  float speed = 0.035f;
+  float reach = 5.0f;
+  float gravity = -0.10;
+
   struct AABB aabb = {.min = glm::vec3(-0.3f, -1.5f, -0.3f),
                       .max = glm::vec3(0.3, 0.3f, 0.3)};
+  struct Camera *_camera;
+
   GLFWwindow *_window;
   glm::vec3 position;
   std::unordered_map<unsigned int, bool> keyPress;
-  struct Camera *_camera;
   void move(glm::vec3 movement);
   std::vector<glm::vec3> boundingBox{
       {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3},
       {0.3, -1.5, -0.3},  {0.3, -1.5, 0.3},
-
       {-0.3, 0.3, -0.3},  {-0.3, 0.3, 0.3},
       {0.3, 0.3, -0.3},   {0.3, 0.3, 0.3},
   };
 
+  void applyGravity();
   void tryToPlaceBlock(std::optional<Intersection> maybeIntersection);
   void tryToDestroyBlock(std::optional<Intersection> maybeIntersection);
 };

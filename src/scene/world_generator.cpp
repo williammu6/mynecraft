@@ -47,11 +47,11 @@ void WorldGenerator::generateChunk(Chunk *chunk) {
         continue;
 
       glm::ivec3 position(x, height, z);
-      if (RANDCHANCE(0.01) && strcmp(block->name, "sand") == 0) {
+      if (CHANCE(0.01) && strcmp(block->name, "sand") == 0) {
         createCactus(chunk, position);
       }
 
-      if (RANDCHANCE(0.01) && strcmp(block->name, "grass") == 0) {
+      if (CHANCE(0.02) && strcmp(block->name, "grass") == 0) {
         createTree(chunk, position, TreeType::NORMAL);
       }
     }

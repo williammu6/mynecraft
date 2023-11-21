@@ -10,8 +10,8 @@ Camera::Camera(int width, int height) : width(width), height(height) {
   projection = glm::mat4(1.0f);
   view = glm::mat4(1.0f);
 
-  projection = glm::perspective(glm::radians(50.0f),
-                                (float)width / (float)height, 0.1f, 400.0f);
+  projection = glm::perspective(glm::radians(100.0f),
+                                (float)width / (float)height, 0.1f, 900.0f);
   view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
   glm::mat4 model = glm::mat4(1.0f);

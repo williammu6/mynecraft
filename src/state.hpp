@@ -23,7 +23,7 @@ struct State {
   std::unordered_map<int, bool> pressed;
 
   State() {
-    windowWidth = 1000;
+    windowWidth = 1100;
     windowHeight = 800;
 
     aspectRatio =

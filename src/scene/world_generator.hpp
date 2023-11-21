@@ -5,6 +5,8 @@
 #include "perlin_noise.hpp"
 #include "tree.hpp"
 
+#define CHANCE(chance) ((RAND(0, 100000) / 100000.0) <= chance)
+
 constexpr int MAX_WORLD_HEIGHT = 96;
 constexpr int WATER_LEVEL = 32;
 
