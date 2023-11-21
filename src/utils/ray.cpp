@@ -8,7 +8,7 @@
  probably be optimized
 */
 
-std::optional<Intersection> Ray::intersection(const struct World &world,
+std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
                                               float reach) {
   glm::vec3 rayPosition = origin;
   glm::vec3 faceSide(0);
@@ -18,50 +18,37 @@ std::optional<Intersection> Ray::intersection(const struct World &world,
   glm::vec3 stepSize = direction / 5.0f;
 
   while (glm::distance(origin, rayPosition) <= reach) {
-    std::optional<Block *> maybeBlock =
-        state.world->globalPositionToBlock(rayPosition + halfBlock);
-
     rayPosition.z += stepSize.z;
-    if (maybeBlock.has_value()) {
-      faceSide = direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH];
-      success = true;
-      break;
+    if (colisionCheck(rayPosition + halfBlock)) {
+      return (Intersection){
+          .position = rayPosition + halfBlock,
+          .faceSide = direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH],
+      };
     } else {
       rayPosition.z -= stepSize.z;
     }
 
     rayPosition.x += stepSize.x;
-    maybeBlock = state.world->globalPositionToBlock(rayPosition + halfBlock);
-    if (maybeBlock.has_value()) {
-      faceSide = direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST];
-      success = true;
-      break;
+    if (colisionCheck(rayPosition + halfBlock)) {
+      return (Intersection){
+          .position = rayPosition + halfBlock,
+          .faceSide = direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST],
+      };
     } else {
       rayPosition.x -= stepSize.x;
     }
 
     rayPosition.y += stepSize.y;
-    maybeBlock = state.world->globalPositionToBlock(rayPosition + halfBlock);
-    if (maybeBlock.has_value()) {
-      faceSide = direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN];
-      success = true;
-      break;
+    if (colisionCheck(rayPosition + halfBlock)) {
+      return (Intersection){
+          .position = rayPosition + halfBlock,
+          .faceSide = direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN],
+      };
     } else {
       rayPosition.y -= stepSize.y;
     }
 
     rayPosition += stepSize;
-  }
-
-  if (success) {
-    return (Intersection){
-        .position = rayPosition,
-        .blockPosition =
-            state.world->globalPositionToBlockPosition(rayPosition + halfBlock),
-        .placeBlockChunk = state.world->globalPositionToChunk(
-            rayPosition + (glm::vec3)faceSide + halfBlock),
-        .placeBlockPosition = state.world->globalPositionToBlockPosition(
-            rayPosition + (glm::vec3)faceSide + halfBlock)};
   }
 
   return std::nullopt;

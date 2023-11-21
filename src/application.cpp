@@ -66,8 +66,8 @@ void Application::tick() {
   state.camera.update();
   player->tick();
 
-  if (player->blockIntersection.has_value()) {
-    blockOutline->draw(glm::round(player->blockIntersection.value().position));
+  if (player->lookIntersection.has_value()) {
+    blockOutline->draw(player->lookIntersection.value().position);
   }
 
   // 2d pass

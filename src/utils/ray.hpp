@@ -10,13 +10,11 @@
 
 struct Intersection {
   glm::vec3 position;
-  glm::ivec3 blockPosition;
-  std::optional<Chunk *> placeBlockChunk;
-  glm::ivec3 placeBlockPosition;
+  glm::vec3 faceSide;
 };
 
 struct Ray {
-  std::optional<Intersection> intersection(const struct World &world,
+  std::optional<Intersection> intersection(bool (*colisionCheck)(glm::vec3),
                                            float reach);
 
   glm::vec3 origin;

@@ -14,7 +14,8 @@ public:
   }
 
   void draw(glm::vec3 position) {
-    mesh->drawOpaque(position, state.renderer->shaders[Shaders::BLOCK_OUTLINE]);
+    mesh->drawOpaque(glm::round(position - 0.5f),
+                     state.renderer->shaders[Shaders::BLOCK_OUTLINE]);
   }
 
   void setup() {

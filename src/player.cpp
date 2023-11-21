@@ -39,45 +39,60 @@ void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
   }
 }
 
+bool colisionCheck(glm::vec3 position) {
+  auto maybeBlock = state.world->globalPositionToBlock(position);
+  return maybeBlock.has_value();
+  ;
+}
+
 void Player::tick() {
   Ray ray{.origin = state.camera.position, .direction = state.camera.direction};
-  blockIntersection = ray.intersection(*state.world, _reach);
+  lookIntersection = ray.intersection(colisionCheck, _reach);
 
-  /*
   if (canMove(_camera->down * 0.10f)) {
     move(-_camera->down * 0.10f);
   }
-  */
 
-  // DEBUG_VEC3(position);
   if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
-    // Delete the block
     state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
-    if (blockIntersection.has_value()) {
-      Intersection intersection = blockIntersection.value();
-      auto maybeChunk =
-          state.world->globalPositionToChunk(intersection.position + 0.5f);
-      if (maybeChunk.has_value()) {
-        Chunk *chunk = maybeChunk.value();
-        DEBUG_IVEC3(intersection.blockPosition);
-        maybeChunk.value()->blocks.erase(intersection.blockPosition);
-        state.world->chunksNeedUpdate.push_back(maybeChunk.value());
-      }
-    }
+    tryToDestroyBlock(lookIntersection);
   }
 
   if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
     state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
-    if (blockIntersection.has_value()) {
-      Intersection intersection = blockIntersection.value();
-      if (intersection.placeBlockChunk.has_value()) {
-        intersection.placeBlockChunk.value()->set(
-            intersection.placeBlockPosition, new Cobblestone());
+    tryToPlaceBlock(lookIntersection);
+  }
+}
 
-        state.world->chunksNeedUpdate.push_back(
-            intersection.placeBlockChunk.value());
-      }
-    }
+void Player::tryToPlaceBlock(std::optional<Intersection> maybeIntersection) {
+  if (!maybeIntersection.has_value())
+    return;
+
+  auto intersection = maybeIntersection.value();
+
+  auto maybeChunk = state.world->globalPositionToChunk(intersection.position);
+  auto placePosition =
+      state.world->globalPositionToChunk(intersection.position);
+  if (maybeChunk.has_value()) {
+    maybeChunk.value()->set(state.world->globalPositionToBlockPosition(
+                                intersection.position + intersection.faceSide),
+                            new Cobblestone());
+    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
+  }
+}
+
+void Player::tryToDestroyBlock(std::optional<Intersection> intersection) {
+  if (!intersection.has_value())
+    return;
+  auto intersectionPosition = intersection.value().position;
+
+  auto maybeChunk = state.world->globalPositionToChunk(intersectionPosition);
+
+  if (maybeChunk.has_value()) {
+    auto chunk = maybeChunk.value();
+    maybeChunk.value()->blocks.erase(
+        state.world->globalPositionToBlockPosition(intersectionPosition));
+    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
   }
 }
 
@@ -92,15 +107,12 @@ bool Player::canMove(glm::vec3 movement) {
     Ray ray{.origin = state.camera.position + point,
             .direction = movement * _speed};
 
-    auto blockIntersection = ray.intersection(*state.world, 0.3f);
+    auto intersection = ray.intersection(colisionCheck, 0.3f);
 
-    if (!blockIntersection.has_value())
+    if (!intersection.has_value())
       continue;
 
-    auto maybeBlock = state.world->globalPositionToBlock(
-        blockIntersection.value().blockPosition);
-    if (maybeBlock.has_value()) {
-      // DEBUG_IVEC3(blockPos.value());
+    if (state.world->globalPositionToBlock(intersection.value().position)) {
       return !aabb.intersects(Block::aabb);
     }
   };

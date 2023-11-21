@@ -19,7 +19,7 @@ public:
   };
   ~Player(){};
 
-  std::optional<Intersection> blockIntersection;
+  std::optional<Intersection> lookIntersection;
   bool canMove(glm::vec3 newPosition);
   void tick();
   void keyboardCallback(float deltaTime);
@@ -45,6 +45,9 @@ private:
       {-0.3, 0.3, -0.3},  {-0.3, 0.3, 0.3},
       {0.3, 0.3, -0.3},   {0.3, 0.3, 0.3},
   };
+
+  void tryToPlaceBlock(std::optional<Intersection> maybeIntersection);
+  void tryToDestroyBlock(std::optional<Intersection> maybeIntersection);
 };
 
 #endif
