@@ -7,22 +7,22 @@ void Player::keyboardCallback(float deltaTime) {
   handleActionKey(GLFW_KEY_F,
                   []() { state.wireframeMode = !state.wireframeMode; });
   handleActionKey(GLFW_KEY_ESCAPE, []() { exit(0); });
-  handleMovementKey(GLFW_KEY_W, _camera->horizontalFront);
-  handleMovementKey(GLFW_KEY_S, _camera->horizontalFront * -1.0f);
-  handleMovementKey(GLFW_KEY_A, _camera->right * -1.0f);
-  handleMovementKey(GLFW_KEY_D, _camera->right);
-  handleMovementKey(GLFW_KEY_SPACE, _camera->up + glm::vec3(0, 0.5, 0));
+  handleMovementKey(GLFW_KEY_W, camera->horizontalFront);
+  handleMovementKey(GLFW_KEY_S, camera->horizontalFront * -1.0f);
+  handleMovementKey(GLFW_KEY_A, camera->right * -1.0f);
+  handleMovementKey(GLFW_KEY_D, camera->right);
+  handleMovementKey(GLFW_KEY_SPACE, camera->up + glm::vec3(0, 0.5, 0));
   handleMovementKey(GLFW_KEY_LEFT_SHIFT, glm::vec3(0, -1, 0));
 }
 
 void Player::handleActionKey(int key, const std::function<void()> &action) {
-  if (glfwGetKey(_window, key) == GLFW_PRESS) {
+  if (glfwGetKey(window, key) == GLFW_PRESS) {
     action();
   }
 }
 
 void Player::handleMovementKey(int key, glm::vec3 movement) {
-  if (glfwGetKey(_window, key) == GLFW_PRESS) {
+  if (glfwGetKey(window, key) == GLFW_PRESS) {
     move(movement * speed);
   }
 }
@@ -77,7 +77,7 @@ void Player::tryToDestroyBlock(std::optional<Intersection> intersection) {
 
 void Player::move(glm::vec3 movement) {
   if (canMove(movement)) {
-    _camera->position += movement;
+    camera->position += movement;
   }
 }
 
@@ -86,9 +86,10 @@ bool Player::canMove(glm::vec3 movement) {
     Ray ray{.origin = state.camera.position + point,
             .direction = movement * speed};
 
-    if (auto intersection = ray.intersection(colisionCheck, 0.3f)) {
+    if (auto intersection = ray.intersection(colisionCheck, 0.5f)) {
       if (state.world->globalPositionToBlock(intersection->position)) {
-        return !Player::aabb.intersects(Block::aabb);
+        if (Player::aabb.intersects(Block::aabb))
+          return false;
       }
     }
   };
@@ -97,7 +98,7 @@ bool Player::canMove(glm::vec3 movement) {
 }
 
 void Player::applyGravity() {
-  if (canMove(_camera->up * gravity)) {
-    move(_camera->up * gravity);
+  if (canMove(camera->up * gravity)) {
+    move(camera->up * gravity);
   }
 }

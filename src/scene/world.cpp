@@ -130,12 +130,11 @@ glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 gp) {
 }
 
 std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
-  std::optional<Chunk *> maybeChunk = globalPositionToChunk(globalPosition);
-  if (!maybeChunk.has_value())
-    return std::nullopt;
-
-  glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
-  return maybeChunk.value()->getBlock(blockPosition);
+  if (auto chunk = globalPositionToChunk(globalPosition)) {
+    glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
+    return chunk.value()->getBlock(blockPosition);
+  }
+  return std::nullopt;
 }
 
 void World::placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide,

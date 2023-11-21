@@ -11,7 +11,7 @@
 class Player {
 public:
   Player(GLFWwindow *window, struct Camera *camera)
-      : _window(window), _camera(camera) {
+      : window(window), camera(camera) {
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetMouseButtonCallback(window, mouseClickCallback);
@@ -20,7 +20,6 @@ public:
   ~Player(){};
 
   std::optional<Intersection> lookIntersection;
-  bool canMove(glm::vec3 newPosition);
   void tick();
   void keyboardCallback(float deltaTime);
   static void mousePosCallback(GLFWwindow *window, double xpos, double ypos);
@@ -34,12 +33,11 @@ private:
 
   static constexpr AABB aabb = {.min = glm::vec3(-0.3f, -1.5f, -0.3f),
                                 .max = glm::vec3(0.3, 0.3f, 0.3)};
-  struct Camera *_camera;
+  struct Camera *camera;
+  GLFWwindow *window;
 
-  GLFWwindow *_window;
   glm::vec3 position;
   std::unordered_map<unsigned int, bool> keyPress;
-  void move(glm::vec3 movement);
   std::vector<glm::vec3> boundingBox{
       {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3}, {0.3, -1.5, -0.3},
       {0.3, -1.5, 0.3},   {-0.3, 0.3, -0.3}, {-0.3, 0.3, 0.3},
@@ -47,12 +45,12 @@ private:
   };
 
   void applyGravity();
-  void tryToPlaceBlock(std::optional<Intersection> maybeIntersection);
-  void tryToDestroyBlock(std::optional<Intersection> maybeIntersection);
-
-
-  void handleActionKey(int key, const std::function<void()>& action);
+  bool canMove(glm::vec3 newPosition);
+  void handleActionKey(int key, const std::function<void()> &action);
   void handleMovementKey(int key, glm::vec3 movement);
+  void move(glm::vec3 movement);
+  void tryToDestroyBlock(std::optional<Intersection> maybeIntersection);
+  void tryToPlaceBlock(std::optional<Intersection> maybeIntersection);
 };
 
 #endif
