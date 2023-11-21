@@ -1,8 +1,10 @@
 #include "ray.hpp"
 #include "../scene/blocks/block.hpp"
 
-std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
-                                              float reach) {
+std::optional<ray::Intersection> ray::cast(glm::vec3 origin,
+                                           glm::vec3 direction,
+                                           bool (*collisionCheck)(glm::vec3),
+                                           float reach) {
   glm::vec3 rayPosition = origin;
   glm::vec3 faceSide(0);
 
@@ -12,8 +14,8 @@ std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
 
   while (glm::distance(origin, rayPosition) <= reach) {
     rayPosition.z += stepSize.z;
-    if (colisionCheck(rayPosition + halfBlock)) {
-      return (Intersection){
+    if (collisionCheck(rayPosition + halfBlock)) {
+      return (ray::Intersection){
           .position = rayPosition + halfBlock,
           .faceSide = direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH],
       };
@@ -22,8 +24,8 @@ std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
     }
 
     rayPosition.x += stepSize.x;
-    if (colisionCheck(rayPosition + halfBlock)) {
-      return (Intersection){
+    if (collisionCheck(rayPosition + halfBlock)) {
+      return (ray::Intersection){
           .position = rayPosition + halfBlock,
           .faceSide = direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST],
       };
@@ -32,8 +34,8 @@ std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
     }
 
     rayPosition.y += stepSize.y;
-    if (colisionCheck(rayPosition + halfBlock)) {
-      return (Intersection){
+    if (collisionCheck(rayPosition + halfBlock)) {
+      return (ray::Intersection){
           .position = rayPosition + halfBlock,
           .faceSide = direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN],
       };

@@ -19,7 +19,7 @@ public:
   };
   ~Player(){};
 
-  std::optional<Intersection> lookIntersection;
+  std::optional<ray::Intersection> lookIntersection;
   void tick();
   void keyboardCallback(float deltaTime);
   static void mousePosCallback(GLFWwindow *window, double xpos, double ypos);
@@ -39,14 +39,9 @@ private:
   glm::vec3 position;
   std::unordered_map<unsigned int, bool> keyPress;
   std::vector<glm::vec3> boundingBox{
-      {-0.3, -1.5, -0.3}, 
-      {-0.3, -1.5, 0.3}, 
-      {0.3, -1.5, -0.3},
-      {0.3, -1.5, 0.3},   
-      {-0.3, 0.3, -0.3},
-      {-0.3, 0.3, 0.3},
-      {0.3, 0.3, -0.3},
-      {0.3, 0.3, 0.3},
+      {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3}, {0.3, -1.5, -0.3},
+      {0.3, -1.5, 0.3},   {-0.3, 0.3, -0.3}, {-0.3, 0.3, 0.3},
+      {0.3, 0.3, -0.3},   {0.3, 0.3, 0.3},
   };
 
   void applyGravity();
@@ -54,8 +49,8 @@ private:
   void handleActionKey(int key, const std::function<void()> &action);
   void handleMovementKey(int key, glm::vec3 movement);
   void move(glm::vec3 movement);
-  void tryToDestroyBlock(std::optional<Intersection> maybeIntersection);
-  void tryToPlaceBlock(std::optional<Intersection> maybeIntersection);
+  void tryToDestroyBlock(std::optional<ray::Intersection> maybeIntersection);
+  void tryToPlaceBlock(std::optional<ray::Intersection> maybeIntersection);
 };
 
 #endif

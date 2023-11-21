@@ -32,11 +32,11 @@ void WorldGenerator::generateChunk(Chunk *chunk) {
 
       for (int y = 0; y < height; y++) {
         glm::ivec3 position = {x, y, z};
-        chunk->set(position, block);
+        chunk->set(glm::ivec3(x, y, z), block);
       }
 
       for (int y = height; y < WATER_LEVEL; y++) {
-        glm::ivec3 position = {x, y, z};
+        glm::ivec3 position(x, y, z);
         if (y == height)
           chunk->set(position, new Sand());
         else

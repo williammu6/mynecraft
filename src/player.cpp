@@ -40,14 +40,14 @@ void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
   state.camera.lookAt(xpos, ypos);
 }
 
-bool colisionCheck(glm::vec3 position) {
+bool collisionCheck(glm::vec3 position) {
   auto maybeBlock = state.world->globalPositionToBlock(position);
   return maybeBlock.has_value();
 }
 
 void Player::tick() {
-  Ray ray{.origin = state.camera.position, .direction = state.camera.direction};
-  lookIntersection = ray.intersection(colisionCheck, reach);
+  lookIntersection = ray::cast(state.camera.position, state.camera.direction,
+                               collisionCheck, reach);
 
   applyGravity();
 
@@ -61,7 +61,7 @@ void Player::tick() {
   }
 }
 
-void Player::tryToPlaceBlock(std::optional<Intersection> intersection) {
+void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
   if (!intersection)
     return;
 
@@ -69,7 +69,7 @@ void Player::tryToPlaceBlock(std::optional<Intersection> intersection) {
                             new Sand());
 }
 
-void Player::tryToDestroyBlock(std::optional<Intersection> intersection) {
+void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
   if (!intersection)
     return;
   state.world->deleteBlockAt(intersection->position);
@@ -83,9 +83,8 @@ void Player::move(glm::vec3 movement) {
 
 bool Player::canMove(glm::vec3 movement) {
   for (const auto point : boundingBox) {
-    Ray ray{.origin = state.camera.position + point, .direction = movement};
-
-    if (auto intersection = ray.intersection(colisionCheck, speed)) {
+    if (auto intersection = ray::cast(state.camera.position + point, movement,
+                                      collisionCheck, speed)) {
       if (state.world->globalPositionToBlock(intersection->position)) {
         if (Player::aabb.intersects(Block::aabb)) {
           return false;

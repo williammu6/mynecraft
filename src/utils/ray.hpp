@@ -8,17 +8,15 @@
 #include "glm/glm.hpp"
 #include <optional>
 
+namespace ray {
 struct Intersection {
   glm::vec3 position;
   glm::vec3 faceSide;
 };
 
-struct Ray {
-  std::optional<Intersection> intersection(bool (*colisionCheck)(glm::vec3),
-                                           float reach);
+std::optional<Intersection> cast(glm::vec3 origin, glm::vec3 direction,
+                                    bool (*collisionCheck)(glm::vec3),
+                                    float reach);
 
-  glm::vec3 origin;
-  glm::vec3 direction;
-};
-
+}; // namespace ray
 #endif
