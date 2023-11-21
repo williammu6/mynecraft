@@ -137,3 +137,20 @@ std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
   glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
   return maybeChunk.value()->getBlock(blockPosition);
 }
+
+void World::placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide,
+                         Block *block) {
+  if (auto maybeChunk = state.world->globalPositionToChunk(globalPosition)) {
+    auto &chunk = *maybeChunk;
+    chunk->set(globalPositionToBlockPosition(globalPosition + faceSide), block);
+    chunksNeedUpdate.push_back(maybeChunk.value());
+  }
+}
+
+void World::deleteBlockAt(glm::vec3 globalPosition) {
+  if (auto maybeChunk = globalPositionToChunk(globalPosition)) {
+    auto chunk = *maybeChunk;
+    chunk->blocks.erase(globalPositionToBlockPosition(globalPosition));
+    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
+  }
+}

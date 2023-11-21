@@ -4,28 +4,27 @@
 #include "utils/debug.hpp"
 
 void Player::keyboardCallback(float deltaTime) {
-  if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    exit(0);
-
-  if (glfwGetKey(_window, GLFW_KEY_F) == GLFW_PRESS)
-    state.wireframeMode = !state.wireframeMode;
-  if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
-    move(_camera->horizontalFront * speed);
-  if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
-    move(_camera->horizontalFront * speed * -1.0f);
-  if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
-    move(_camera->right * speed);
-  if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
-    move(_camera->right * speed * -1.0f);
-
-  if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-    move(glm::vec3(0, -1, 0) * speed);
-  if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
-    move(_camera->up + glm::vec3(0, 1, 0) * speed);
+  handleActionKey(GLFW_KEY_F,
+                  []() { state.wireframeMode = !state.wireframeMode; });
+  handleActionKey(GLFW_KEY_ESCAPE, []() { exit(0); });
+  handleMovementKey(GLFW_KEY_W, _camera->horizontalFront);
+  handleMovementKey(GLFW_KEY_S, _camera->horizontalFront * -1.0f);
+  handleMovementKey(GLFW_KEY_A, _camera->right * -1.0f);
+  handleMovementKey(GLFW_KEY_D, _camera->right);
+  handleMovementKey(GLFW_KEY_SPACE, _camera->up + glm::vec3(0, 0.5, 0));
+  handleMovementKey(GLFW_KEY_LEFT_SHIFT, glm::vec3(0, -1, 0));
 }
 
-void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
-  state.camera.lookAt(xpos, ypos);
+void Player::handleActionKey(int key, const std::function<void()> &action) {
+  if (glfwGetKey(_window, key) == GLFW_PRESS) {
+    action();
+  }
+}
+
+void Player::handleMovementKey(int key, glm::vec3 movement) {
+  if (glfwGetKey(_window, key) == GLFW_PRESS) {
+    move(movement * speed);
+  }
 }
 
 void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
@@ -37,10 +36,13 @@ void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
   }
 }
 
+void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
+  state.camera.lookAt(xpos, ypos);
+}
+
 bool colisionCheck(glm::vec3 position) {
   auto maybeBlock = state.world->globalPositionToBlock(position);
   return maybeBlock.has_value();
-  ;
 }
 
 void Player::tick() {
@@ -53,43 +55,24 @@ void Player::tick() {
     state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
     tryToDestroyBlock(lookIntersection);
   }
-
   if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
     state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
     tryToPlaceBlock(lookIntersection);
   }
 }
 
-void Player::tryToPlaceBlock(std::optional<Intersection> maybeIntersection) {
-  if (!maybeIntersection.has_value())
+void Player::tryToPlaceBlock(std::optional<Intersection> intersection) {
+  if (!intersection)
     return;
 
-  auto intersection = maybeIntersection.value();
-
-  auto maybeChunk = state.world->globalPositionToChunk(intersection.position);
-  auto placePosition =
-      state.world->globalPositionToChunk(intersection.position);
-  if (maybeChunk.has_value()) {
-    maybeChunk.value()->set(state.world->globalPositionToBlockPosition(
-                                intersection.position + intersection.faceSide),
-                            new Cobblestone());
-    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
-  }
+  state.world->placeBlockAt(intersection->position, intersection->faceSide,
+                            new Sand());
 }
 
 void Player::tryToDestroyBlock(std::optional<Intersection> intersection) {
-  if (!intersection.has_value())
+  if (!intersection)
     return;
-  auto intersectionPosition = intersection.value().position;
-
-  auto maybeChunk = state.world->globalPositionToChunk(intersectionPosition);
-
-  if (maybeChunk.has_value()) {
-    auto chunk = maybeChunk.value();
-    maybeChunk.value()->blocks.erase(
-        state.world->globalPositionToBlockPosition(intersectionPosition));
-    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
-  }
+  state.world->deleteBlockAt(intersection->position);
 }
 
 void Player::move(glm::vec3 movement) {
@@ -103,13 +86,10 @@ bool Player::canMove(glm::vec3 movement) {
     Ray ray{.origin = state.camera.position + point,
             .direction = movement * speed};
 
-    auto intersection = ray.intersection(colisionCheck, 0.3f);
-
-    if (!intersection.has_value())
-      continue;
-
-    if (state.world->globalPositionToBlock(intersection.value().position)) {
-      return !aabb.intersects(Block::aabb);
+    if (auto intersection = ray.intersection(colisionCheck, 0.3f)) {
+      if (state.world->globalPositionToBlock(intersection->position)) {
+        return !Player::aabb.intersects(Block::aabb);
+      }
     }
   };
 

@@ -19,20 +19,22 @@ public:
   }
 
   int version = 1;
-  std::unique_ptr<WorldGenerator> generator;
-
-  void tick();
-  void render();
-  void newChunkAt(glm::ivec3 chunkPosition);
-
-  bool isChunkFar(glm::ivec3 chunkPosition);
-
-  std::optional<Chunk *> getChunkAt(const glm::ivec3 position);
-  std::optional<Chunk *> globalPositionToChunk(glm::vec3 p);
-  std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition);
 
   glm::ivec3 globalPositionToBlockPosition(glm::vec3 gp);
+  std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition);
+  std::optional<Chunk *> getChunkAt(const glm::ivec3 position);
+  std::optional<Chunk *> globalPositionToChunk(glm::vec3 p);
+  std::unique_ptr<WorldGenerator> generator;
   std::vector<Chunk *> chunksNeedUpdate;
+
+  bool isChunkFar(glm::ivec3 chunkPosition);
+  
+  void deleteBlockAt(glm::vec3 globalPosition);
+  void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block* block);
+
+  void newChunkAt(glm::ivec3 chunkPosition);
+  void render();
+  void tick();
 
 private:
   int nChunks = 4;
