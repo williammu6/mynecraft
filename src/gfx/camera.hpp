@@ -14,6 +14,7 @@ struct Camera {
   glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
   glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::vec3 down = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::vec3 right = glm::vec3(0);
   glm::vec3 direction = glm::vec3(0);
   glm::mat4 projection;

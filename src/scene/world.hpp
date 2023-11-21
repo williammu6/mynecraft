@@ -12,7 +12,7 @@
 class World {
 public:
   World(int seed) {
-    state.camera.position = glm::vec3(0.0f, 100, 0.0f);
+    state.camera.position = glm::vec3(0.0f, 60, 0.0f);
     generator = std::make_unique<WorldGenerator>(seed);
   }
   ~World() {
