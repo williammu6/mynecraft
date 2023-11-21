@@ -83,13 +83,13 @@ void Player::move(glm::vec3 movement) {
 
 bool Player::canMove(glm::vec3 movement) {
   for (const auto point : boundingBox) {
-    Ray ray{.origin = state.camera.position + point,
-            .direction = movement * speed};
+    Ray ray{.origin = state.camera.position + point, .direction = movement};
 
-    if (auto intersection = ray.intersection(colisionCheck, 0.5f)) {
+    if (auto intersection = ray.intersection(colisionCheck, speed)) {
       if (state.world->globalPositionToBlock(intersection->position)) {
-        if (Player::aabb.intersects(Block::aabb))
+        if (Player::aabb.intersects(Block::aabb)) {
           return false;
+        }
       }
     }
   };

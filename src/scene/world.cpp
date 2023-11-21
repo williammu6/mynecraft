@@ -70,10 +70,10 @@ void World::render() {
  */
 void World::prepareNewChunks(unsigned int maxThrottle) {
   for (int i = 0; i < chunksNeedUpdate.size(); i++) {
-    Chunk *chunk = chunksNeedUpdate[i];
+    auto chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {
-      if (neighborChunk.has_value()) {
+      if (neighborChunk) {
         neighborChunk.value()->update();
       }
     }
