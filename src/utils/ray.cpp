@@ -1,13 +1,6 @@
 #include "ray.hpp"
 #include "../scene/blocks/block.hpp"
 
-/**
- TODOS
- not inject the world, instead, inject a method that does the collision
- detection ray should't know about the world although this works, it could
- probably be optimized
-*/
-
 std::optional<Intersection> Ray::intersection(bool (*colisionCheck)(glm::vec3),
                                               float reach) {
   glm::vec3 rayPosition = origin;
