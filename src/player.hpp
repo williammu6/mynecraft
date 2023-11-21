@@ -16,7 +16,6 @@ public:
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetMouseButtonCallback(window, mouseClickCallback);
     glfwSetCursorPosCallback(window, mousePosCallback);
-    _ray = std::make_unique<Ray>();
   };
   ~Player(){};
 
@@ -31,13 +30,13 @@ public:
 private:
   float _speed = 0.055f;
   float _reach = 7.5f;
+  bool grounded = false;
   struct AABB aabb = {.min = glm::vec3(-0.3f, -1.5f, -0.3f),
                       .max = glm::vec3(0.3, 0.3f, 0.3)};
   GLFWwindow *_window;
   glm::vec3 position;
-  struct Camera *_camera;
-  std::unique_ptr<Ray> _ray;
   std::unordered_map<unsigned int, bool> keyPress;
+  struct Camera *_camera;
   void move(glm::vec3 movement);
   std::vector<glm::vec3> boundingBox{
       {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3},

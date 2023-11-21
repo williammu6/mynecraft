@@ -11,26 +11,16 @@
 struct Intersection {
   glm::vec3 position;
   glm::ivec3 blockPosition;
-  std::optional<Chunk *>placeBlockChunk;
+  std::optional<Chunk *> placeBlockChunk;
   glm::ivec3 placeBlockPosition;
 };
 
-class Ray {
-public:
-  Ray(){};
-  ~Ray(){};
-  void setOrigin(glm::vec3 origin) {
-    _origin = origin;
-  };
-  void setDirection(glm::vec3 direction) {
-    _direction = direction;
-  };
+struct Ray {
   std::optional<Intersection> intersection(const struct World &world,
                                            float reach);
 
-private:
-  glm::vec3 _origin;
-  glm::vec3 _direction;
+  glm::vec3 origin;
+  glm::vec3 direction;
 };
 
 #endif

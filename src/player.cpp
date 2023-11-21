@@ -19,9 +19,11 @@ void Player::keyboardCallback(float deltaTime) {
     move(_camera->right * _speed * -1.0f);
 
   if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-    _camera->position -= glm::vec3(0, 1, 0) * _speed;
-  if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
-    move(_camera->up + glm::vec3(0, 5, 0) * _speed);
+    move(glm::vec3(0, -1, 0) * _speed);
+  if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    move(_camera->up * _speed);
+    grounded = false;
+  }
 }
 
 void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
@@ -38,12 +40,14 @@ void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
 }
 
 void Player::tick() {
-  _ray->setOrigin(state.camera.position);
-  _ray->setDirection(state.camera.direction);
-  blockIntersection = _ray->intersection(*state.world, _reach);
+  Ray ray{.origin = state.camera.position, .direction = state.camera.direction};
+  blockIntersection = ray.intersection(*state.world, _reach);
+
+  /*
   if (canMove(_camera->down * 0.10f)) {
     move(-_camera->down * 0.10f);
   }
+  */
 
   // DEBUG_VEC3(position);
   if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
@@ -55,6 +59,7 @@ void Player::tick() {
           state.world->globalPositionToChunk(intersection.position + 0.5f);
       if (maybeChunk.has_value()) {
         Chunk *chunk = maybeChunk.value();
+        DEBUG_IVEC3(intersection.blockPosition);
         maybeChunk.value()->blocks.erase(intersection.blockPosition);
         state.world->chunksNeedUpdate.push_back(maybeChunk.value());
       }
@@ -84,11 +89,18 @@ void Player::move(glm::vec3 movement) {
 
 bool Player::canMove(glm::vec3 movement) {
   for (const auto point : boundingBox) {
-    glm::vec3 newPosition = _camera->position + point + movement;
-    std::optional<Block *> maybeBlock =
-        state.world->globalPositionToBlock(glm::round(newPosition));
+    Ray ray{.origin = state.camera.position + point,
+            .direction = movement * _speed};
+
+    auto blockIntersection = ray.intersection(*state.world, 0.3f);
+
+    if (!blockIntersection.has_value())
+      continue;
+
+    auto maybeBlock = state.world->globalPositionToBlock(
+        blockIntersection.value().blockPosition);
     if (maybeBlock.has_value()) {
-      //return !aabb.intersects(AABB(glm::vec3(-1.0), glm::vec3(1.5)));
+      // DEBUG_IVEC3(blockPos.value());
       return !aabb.intersects(Block::aabb);
     }
   };
