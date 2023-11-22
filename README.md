@@ -30,7 +30,7 @@ _I don't know if it runs on Windows_
 1. Clone the repository
 
 ```sh
-git clone https://github.com/williammu6/mynecraft.git
+git clone https://github.com/williammu6/mynecraft.git --recursive
 cd mynecraft
 ```
 
