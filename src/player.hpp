@@ -29,7 +29,11 @@ public:
 private:
   float speed = 0.035f;
   float reach = 5.0f;
-  float gravity = -0.10;
+  float gravity = -0.075;
+  float jumpHeight = 2.0f;
+  bool jumping = false;
+  bool canJump = false;
+  glm::vec3 jumpStart;
 
   static constexpr AABB aabb = {.min = glm::vec3(-0.3f, -1.5f, -0.3f),
                                 .max = glm::vec3(0.3, 0.3f, 0.3)};
@@ -44,11 +48,11 @@ private:
       {0.3, 0.3, -0.3},   {0.3, 0.3, 0.3},
   };
 
-  void applyGravity();
+  bool applyGravity();
   bool canMove(glm::vec3 newPosition);
   void handleActionKey(int key, const std::function<void()> &action);
   void handleMovementKey(int key, glm::vec3 movement);
-  void move(glm::vec3 movement);
+  bool move(glm::vec3 movement);
   void tryToDestroyBlock(std::optional<ray::Intersection> maybeIntersection);
   void tryToPlaceBlock(std::optional<ray::Intersection> maybeIntersection);
 };

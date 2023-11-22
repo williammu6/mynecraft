@@ -12,14 +12,15 @@
     std::cerr << #y << ": " << y << std::endl;                                 \
   } while (0)
 
+#include <assert.h>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <map>
+#include <memory>
+#include <queue>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <functional>
-#include <memory>
-#include <assert.h>
 
 #endif

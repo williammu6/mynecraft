@@ -47,7 +47,7 @@ void Application::loop() {
     player->keyboardCallback(deltaTime);
 
     if (currentTime - previousTime >= 1.0) {
-      // DEBUG(frames);
+      DEBUG(frames);
       previousTime = currentTime;
       frames = 0;
     }

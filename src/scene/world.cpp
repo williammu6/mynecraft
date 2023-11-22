@@ -5,10 +5,10 @@
 #include "glm/common.hpp"
 
 void World::tick() {
-  deleteFarChunks();
   loadAndUnloadChunks();
   prepareNewChunks(1);
   render();
+  deleteFarChunks();
 }
 
 glm::ivec3 get_current_chunk_position() {
@@ -24,7 +24,7 @@ glm::ivec3 get_current_chunk_position() {
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
   glm::ivec3 cc = get_current_chunk_position();
   auto diff = chunkPosition - cc;
-  return std::abs(diff.x) > nChunks || std::abs(diff.z) > nChunks;
+  return std::abs(diff.x) > chunkDistance || std::abs(diff.z) > chunkDistance;
 }
 
 void World::deleteFarChunks() {
@@ -69,7 +69,7 @@ void World::render() {
  * it is important so block faces between chunks aren't rendered
  */
 void World::prepareNewChunks(unsigned int maxThrottle) {
-  for (int i = 0; i < chunksNeedUpdate.size(); i++) {
+  for (int i = 0; i < chunksNeedUpdate.size() && maxThrottle-- >= 0; i++) {
     auto chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {
@@ -83,13 +83,14 @@ void World::prepareNewChunks(unsigned int maxThrottle) {
 }
 
 void World::loadAndUnloadChunks() {
-  glm::ivec3 cc = get_current_chunk_position();
-  for (int x = cc.x - nChunks; x < cc.x + nChunks; x++) {
-    for (int z = cc.z - nChunks; z < cc.z + nChunks; z++) {
+  auto cc = get_current_chunk_position();
+  for (int x = cc.x - chunkDistance / 2; x < cc.x + chunkDistance / 2; x++) {
+    for (int z = cc.z - chunkDistance / 2; z < cc.z + chunkDistance / 2; z++) {
       auto newChunkPosition = glm::ivec3(x, 0, z);
       if (chunks.find(newChunkPosition) == chunks.end()) {
         newChunkAt(newChunkPosition);
-        return;
+        if (chunks.size() >= chunkDistance * chunkDistance)
+          return;
       }
     }
   }
