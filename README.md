@@ -12,6 +12,7 @@ The goal of this project is to learn more about "modern" C++ and OpenGL, while c
 - Player movement
 - Destroying blocks within a certain range from the player
 - Placing blocks
+- Basic lighting
 
 ## Getting Started
 
