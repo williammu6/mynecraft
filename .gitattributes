@@ -1,2 +1,6 @@
 * linguist-vendored
-*.c linguist-vendored=false
+*.cpp linguist-vendored=false
+*.hpp linguist-vendored=false
+*.h linguist-vendored=false
+*.frag linguist-vendored=false
+*.vert linguist-vendored=false
