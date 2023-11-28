@@ -3,7 +3,6 @@
 
 #include "./gfx/cube_face.hpp"
 #include "gfx/camera.hpp"
-#include "physics/aabb.hpp"
 #include "state.hpp"
 #include "utils/debug.hpp"
 #include "utils/ray.hpp"
@@ -35,8 +34,6 @@ private:
   bool canJump = false;
   glm::vec3 jumpStart;
 
-  static constexpr AABB aabb = {.min = glm::vec3(-0.3f, -1.5f, -0.3f),
-                                .max = glm::vec3(0.3, 0.3f, 0.3)};
   struct Camera *camera;
   GLFWwindow *window;
 
@@ -50,9 +47,10 @@ private:
 
   bool applyGravity();
   bool canMove(glm::vec3 newPosition);
+  bool move(glm::vec3 movement);
+
   void handleActionKey(int key, const std::function<void()> &action);
   void handleMovementKey(int key, glm::vec3 movement);
-  bool move(glm::vec3 movement);
   void tryToDestroyBlock(std::optional<ray::Intersection> maybeIntersection);
   void tryToPlaceBlock(std::optional<ray::Intersection> maybeIntersection);
 };

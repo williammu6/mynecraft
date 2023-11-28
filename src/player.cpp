@@ -67,9 +67,7 @@ void Player::tick() {
       jumping = false;
     }
   } else {
-    if (!applyGravity()) {
-      canJump = true;
-    };
+    canJump = !applyGravity();
   }
 
   if (state.pressed[GLFW_KEY_SPACE]) {
@@ -96,27 +94,21 @@ void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
   if (!intersection)
     return;
-  state.world->deleteBlockAt(intersection->position);
-}
 
-bool Player::move(glm::vec3 movement) {
-  if (canMove(movement)) {
-    camera->position += movement;
-    return true;
-  }
-  return false;
+  state.world->deleteBlockAt(intersection->position);
 }
 
 bool Player::canMove(glm::vec3 movement) {
   for (const auto point : boundingBox) {
-    if (auto intersection = ray::cast(state.camera.position + point + movement,
-                                      movement, collisionCheck, speed)) {
-      if (state.world->globalPositionToBlock(intersection->position)) {
-        // if (Player::aabb.intersects(Block::aabb)) {
-        return false;
-      }
+    auto intersection = ray::cast(state.camera.position + point + movement,
+                                  movement, collisionCheck, speed);
+    if (!intersection)
+      continue;
+
+    if (state.world->globalPositionToBlock(intersection->position)) {
+      return false;
     }
-  };
+  }
 
   return true;
 }
@@ -124,6 +116,14 @@ bool Player::canMove(glm::vec3 movement) {
 bool Player::applyGravity() {
   if (canMove(camera->up * gravity)) {
     return move(camera->up * gravity);
+  }
+  return false;
+}
+
+bool Player::move(glm::vec3 movement) {
+  if (canMove(movement)) {
+    camera->position += movement;
+    return true;
   }
   return false;
 }
