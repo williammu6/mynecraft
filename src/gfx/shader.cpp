@@ -83,14 +83,16 @@ void BlockShader::setUniforms(glm::vec3 position) {
   model = glm::translate(state.camera.model, position);
   setUniform("model", model);
   setUniform("view", state.camera.view);
+  setUniform("viewPos", state.camera.position);
   setUniform("projection", state.camera.projection);
 
-  setUniform("light.direction", glm::vec3(-0.2f, 1.0f, 0.3f));
-  // setUniform("light.position", glm::vec3(0, 100, 0));
-  setUniform("light.ambient", glm::vec3(0.3));
-  setUniform("light.diffuse", glm::vec3(0.5f));
-  setUniform("light.specular", glm::vec3(1.0f));
+  setUniform("light.ambient", glm::vec3(0.6));
   setUniform("light.color", glm::vec3(1.0f));
+  setUniform("light.diffuse", glm::vec3(0.5f));
+  setUniform("light.direction", glm::vec3(0.5, -0.5, 0.0));
+  setUniform("light.specular", glm::vec3(1.0f));
+
+  setUniform("cameraPosition", state.camera.position);
 }
 
 void CrosshairShader::setUniforms(glm::vec3 position) {

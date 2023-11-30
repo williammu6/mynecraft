@@ -13,8 +13,6 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-  mat4 mvMatrix = view * model;
-
   TexCoord = aTexCoord;
   FragPos = vec3(model * vec4(aPos, 1.0));
   Normal = mat3(transpose(inverse(model))) * aNormal;

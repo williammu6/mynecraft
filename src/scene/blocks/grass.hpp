@@ -13,7 +13,7 @@ struct Grass : Block {
     case DOWN:
       return glm::vec2(0, 0);
     case TOP:
-      return glm::vec2(1, 1);
+      return glm::vec2(0, 0);
     case WEST:
     case EAST:
       return glm::vec2(1, 0);

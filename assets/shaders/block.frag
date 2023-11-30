@@ -16,14 +16,12 @@ struct Material {
 struct Light {
   vec3 ambient;
   vec3 diffuse;
-  vec3 specular;
-  vec3 position;
   vec3 direction;
-  float constant;
-  float linear;
-  float quadratic;
+  vec3 position;
+  vec3 specular;
 };
 
+uniform vec3 cameraPosition;
 uniform vec3 viewPos;
 uniform Light light;
 uniform Material material;

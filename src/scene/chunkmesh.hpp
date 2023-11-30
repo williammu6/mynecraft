@@ -30,7 +30,8 @@ public:
   }
 
   void setup() {
-    mesh->addVertexBuffer({positionAttrib, normalAttrib, uvAttrib});
+    mesh->addVertexBuffer(
+        {positionAttrib, normalAttrib, uvAttrib, positionAttrib});
   }
 };
 
