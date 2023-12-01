@@ -46,6 +46,5 @@ void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
 
   std::vector<CubeVertex> vertices = cube_face.blockVertex(position, uvs);
 
-  mesh->push(vertices, QUAD_FACE_INDICES[cube_face.direction],
-                  render_type);
+  mesh->push(vertices, QUAD_FACE_INDICES[cube_face.direction], render_type);
 }

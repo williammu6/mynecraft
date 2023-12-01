@@ -12,7 +12,7 @@
 class World {
 public:
   World(int seed) {
-    state.camera.position = glm::vec3(0.0f, 120, 0.0f);
+    state.camera.position = glm::vec3(0.0f, 100, 0.0f);
     generator = std::make_unique<WorldGenerator>(seed);
   }
   ~World() {
@@ -28,11 +28,9 @@ public:
   std::vector<Chunk *> chunksNeedUpdate;
 
   bool isChunkFar(glm::ivec3 chunkPosition);
-
   void deleteBlockAt(glm::vec3 globalPosition);
-  void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block *block);
-
   void newChunkAt(glm::ivec3 chunkPosition);
+  void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block *block);
   void render();
   void tick();
 
@@ -43,7 +41,7 @@ private:
 
   void deleteFarChunks();
   void loadAndUnloadChunks();
-  void prepareNewChunks(unsigned int maxThrottle);
+  void prepareNewChunks(unsigned int maxReloads);
 };
 
 #endif

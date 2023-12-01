@@ -47,7 +47,7 @@ void WorldGenerator::generateChunk(Chunk *chunk) {
         continue;
 
       glm::ivec3 position(x, height, z);
-      if (CHANCE(0.01) && strcmp(block->name, "sand") == 0) {
+      if (CHANCE(0.04) && strcmp(block->name, "sand") == 0) {
         createCactus(chunk, position);
       }
 

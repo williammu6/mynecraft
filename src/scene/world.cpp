@@ -42,7 +42,7 @@ void World::deleteFarChunks() {
 bool compare(const glm::ivec3 &pos1, const glm::ivec3 &pos2) {
   float distance1 = glm::distance((glm::vec3)pos1, state.camera.position);
   float distance2 = glm::distance((glm::vec3)pos2, state.camera.position);
-  return distance1 < distance2;
+  return distance1 > distance2;
 }
 
 /**
@@ -68,8 +68,8 @@ void World::render() {
  * this happens every time a chunk changes or one of its neighbors change
  * it is important so block faces between chunks aren't rendered
  */
-void World::prepareNewChunks(unsigned int maxThrottle) {
-  for (int i = 0; i < chunksNeedUpdate.size() && maxThrottle-- >= 0; i++) {
+void World::prepareNewChunks(unsigned int maxChunkReloads) {
+  for (int i = 0; i < chunksNeedUpdate.size() && maxChunkReloads-- >= 0; i++) {
     auto chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {

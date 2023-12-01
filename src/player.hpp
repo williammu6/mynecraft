@@ -28,8 +28,8 @@ public:
 private:
   float speed = 0.035f;
   float reach = 5.0f;
-  float gravity = -0.075;
-  float jumpHeight = 2.0f;
+  float gravity = -0.065;
+  float jumpHeight = 1.2f;
   bool jumping = false;
   bool canJump = false;
   glm::vec3 jumpStart;

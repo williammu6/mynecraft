@@ -89,7 +89,7 @@ void BlockShader::setUniforms(glm::vec3 position) {
   setUniform("light.ambient", glm::vec3(0.6));
   setUniform("light.color", glm::vec3(1.0f));
   setUniform("light.diffuse", glm::vec3(0.5f));
-  setUniform("light.direction", glm::vec3(0.5, -0.5, 0.0));
+  setUniform("light.direction", glm::vec3(-0.5, 0.5, 0.0));
   setUniform("light.specular", glm::vec3(1.0f));
 
   setUniform("cameraPosition", state.camera.position);
