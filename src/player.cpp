@@ -125,7 +125,6 @@ bool Player::applyGravity() {
 }
 
 bool Player::move(glm::vec3 movement) {
-  DEBUG_VEC3(movement);
   if (canMove(movement)) {
     camera->position += movement;
     return true;
