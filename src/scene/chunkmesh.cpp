@@ -28,23 +28,23 @@ getRotatedTexCoordinates(const std::vector<glm::vec2> texCoords,
   return rotatedTexCoordinates;
 }
 
-void ChunkMesh::add_face(CubeFace cube_face, glm::ivec3 position,
-                         glm::vec2 texture_offset, RenderType render_type,
-                         TextureRotation rotation) {
+void ChunkMesh::addBlockFace(CubeFace cubeFace, glm::ivec3 position,
+                             glm::vec2 textureOffset, RenderType renderType,
+                             TextureRotation rotation) {
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
-  auto face_direction = DIRECTIONS[cube_face.direction];
+  auto faceDirection = DIRECTIONS[cubeFace.direction];
 
-  float minTX = texture.tile_size * texture_offset.x / texture.width;
-  float maxTX = texture.tile_size * (texture_offset.x + 1) / texture.width;
-  float minTY = texture.tile_size * texture_offset.y / texture.height;
-  float maxTY = texture.tile_size * (texture_offset.y + 1) / texture.height;
+  float minTX = texture.tileSize * textureOffset.x / texture.width;
+  float maxTX = texture.tileSize * (textureOffset.x + 1) / texture.width;
+  float minTY = texture.tileSize * textureOffset.y / texture.height;
+  float maxTY = texture.tileSize * (textureOffset.y + 1) / texture.height;
 
   std::vector<glm::vec2> uvs = getRotatedTexCoordinates(
       {{minTX, minTY}, {maxTX, minTY}, {minTX, maxTY}, {maxTX, maxTY}},
       rotation);
 
-  std::vector<CubeVertex> vertices = cube_face.blockVertex(position, uvs);
+  std::vector<CubeVertex> vertices = cubeFace.blockVertex(position, uvs);
 
-  mesh->push(vertices, QUAD_FACE_INDICES[cube_face.direction], render_type);
+  mesh->push(vertices, QUAD_FACE_INDICES[cubeFace.direction], renderType);
 }

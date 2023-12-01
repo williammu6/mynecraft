@@ -9,7 +9,7 @@ enum class TextureID { ATLAS = 0, SUN, CROSSHAIR };
 struct Texture {
   TextureID id;
   GLuint pixels;
-  int tile_size = 16;
+  int tileSize = 16;
   int width;
   int height;
 };

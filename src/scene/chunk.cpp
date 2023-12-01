@@ -68,9 +68,9 @@ void Chunk::reloadMesh() {
       glm::vec2 textureOffset = block->textureOffset(cube_face.direction);
 
       if (shouldDrawBlockFace(this, cube_face.direction, blockPosition))
-        this->chunkmesh->add_face(CUBE_FACES[cube_face.direction],
-                                  blockPosition, textureOffset, renderType,
-                                  block->rotation);
+        this->chunkmesh->addBlockFace(CUBE_FACES[cube_face.direction],
+                                      blockPosition, textureOffset, renderType,
+                                      block->rotation);
       block->rendered = true;
     }
   }

@@ -21,9 +21,9 @@ public:
   ~ChunkMesh() {
   }
 
-  void add_face(CubeFace cube_face, glm::ivec3 position,
-                glm::vec2 texture_offset, RenderType render_type,
-                TextureRotation texture_rotations);
+  void addBlockFace(CubeFace cubeFace, glm::ivec3 position,
+                    glm::vec2 textureOffset, RenderType renderType,
+                    TextureRotation textureRotations);
 
   void draw(glm::vec3 position, struct Texture *texture) {
     mesh->draw(position, state.renderer->shaders[Shaders::BLOCK], *texture);
