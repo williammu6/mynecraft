@@ -46,16 +46,15 @@ void Window::prepareRender2d() {
 
 void Window::prepareRender3d() {
   glEnable(GL_BLEND);
-  glEnable(GL_DEPTH_CLAMP);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
-
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glPolygonMode(GL_FRONT_AND_BACK, state.wireframeMode ? GL_LINE : GL_FILL);
   glDepthFunc(GL_LESS);
-  glCullFace(GL_BACK);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, state.wireframeMode ? GL_LINE : GL_FILL);
+
+  glPolygonOffset(1.0, 1.0);
+  glEnable(GL_POLYGON_OFFSET_FILL);
 }
 
 Window::~Window() {

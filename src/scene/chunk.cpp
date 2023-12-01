@@ -95,7 +95,7 @@ void Chunk::set(glm::ivec3 blockPosition, Block *block) {
     blocks[blockPosition] = block;
 }
 
-Chunk *createChunk(glm::vec3 position, World *world) {
+Chunk *createChunk(glm::ivec3 position, World *world) {
   Chunk *chunk = new Chunk(position, world);
   state.world->generator->generateChunk(chunk);
   return chunk;

@@ -11,7 +11,7 @@ void World::tick() {
   deleteFarChunks();
 }
 
-glm::ivec3 get_current_chunk_position() {
+glm::ivec3 getCurrentChunkPosition() {
   int currX = state.camera.position.x < 0
                   ? state.camera.position.x / CHUNK_SIZE - 1
                   : state.camera.position.x / CHUNK_SIZE;
@@ -22,9 +22,9 @@ glm::ivec3 get_current_chunk_position() {
 }
 
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
-  glm::ivec3 cc = get_current_chunk_position();
-  auto diff = chunkPosition - cc;
-  return std::abs(diff.x) > chunkDistance || std::abs(diff.z) > chunkDistance;
+  glm::ivec3 cc = getCurrentChunkPosition();
+  auto distance = glm::distance((glm::vec3)cc, (glm::vec3)chunkPosition);
+  return distance > chunkDistance;
 }
 
 void World::deleteFarChunks() {
@@ -40,18 +40,20 @@ void World::deleteFarChunks() {
 }
 
 /**
- * renders chunks from furthest to closer
- * so water transparency works correclty
+ * sorting chunks is so that water transparency look correct
+ * renders chunks from back to front
  */
 void World::render() {
   std::vector<glm::ivec3> positions;
   for (const auto &[position, _] : chunks)
     positions.push_back(position);
 
+  glm::vec3 cc = getCurrentChunkPosition();
+
   std::sort(positions.begin(), positions.end(),
             [&](const glm::ivec3 &a, const glm::ivec3 &b) {
-              float d1 = glm::distance((glm::vec3)a, state.camera.position);
-              float d2 = glm::distance((glm::vec3)b, state.camera.position);
+              float d1 = glm::distance((glm::vec3)a, cc);
+              float d2 = glm::distance((glm::vec3)b, cc);
               return d1 > d2;
             });
 
@@ -66,11 +68,13 @@ void World::render() {
  * it is important so block faces between chunks aren't rendered
  */
 void World::prepareNewChunks(unsigned int maxChunkReloads) {
-  for (int i = 0; i < chunksNeedUpdate.size() && maxChunkReloads-- >= 0; i++) {
+  for (int i = chunksNeedUpdate.size() - 1; i >= 0 && maxChunkReloads-- >= 0;
+       --i) {
     auto chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {
       if (neighborChunk) {
+        // TODO: it might be better to put neighborChunk in chunksNeedUpdate
         neighborChunk.value()->update();
       }
     }
@@ -80,7 +84,7 @@ void World::prepareNewChunks(unsigned int maxChunkReloads) {
 }
 
 void World::loadAndUnloadChunks() {
-  auto cc = get_current_chunk_position();
+  auto cc = getCurrentChunkPosition();
   for (int x = cc.x - chunkDistance / 2; x < cc.x + chunkDistance / 2; x++) {
     for (int z = cc.z - chunkDistance / 2; z < cc.z + chunkDistance / 2; z++) {
       auto newChunkPosition = glm::ivec3(x, 0, z);
@@ -113,7 +117,6 @@ std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
       0,
       p.z < 0 ? p.z / CHUNK_SIZE - 1 : p.z / CHUNK_SIZE,
   };
-  chunkPosition.y = 0;
   return getChunkAt(chunkPosition);
 }
 
@@ -137,10 +140,11 @@ std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
 
 void World::placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide,
                          Block *block) {
-  if (auto maybeChunk = state.world->globalPositionToChunk(globalPosition)) {
+  auto placeBlockAt = globalPosition + faceSide;
+  if (auto maybeChunk = state.world->globalPositionToChunk(placeBlockAt)) {
     auto &chunk = *maybeChunk;
-    chunk->set(globalPositionToBlockPosition(globalPosition + faceSide), block);
-    chunksNeedUpdate.push_back(maybeChunk.value());
+    chunk->set(globalPositionToBlockPosition(placeBlockAt), block);
+    chunksNeedUpdate.push_back(chunk);
   }
 }
 
@@ -148,6 +152,6 @@ void World::deleteBlockAt(glm::vec3 globalPosition) {
   if (auto maybeChunk = globalPositionToChunk(globalPosition)) {
     auto chunk = *maybeChunk;
     chunk->blocks.erase(globalPositionToBlockPosition(globalPosition));
-    state.world->chunksNeedUpdate.push_back(maybeChunk.value());
+    state.world->chunksNeedUpdate.push_back(chunk);
   }
 }

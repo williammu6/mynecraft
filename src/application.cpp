@@ -47,7 +47,7 @@ void Application::loop() {
     player->keyboardCallback(deltaTime);
 
     if (currentTime - previousTime >= 1.0) {
-      // DEBUG(frames);
+      DEBUG(frames);
       previousTime = currentTime;
       frames = 0;
     }
@@ -59,6 +59,7 @@ void Application::loop() {
 void Application::tick() {
   state.window->clear();
 
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // 3d pass
   state.window->prepareRender3d();
 

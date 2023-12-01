@@ -68,7 +68,7 @@ void Player::tick() {
       jumping = false;
     }
   } else {
-    canJump = !applyGravity();
+    // canJump = !applyGravity();
   }
 
   if (state.pressed[GLFW_KEY_SPACE]) {
@@ -89,7 +89,7 @@ void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
     return;
 
   state.world->placeBlockAt(intersection->position, intersection->faceSide,
-                            new Glass());
+                            new Grass());
 }
 
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {

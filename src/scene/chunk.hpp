@@ -42,6 +42,6 @@ struct Chunk {
   void updateNeighbors();
 };
 
-Chunk *createChunk(glm::vec3 position, struct World *world);
+Chunk *createChunk(glm::ivec3 position, struct World *world);
 
 #endif

@@ -4,6 +4,7 @@
 #include "perlin_noise.hpp"
 
 void WorldGenerator::generateChunk(Chunk *chunk) {
+  srand(seed);
   Block *block = new Sand();
 
   for (int x = 0; x < CHUNK_SIZE; x++) {

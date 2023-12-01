@@ -5,6 +5,7 @@
 #include "../gfx/gfx.hpp"
 #include "../gfx/shader.hpp"
 #include "../state.hpp"
+#include "../utils/debug.hpp"
 #include "../utils/position.hpp"
 #include "chunk.hpp"
 #include "world_generator.hpp"
@@ -12,7 +13,6 @@
 class World {
 public:
   World(int seed) {
-    state.camera.position = glm::vec3(0.0f, 100, 0.0f);
     generator = std::make_unique<WorldGenerator>(seed);
   }
   ~World() {
@@ -27,6 +27,7 @@ public:
   std::unique_ptr<WorldGenerator> generator;
   std::vector<Chunk *> chunksNeedUpdate;
 
+  int heighestBlockAt(int globalX, int globalZ);
   bool isChunkFar(glm::ivec3 chunkPosition);
   void deleteBlockAt(glm::vec3 globalPosition);
   void newChunkAt(glm::ivec3 chunkPosition);
@@ -35,7 +36,7 @@ public:
   void tick();
 
 private:
-  int chunkDistance = 16;
+  int chunkDistance = 20;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 

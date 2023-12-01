@@ -26,7 +26,11 @@ public:
                     TextureRotation textureRotations);
 
   void draw(glm::vec3 position, struct Texture *texture) {
-    mesh->draw(position, state.renderer->shaders[Shaders::BLOCK], *texture);
+    mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture,
+                   RenderType::NORMAL);
+
+    mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture,
+                   RenderType::TRANSPARENT);
   }
 
   void setup() {

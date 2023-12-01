@@ -100,12 +100,35 @@ public:
         continue;
       ib_map[renderType]->bind();
       // TODO: do this some other way
-      // TODO: this is only here because blocks and water share the same VAO and VBO
-      shader->setUniform("material.opacity", renderType == RenderType::TRANSPARENT ? 0.6f : 1.0f);
+      // TODO: this is only here because blocks and water share the same VAO and
+      // VBO
+      shader->setUniform("material.opacity",
+                         renderType == RenderType::TRANSPARENT ? 0.6f : 1.0f);
       glDrawElements(GL_TRIANGLES, indices_map[renderType].size(),
                      GL_UNSIGNED_INT, (void *)0);
     }
   };
+
+  void drawType(const glm::vec3 &position, Shader *shader,
+                const Texture &texture, RenderType renderType) {
+    shader->use();
+    shader->setUniforms(position);
+    glActiveTexture(GL_TEXTURE + static_cast<int>(texture.id));
+    glBindTexture(GL_TEXTURE_2D, texture.pixels);
+
+    glBindVertexArray(VAO);
+    vb->bind();
+
+    if (indices_map[renderType].size() == 0)
+      return;
+
+    ib_map[renderType]->bind();
+
+    shader->setUniform("material.opacity",
+                       renderType == RenderType::TRANSPARENT ? 0.6f : 1.0f);
+    glDrawElements(GL_TRIANGLES, indices_map[renderType].size(),
+                   GL_UNSIGNED_INT, (void *)0);
+  }
 
   void drawOpaque(const glm::vec3 &position, Shader *shader) {
     RenderType type = RenderType::NORMAL;
