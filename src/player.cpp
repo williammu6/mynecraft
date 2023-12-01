@@ -68,7 +68,7 @@ void Player::tick() {
       jumping = false;
     }
   } else {
-    // canJump = !applyGravity();
+    canJump = !applyGravity();
   }
 
   if (state.pressed[GLFW_KEY_SPACE]) {

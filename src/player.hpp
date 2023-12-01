@@ -26,7 +26,7 @@ public:
                                  int mods);
 
 private:
-  float speed = 1.035f;
+  float speed = 0.035f;
   float reach = 5.0f;
   float gravity = -0.065;
   float jumpHeight = 1.2f;
