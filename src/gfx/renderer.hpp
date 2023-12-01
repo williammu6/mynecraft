@@ -9,8 +9,9 @@ struct Renderer {
   std::map<Shaders, Shader *> shaders;
 
   Renderer() {
-    textures[TextureID::ATLAS] = texture_from_path("assets/textures/atlas.png");
-    textures[TextureID::CROSSHAIR] = texture_from_path("assets/textures/crosshair.png");
+    textures[TextureID::ATLAS] = textureFromPath("assets/textures/atlas.png");
+    textures[TextureID::CROSSHAIR] =
+        textureFromPath("assets/textures/crosshair.png");
 
     shaders[Shaders::CROSSHAIR] = new CrosshairShader();
     shaders[Shaders::BLOCK] = new BlockShader();

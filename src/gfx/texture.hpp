@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../common.hpp"
-#include "gfx.hpp"
 #include "../vendor/stb_image.h"
+#include "gfx.hpp"
 
 enum class TextureID { ATLAS = 0, SUN, CROSSHAIR };
 
@@ -14,4 +14,4 @@ struct Texture {
   int height;
 };
 
-Texture texture_from_path(const char *path);
+Texture textureFromPath(const char *path);

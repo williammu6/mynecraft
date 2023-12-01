@@ -1,46 +1,50 @@
 #include "texture.hpp"
 #include "glad/glad.h"
 
-void load_pixels(const char *path, unsigned char **pixels_out, int *width_out,
-                 int *height_out) {
+typedef struct {
+  unsigned char *pixels;
+  int width;
+  int height;
+} Image;
+
+Image loadPixels(const char *path) {
+  Image image;
+
   int width, height, channels;
 
-  unsigned char *image = stbi_load(path, &width, &height, &channels, 0);
+  image.pixels = stbi_load(path, &width, &height, &channels, 0);
 
-  size_t size = width * height * 4;
+  if (!image.pixels) {
+    fprintf(stderr, "Error loading image at %s\n", path);
+    return image;
+  }
 
-  *pixels_out = (unsigned char *)malloc(size);
-  memcpy(*pixels_out, image, size);
-  *width_out = width;
-  *height_out = height;
+  image.width = width;
+  image.height = height;
 
-  stbi_image_free(image);
+  return image;
 }
 
-Texture from_pixels(unsigned char *pixels, int width, int height) {
-  struct Texture tex = {.width = width, .height = height};
-  glGenTextures(1, &tex.pixels);
-  glBindTexture(GL_TEXTURE_2D, tex.pixels);
+Texture textureFromPixels(const Image *image) {
+  struct Texture texture = {.width = image->width, .height = image->height};
+
+  glGenTextures(1, &texture.pixels);
+  glBindTexture(GL_TEXTURE_2D, texture.pixels);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA,
-               GL_UNSIGNED_BYTE, pixels);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image->width, image->height, 0,
+               GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
   glGenerateMipmap(GL_TEXTURE_2D);
 
-  return tex;
+  return texture;
 }
 
-Texture texture_from_path(const char *path) {
-  unsigned char *pixels;
-
-  int width, height, nrChannels;
-
-  load_pixels(path, &pixels, &width, &height);
-  Texture tex = from_pixels(pixels, width, height);
-  free(pixels);
-
-  return tex;
+Texture textureFromPath(const char *path) {
+  Image image = loadPixels(path);
+  Texture texture = textureFromPixels(&image);
+  free(image.pixels);
+  return texture;
 }

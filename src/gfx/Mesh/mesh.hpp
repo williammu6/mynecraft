@@ -99,7 +99,7 @@ public:
       if (indices_map[renderType].size() == 0)
         continue;
       ib_map[renderType]->bind();
-      // TODO: not do this here!
+      // TODO: do this some other way
       // TODO: this is only here because blocks and water share the same VAO and VBO
       shader->setUniform("material.opacity", renderType == RenderType::TRANSPARENT ? 0.6f : 1.0f);
       glDrawElements(GL_TRIANGLES, indices_map[renderType].size(),
