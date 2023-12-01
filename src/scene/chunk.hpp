@@ -23,6 +23,7 @@ struct Chunk {
 
   int version = 1;
   glm::vec3 position;
+  struct World *world;
 
   std::map<Direction, std::optional<Chunk *>> neighborChunk{};
   std::optional<Block *> getBlock(const glm::ivec3 blockPosition);
@@ -31,16 +32,10 @@ struct Chunk {
   std::unordered_map<glm::ivec3, Block *> blocks{};
   std::vector<std::optional<Chunk *>> neighbors();
 
-  struct World *world;
-
   bool inBounds(glm::ivec3 position);
 
-  void addFaceToMesh(CubeFace cf, glm::vec3 position);
-  void deleteBlockAt(glm::ivec3 position);
-  void prepareBlock(Block &block);
-  void prepareFace(CubeFace cf, Block element);
-  void prepareRender();
   void prepareRenderBorders();
+  void reloadMesh();
   void render();
   void set(glm::ivec3 position, Block *block);
   void update();

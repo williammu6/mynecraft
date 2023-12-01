@@ -53,7 +53,7 @@ void Chunk::render() {
                         &state.renderer->textures[TextureID::ATLAS]);
 }
 
-void Chunk::prepareRender() {
+void Chunk::reloadMesh() {
   this->chunkmesh = std::make_unique<ChunkMesh>();
 
   for (const auto &[blockPosition, block] : blocks) {
@@ -103,7 +103,7 @@ Chunk *createChunk(glm::vec3 position, World *world) {
 
 void Chunk::update() {
   this->updateNeighbors();
-  this->prepareRender();
+  this->reloadMesh();
   this->version = this->world->version;
 }
 

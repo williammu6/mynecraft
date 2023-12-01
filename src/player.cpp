@@ -105,7 +105,9 @@ bool Player::canMove(glm::vec3 movement) {
     if (!intersection)
       continue;
 
-    if (state.world->globalPositionToBlock(intersection->position)) {
+    auto maybeBlock =
+        state.world->globalPositionToBlock(intersection->position);
+    if (maybeBlock.has_value() && !maybeBlock.value()->liquid) {
       return false;
     }
   }
