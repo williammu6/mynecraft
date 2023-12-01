@@ -1,6 +1,7 @@
 #include "player.hpp"
 #include "GLFW/glfw3.h"
 #include "glm/fwd.hpp"
+#include "scene/blocks/glass.hpp"
 #include "utils/debug.hpp"
 
 void Player::keyboardCallback(float deltaTime) {
@@ -88,7 +89,7 @@ void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
     return;
 
   state.world->placeBlockAt(intersection->position, intersection->faceSide,
-                            new Cobblestone());
+                            new Glass());
 }
 
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {

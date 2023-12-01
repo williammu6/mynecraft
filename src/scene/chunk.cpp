@@ -64,11 +64,11 @@ void Chunk::reloadMesh() {
     RenderType renderType =
         block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
 
-    for (const auto &cube_face : CUBE_FACES) {
-      glm::vec2 textureOffset = block->textureOffset(cube_face.direction);
+    for (const auto &cubeFace : CUBE_FACES) {
+      glm::vec2 textureOffset = block->textureOffset(cubeFace.direction);
 
-      if (shouldDrawBlockFace(this, cube_face.direction, blockPosition))
-        this->chunkmesh->addBlockFace(CUBE_FACES[cube_face.direction],
+      if (shouldDrawBlockFace(this, cubeFace.direction, blockPosition))
+        this->chunkmesh->addBlockFace(CUBE_FACES[cubeFace.direction],
                                       blockPosition, textureOffset, renderType,
                                       block->rotation);
       block->rendered = true;

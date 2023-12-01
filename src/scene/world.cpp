@@ -39,12 +39,6 @@ void World::deleteFarChunks() {
   }
 }
 
-bool compare(const glm::ivec3 &pos1, const glm::ivec3 &pos2) {
-  float distance1 = glm::distance((glm::vec3)pos1, state.camera.position);
-  float distance2 = glm::distance((glm::vec3)pos2, state.camera.position);
-  return distance1 > distance2;
-}
-
 /**
  * renders chunks from furthest to closer
  * so water transparency works correclty
@@ -54,9 +48,12 @@ void World::render() {
   for (const auto &[position, _] : chunks)
     positions.push_back(position);
 
-  std::sort(
-      positions.begin(), positions.end(),
-      [&](const glm::ivec3 &a, const glm::ivec3 &b) { return compare(a, b); });
+  std::sort(positions.begin(), positions.end(),
+            [&](const glm::ivec3 &a, const glm::ivec3 &b) {
+              float d1 = glm::distance((glm::vec3)a, state.camera.position);
+              float d2 = glm::distance((glm::vec3)b, state.camera.position);
+              return d1 > d2;
+            });
 
   for (const auto position : positions) {
     chunks[position]->render();

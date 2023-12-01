@@ -3,6 +3,7 @@
 #include "air.hpp"
 #include "cactus.hpp"
 #include "cobblestone.hpp"
+#include "glass.hpp"
 #include "grass.hpp"
 #include "leaves.hpp"
 #include "sand.hpp"
