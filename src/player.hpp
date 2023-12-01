@@ -24,14 +24,14 @@ public:
   static void mousePosCallback(GLFWwindow *window, double xpos, double ypos);
   static void mouseClickCallback(GLFWwindow *window, int button, int action,
                                  int mods);
-
 private:
-  float speed = 0.035f;
+  float speed = 4.0f;
   float reach = 5.0f;
-  float gravity = -0.065;
-  float jumpHeight = 1.2f;
+  float gravity = 6.0f;
+  float jumpHeight = 1.3f;
   bool jumping = false;
   bool canJump = false;
+  glm::vec3 movement;
   glm::vec3 jumpStart;
 
   struct Camera *camera;
@@ -40,8 +40,13 @@ private:
   glm::vec3 position;
   std::unordered_map<unsigned int, bool> keyPress;
   std::vector<glm::vec3> boundingBox{
-      {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3}, {0.3, -1.5, -0.3},
-      {0.3, -1.5, 0.3},   {-0.3, 0.3, -0.3}, {-0.3, 0.3, 0.3},
+      {-0.3, -1.5, -0.3}, {-0.3, -1.5, 0.3},
+      {0.3, -1.5, -0.3},  {0.3, -1.5, 0.3},
+
+      {-0.3, 1.0, -0.3},  {-0.3, 1.0, 0.3},
+      {0.3, 1.0, -0.3},   {0.3, 1.0, 0.3},
+
+      {-0.3, 0.3, -0.3},  {-0.3, 0.3, 0.3},
       {0.3, 0.3, -0.3},   {0.3, 0.3, 0.3},
   };
 

@@ -35,24 +35,27 @@ void Application::run() {
 }
 
 void Application::loop() {
-  int frames = 0;
+  int fps = 0;
   double deltaTime, lastFrame, currentTime;
   double previousTime = glfwGetTime();
 
+  // removed frame rate limit
+  glfwSwapInterval(0);
+
   while (state.running) {
     currentTime = glfwGetTime();
-    frames++;
+    fps++;
     deltaTime = currentTime - lastFrame;
+    state.deltaTime = deltaTime;
     lastFrame = currentTime;
     player->keyboardCallback(deltaTime);
+    this->tick();
 
     if (currentTime - previousTime >= 1.0) {
-      DEBUG(frames);
+      DEBUG(fps);
       previousTime = currentTime;
-      frames = 0;
+      fps = 0;
     }
-
-    this->tick();
   }
 }
 

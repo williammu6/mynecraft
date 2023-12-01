@@ -15,8 +15,8 @@ struct Intersection {
 };
 
 std::optional<Intersection> cast(glm::vec3 origin, glm::vec3 direction,
-                                    bool (*collisionCheck)(glm::vec3),
-                                    float reach);
+                                 std::function<bool(const glm::vec3&)> collision,
+                                 float reach);
 
 }; // namespace ray
 #endif

@@ -13,6 +13,7 @@ struct State {
   bool running = false;
   bool wireframeMode = false;
   float aspectRatio;
+  float deltaTime = 0;
   float tick;
   int frames = 0;
   int windowHeight;

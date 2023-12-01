@@ -12,7 +12,6 @@ void Player::keyboardCallback(float deltaTime) {
   handleMovementKey(GLFW_KEY_S, camera->horizontalFront * -1.0f);
   handleMovementKey(GLFW_KEY_A, camera->right * -1.0f);
   handleMovementKey(GLFW_KEY_D, camera->right);
-  // handleMovementKey(GLFW_KEY_SPACE, camera->up + glm::vec3(0, 2.0, 0));
   handleMovementKey(GLFW_KEY_LEFT_SHIFT, glm::vec3(0, -1, 0));
 
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
@@ -35,7 +34,7 @@ void Player::handleActionKey(int key, const std::function<void()> &action) {
 
 void Player::handleMovementKey(int key, glm::vec3 movement) {
   if (glfwGetKey(window, key) == GLFW_PRESS) {
-    move(movement * speed);
+    move(movement * speed * state.deltaTime);
   }
 }
 
@@ -52,7 +51,7 @@ void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
   state.camera.lookAt(xpos, ypos);
 }
 
-bool collisionCheck(glm::vec3 position) {
+bool collisionCheck(const glm::vec3 &position) {
   auto maybeBlock = state.world->globalPositionToBlock(position);
   return maybeBlock.has_value();
 }
@@ -64,7 +63,7 @@ void Player::tick() {
   if (jumping) {
     const bool midJump =
         glm::length(state.camera.position.y - jumpStart.y) <= jumpHeight;
-    if (!(midJump && move(state.camera.up * speed * 1.5f))) {
+    if (!(midJump && move(state.camera.up * speed * state.deltaTime * 1.2f))) {
       jumping = false;
     }
   } else {
@@ -89,7 +88,7 @@ void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
     return;
 
   state.world->placeBlockAt(intersection->position, intersection->faceSide,
-                            new Grass());
+                            new Glass());
 }
 
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
@@ -100,9 +99,10 @@ void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
 }
 
 bool Player::canMove(glm::vec3 movement) {
+  float playerSpeed = speed * state.deltaTime;
   for (const auto point : boundingBox) {
     auto intersection = ray::cast(state.camera.position + point + movement,
-                                  movement, collisionCheck, speed);
+                                  movement, collisionCheck, playerSpeed);
     if (!intersection)
       continue;
 
@@ -117,13 +117,15 @@ bool Player::canMove(glm::vec3 movement) {
 }
 
 bool Player::applyGravity() {
-  if (canMove(camera->up * gravity)) {
-    return move(camera->up * gravity);
+  auto movement = camera->down * gravity * state.deltaTime;
+  if (canMove(movement)) {
+    return move(movement);
   }
   return false;
 }
 
 bool Player::move(glm::vec3 movement) {
+  DEBUG_VEC3(movement);
   if (canMove(movement)) {
     camera->position += movement;
     return true;
