@@ -63,7 +63,7 @@ void Player::tick() {
   if (jumping) {
     const bool midJump =
         glm::length(state.camera.position.y - jumpStart.y) <= jumpHeight;
-    if (!(midJump && move(state.camera.up * speed * 2.5f))) {
+    if (!(midJump && move(state.camera.up * speed * 1.5f))) {
       jumping = false;
     }
   } else {
