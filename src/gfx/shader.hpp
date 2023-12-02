@@ -4,7 +4,7 @@
 #include "../common.hpp"
 #include "gfx.hpp"
 
-enum class Shaders { BLOCK = 0, CROSSHAIR, RAY, BLOCK_OUTLINE };
+enum class Shaders { BLOCK = 0, CROSSHAIR, RAY, BLOCK_OUTLINE, SKYBOX };
 
 class Shader {
 private:
@@ -82,6 +82,14 @@ public:
   BlockOutlineShader()
       : Shader("assets/shaders/blockOutline.vert",
                "assets/shaders/blockOutline.frag"){};
+
+  void setUniforms(glm::vec3) override;
+};
+
+class SkyboxShader : public Shader {
+public:
+  SkyboxShader()
+      : Shader("assets/shaders/skybox.vert", "assets/shaders/skybox.frag"){};
 
   void setUniforms(glm::vec3) override;
 };

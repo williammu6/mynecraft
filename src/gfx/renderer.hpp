@@ -16,6 +16,7 @@ struct Renderer {
     shaders[Shaders::CROSSHAIR] = new CrosshairShader();
     shaders[Shaders::BLOCK] = new BlockShader();
     shaders[Shaders::BLOCK_OUTLINE] = new BlockOutlineShader();
+    // shaders[Shaders::SKYBOX] = new SkyboxShader();
   }
 };
 

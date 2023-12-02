@@ -15,3 +15,5 @@ struct Texture {
 };
 
 Texture textureFromPath(const char *path);
+Texture
+cubemapTextureFromPath(const std::array<const std::string, 6> textureFaces);
