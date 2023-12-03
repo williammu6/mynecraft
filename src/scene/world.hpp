@@ -36,7 +36,7 @@ public:
   void tick();
 
 private:
-  int chunkDistance = 16;
+  int chunkDistance = 4;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 

@@ -40,7 +40,7 @@ void Application::loop() {
   double previousTime = glfwGetTime();
 
   // removed frame rate limit
-  glfwSwapInterval(0);
+  // glfwSwapInterval(0);
 
   while (state.running) {
     currentTime = glfwGetTime();
