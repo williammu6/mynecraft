@@ -46,7 +46,7 @@ cd build
 3. Build
 ```sh
 cmake .. -B.
-cmake
+make
 ```
 
 ### Running
