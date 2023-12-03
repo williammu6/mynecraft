@@ -30,3 +30,5 @@ target_link_libraries(Mynecraft  OpenGL::GL)
 include(ExternalProject)
 
 find_package(Python COMPONENTS Interpreter Development)
+
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
