@@ -1,9 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "../common.hpp"
-#include "gfx.hpp"
 #include "window.hpp"
+#include <memory>
 
 struct Camera {
   int width, height;

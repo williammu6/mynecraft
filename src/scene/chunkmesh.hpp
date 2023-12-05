@@ -1,11 +1,9 @@
 #ifndef CHUNKMESH_H
 #define CHUNKMESH_H
 
-#include "../common.hpp"
 #include "../gfx/Mesh/mesh.hpp"
 #include "../gfx/cube_face.hpp"
-#include "../gfx/gfx.hpp"
-#include "../state.hpp"
+#include "../gfx/texture.hpp"
 #include "blocks/block.hpp"
 
 class ChunkMesh {
@@ -18,25 +16,12 @@ public:
   ChunkMesh() {
     mesh = std::make_unique<Mesh<VertexType>>();
   };
-  ~ChunkMesh() {
-  }
 
   void addBlockFace(CubeFace cubeFace, glm::ivec3 position,
                     glm::vec2 textureOffset, RenderType renderType,
                     TextureRotation textureRotations);
-
-  void draw(glm::vec3 position, struct Texture *texture) {
-    mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture,
-                   RenderType::NORMAL);
-
-    mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture,
-                   RenderType::TRANSPARENT);
-  }
-
-  void setup() {
-    mesh->addVertexBuffer(
-        {positionAttrib, normalAttrib, uvAttrib, positionAttrib});
-  }
+  void draw(glm::vec3 position, Texture *texture);
+  void setup();
 };
 
 #endif

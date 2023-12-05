@@ -1,17 +1,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "common.hpp"
 #include "gfx/blockOutline.hpp"
-#include "gfx/camera.hpp"
 #include "gfx/crosshair.hpp"
-#include "gfx/renderer.hpp"
-#include "gfx/shader.hpp"
-#include "gfx/texture.hpp"
-#include "gfx/window.hpp"
-#include "scene/world.hpp"
 #include "player.hpp"
-#include "state.hpp"
+#include "scene/world.hpp"
 
 struct Params {
   int seed;
@@ -33,7 +26,7 @@ public:
 
 private:
   struct Params params;
-  struct Crosshair *crosshair;
+  Crosshair *crosshair;
   std::shared_ptr<Player> player;
 };
 

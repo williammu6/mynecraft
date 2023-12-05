@@ -1,13 +1,15 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "../../common.hpp"
 #include "../gfx.hpp"
 #include "../shader.hpp"
 #include "../texture.hpp"
 #include "index_buffer.hpp"
 #include "vertex.hpp"
 #include "vertex_buffer.hpp"
+#include <map>
+#include <memory>
+#include <vector>
 
 enum class RenderType { NORMAL = 0, TRANSPARENT };
 

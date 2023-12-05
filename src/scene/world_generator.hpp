@@ -3,7 +3,8 @@
 
 #include "chunk.hpp"
 #include "perlin_noise.hpp"
-#include "tree.hpp"
+
+struct Chunk;
 
 constexpr int MAX_WORLD_HEIGHT = 96;
 constexpr int WATER_LEVEL = 48;
@@ -20,8 +21,8 @@ struct WorldGenerator {
     perlin = siv::PerlinNoise(seed);
   };
 
-  void createTree(struct Chunk *chunk, glm::ivec3 position, TreeType treeType);
-  void createCactus(struct Chunk *chunk, glm::ivec3 position);
+  void createTree(Chunk *chunk, glm::ivec3 position, TreeType treeType);
+  void createCactus(Chunk *chunk, glm::ivec3 position);
 };
 
 #endif

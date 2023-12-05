@@ -1,8 +1,12 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "../common.hpp"
 #include "gfx.hpp"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <unordered_map>
 
 enum class Shaders { BLOCK = 0, CROSSHAIR, RAY, BLOCK_OUTLINE };
 
@@ -12,13 +16,13 @@ private:
   unsigned int vertex_shader, fragment_shader;
   unsigned int compile(std::string path, GLenum shader_type);
   std::string read_file(std::string path);
-  std::unordered_map<std::string, int> uniform_location_cache;
+  std::unordered_map<std::string, int> uniformLocationCache;
 
   int getUniformLocation(const std::string &name) {
-    if (uniform_location_cache.find(name) != uniform_location_cache.end())
-      return uniform_location_cache[name];
+    if (uniformLocationCache.find(name) != uniformLocationCache.end())
+      return uniformLocationCache[name];
     int location = glGetUniformLocation(program, name.c_str());
-    uniform_location_cache[name] = location;
+    uniformLocationCache[name] = location;
     return location;
   }
 

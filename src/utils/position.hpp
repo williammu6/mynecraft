@@ -1,7 +1,8 @@
-#pragma once
+#ifndef POSITION_H
+#define POSITION_H
 
-#include "../common.hpp"
-#include "../gfx/gfx.hpp"
+#include <glm/glm.hpp>
+#include <functional>
 
 namespace std {
 template <> struct hash<glm::ivec3> {
@@ -14,3 +15,5 @@ template <> struct hash<glm::ivec3> {
   }
 };
 } // namespace std
+
+#endif

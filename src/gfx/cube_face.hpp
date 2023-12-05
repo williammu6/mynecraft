@@ -1,8 +1,21 @@
 #ifndef CUBE_FACE_H
 #define CUBE_FACE_H
 
-#include "../state.hpp"
 #include "Mesh/vertex.hpp"
+#include <vector>
+
+enum Direction {
+  TOP = 0,
+  SOUTH,
+  WEST,
+  EAST,
+  NORTH,
+  DOWN,
+};
+
+const glm::ivec3 DIRECTIONS[] = {glm::ivec3(0, 1, 0),  glm::ivec3(0, 0, 1),
+                                 glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0),
+                                 glm::ivec3(0, 0, -1), glm::ivec3(0, -1, 0)};
 
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {
     {-0.5, -0.5, 0.5}, {0.5, -0.5, 0.5}, {-0.5, 0.5, 0.5}, {0.5, 0.5, 0.5}};
@@ -31,10 +44,6 @@ inline std::vector<glm::vec3> getVerticesByFaceDirection(enum Direction face) {
     return CUBE_L_R_VERTICES;
   }
 }
-
-const glm::ivec3 DIRECTIONS[] = {glm::ivec3(0, 1, 0),  glm::ivec3(0, 0, 1),
-                                 glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0),
-                                 glm::ivec3(0, 0, -1), glm::ivec3(0, -1, 0)};
 
 struct CubeFace {
   enum Direction direction;

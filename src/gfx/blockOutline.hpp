@@ -1,8 +1,7 @@
 #ifndef BLOCK_OUTLINE_H
 #define BLOCK_OUTLINE_H
 
-#include "../common.hpp"
-#include "../scene/world.hpp"
+#include "../state.hpp"
 #include "Mesh/mesh.hpp"
 
 class BlockOutline {

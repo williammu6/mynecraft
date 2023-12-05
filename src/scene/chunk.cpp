@@ -1,7 +1,7 @@
 #include "chunk.hpp"
+#include "../state.hpp"
 #include "chunkmesh.hpp"
 #include "world.hpp"
-#include "world_generator.hpp"
 
 std::vector<Direction> directions{SOUTH, EAST, WEST, NORTH};
 
@@ -93,12 +93,6 @@ bool Chunk::inBounds(glm::ivec3 p) {
 void Chunk::set(glm::ivec3 blockPosition, Block *block) {
   if (inBounds(blockPosition))
     blocks[blockPosition] = block;
-}
-
-Chunk *createChunk(glm::ivec3 position, World *world) {
-  Chunk *chunk = new Chunk(position, world);
-  state.world->generator->generateChunk(chunk);
-  return chunk;
 }
 
 void Chunk::update() {

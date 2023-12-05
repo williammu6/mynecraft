@@ -1,7 +1,7 @@
 #include "world_generator.hpp"
-#include "../common.hpp"
+#include "../utils/math.hpp"
 #include "blocks/wood.hpp"
-#include "perlin_noise.hpp"
+#include "chunk.hpp"
 
 void WorldGenerator::generateChunk(Chunk *chunk) {
   srand(seed);
@@ -59,7 +59,7 @@ void WorldGenerator::generateChunk(Chunk *chunk) {
   }
 }
 
-void WorldGenerator::createTree(struct Chunk *chunk, glm::ivec3 position,
+void WorldGenerator::createTree(Chunk *chunk, glm::ivec3 position,
                                 TreeType treeType) {
   int treeHeight = RAND(5, 7);
   for (int y = position.y; y < position.y + treeHeight; y++) {
@@ -77,7 +77,7 @@ void WorldGenerator::createTree(struct Chunk *chunk, glm::ivec3 position,
   }
 }
 
-void WorldGenerator::createCactus(struct Chunk *chunk, glm::ivec3 position) {
+void WorldGenerator::createCactus(Chunk *chunk, glm::ivec3 position) {
   for (int cY = 0; cY < RAND(3, 5); cY++) {
     chunk->set(position + glm::ivec3(0, cY, 0), new Cactus());
   }

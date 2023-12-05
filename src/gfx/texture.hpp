@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../common.hpp"
 #include "../vendor/stb_image.h"
 #include "gfx.hpp"
 

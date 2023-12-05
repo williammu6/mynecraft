@@ -1,16 +1,13 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "../common.hpp"
-#include "../gfx/gfx.hpp"
-#include "../gfx/shader.hpp"
-#include "../state.hpp"
-#include "../utils/debug.hpp"
-#include "../utils/position.hpp"
 #include "chunk.hpp"
 #include "world_generator.hpp"
 
-class World {
+struct WorldGenerator;
+struct Chunk;
+
+struct World {
 public:
   World(int seed) {
     generator = std::make_unique<WorldGenerator>(seed);
@@ -30,13 +27,13 @@ public:
   int heighestBlockAt(int globalX, int globalZ);
   bool isChunkFar(glm::ivec3 chunkPosition);
   void deleteBlockAt(glm::vec3 globalPosition);
-  void newChunkAt(glm::ivec3 chunkPosition);
+  void newChunkAt(glm::vec3 chunkPosition);
   void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block *block);
   void render();
   void tick();
 
 private:
-  int chunkDistance = 4;
+  int chunkDistance = 18;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 

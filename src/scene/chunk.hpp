@@ -1,12 +1,10 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
-#include "../common.hpp"
-#include "../state.hpp"
-#include "../utils/math.hpp"
 #include "../utils/position.hpp"
 #include "blocks/blocks.hpp"
 #include "chunkmesh.hpp"
+#include "world.hpp"
 
 #define CHUNK_SIZE 16
 
@@ -33,7 +31,6 @@ struct Chunk {
   std::vector<std::optional<Chunk *>> neighbors();
 
   bool inBounds(glm::ivec3 position);
-
   void prepareRenderBorders();
   void reloadMesh();
   void render();
@@ -41,7 +38,5 @@ struct Chunk {
   void update();
   void updateNeighbors();
 };
-
-Chunk *createChunk(glm::ivec3 position, struct World *world);
 
 #endif

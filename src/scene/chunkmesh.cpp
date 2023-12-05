@@ -1,4 +1,7 @@
 #include "chunkmesh.hpp"
+#include "../gfx/Mesh/mesh.hpp"
+#include "../state.hpp"
+#include <array>
 
 constexpr std::array<int, 4> degrees_0_drawing_order = {0, 1, 2, 3};
 constexpr std::array<int, 4> degrees_90_drawing_order{1, 3, 0, 2};
@@ -33,8 +36,6 @@ void ChunkMesh::addBlockFace(CubeFace cubeFace, glm::ivec3 position,
                              TextureRotation rotation) {
   Texture texture = state.renderer->textures[TextureID::ATLAS];
 
-  auto faceDirection = DIRECTIONS[cubeFace.direction];
-
   float minTX = texture.tileSize * textureOffset.x / texture.width;
   float maxTX = texture.tileSize * (textureOffset.x + 1) / texture.width;
   float minTY = texture.tileSize * textureOffset.y / texture.height;
@@ -47,4 +48,16 @@ void ChunkMesh::addBlockFace(CubeFace cubeFace, glm::ivec3 position,
   std::vector<CubeVertex> vertices = cubeFace.blockVertex(position, uvs);
 
   mesh->push(vertices, QUAD_FACE_INDICES[cubeFace.direction], renderType);
+}
+
+void ChunkMesh::draw(glm::vec3 position, Texture *texture) {
+  mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture,
+                 RenderType::NORMAL);
+
+  mesh->drawType(position, state.renderer->shaders[Shaders::BLOCK], *texture, RenderType::TRANSPARENT);
+}
+
+void ChunkMesh::setup() {
+  mesh->addVertexBuffer(
+      {positionAttrib, normalAttrib, uvAttrib, positionAttrib});
 }

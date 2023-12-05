@@ -1,6 +1,5 @@
 #include "shader.hpp"
 #include "../state.hpp"
-#include "blockOutline.hpp"
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) {
   char infoLog[512];

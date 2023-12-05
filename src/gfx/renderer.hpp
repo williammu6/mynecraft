@@ -3,6 +3,7 @@
 
 #include "shader.hpp"
 #include "texture.hpp"
+#include <map>
 
 struct Renderer {
   std::map<TextureID, Texture> textures;

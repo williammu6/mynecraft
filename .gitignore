@@ -2,7 +2,7 @@
 build
 bin/**
 *psd
-
+.cache
 Makefile
 CMakeCache.txt
 CMakeDoxyfile.in

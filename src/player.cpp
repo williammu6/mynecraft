@@ -1,8 +1,6 @@
 #include "player.hpp"
-#include "GLFW/glfw3.h"
-#include "glm/fwd.hpp"
 #include "scene/blocks/glass.hpp"
-#include "utils/debug.hpp"
+#include "state.hpp"
 
 void Player::keyboardCallback(float deltaTime) {
   handleActionKey(GLFW_KEY_F,

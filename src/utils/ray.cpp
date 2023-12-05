@@ -1,5 +1,4 @@
 #include "ray.hpp"
-#include "../scene/blocks/block.hpp"
 
 std::optional<ray::Intersection>
 ray::cast(glm::vec3 origin, glm::vec3 direction,
@@ -8,9 +7,6 @@ ray::cast(glm::vec3 origin, glm::vec3 direction,
     return std::nullopt;
 
   glm::vec3 rayPosition = origin;
-  glm::vec3 faceSide(0);
-
-  bool success = false;
   float halfBlock = 0.5f;
   glm::vec3 stepSize = direction / 5.0f;
 

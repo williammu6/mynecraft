@@ -1,8 +1,7 @@
 #include "world.hpp"
-#include "../utils/math.hpp"
+#include "../state.hpp"
 #include "blocks/blocks.hpp"
 #include "chunk.hpp"
-#include "glm/common.hpp"
 
 void World::tick() {
   loadAndUnloadChunks();
@@ -97,8 +96,9 @@ void World::loadAndUnloadChunks() {
   }
 }
 
-void World::newChunkAt(glm::ivec3 chunkPosition) {
-  Chunk *newChunk = createChunk(chunkPosition, this);
+void World::newChunkAt(glm::vec3 chunkPosition) {
+  Chunk *newChunk = new Chunk(chunkPosition, this);
+  generator->generateChunk(newChunk);
   chunks[chunkPosition] = newChunk;
   chunksNeedUpdate.push_back(newChunk);
   version++;
@@ -141,7 +141,7 @@ std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
 void World::placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide,
                          Block *block) {
   auto placeBlockAt = globalPosition + faceSide;
-  if (auto maybeChunk = state.world->globalPositionToChunk(placeBlockAt)) {
+  if (auto maybeChunk = globalPositionToChunk(placeBlockAt)) {
     auto &chunk = *maybeChunk;
     chunk->set(globalPositionToBlockPosition(placeBlockAt), block);
     chunksNeedUpdate.push_back(chunk);
@@ -152,6 +152,6 @@ void World::deleteBlockAt(glm::vec3 globalPosition) {
   if (auto maybeChunk = globalPositionToChunk(globalPosition)) {
     auto chunk = *maybeChunk;
     chunk->blocks.erase(globalPositionToBlockPosition(globalPosition));
-    state.world->chunksNeedUpdate.push_back(chunk);
+    chunksNeedUpdate.push_back(chunk);
   }
 }

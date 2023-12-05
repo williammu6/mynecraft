@@ -2,9 +2,12 @@
 #define STATE_H
 
 #include "gfx/camera.hpp"
+#include "gfx/crosshair.hpp"
 #include "gfx/renderer.hpp"
 #include "gfx/window.hpp"
-#include "scene/blocks/block.hpp"
+#include "scene/world.hpp"
+#include <memory>
+#include <unordered_map>
 
 struct State {
   Camera camera;
@@ -21,7 +24,7 @@ struct State {
 
   std::shared_ptr<Window> window;
   std::unordered_map<int, bool> pressed;
-  struct Crosshair *crosshair;
+  Crosshair *crosshair;
   struct World *world;
 
   State() {

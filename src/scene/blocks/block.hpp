@@ -1,8 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "../../gfx/direction.hpp"
-#include "../../gfx/gfx.hpp"
+#include "../../gfx/cube_face.hpp"
 
 enum class TextureRotation { DEGREES_0, DEGREES_90, DEGREES_180, DEGREES_270 };
 

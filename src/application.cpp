@@ -2,12 +2,7 @@
 #include "GLFW/glfw3.h"
 #include "gfx/blockOutline.hpp"
 #include "glad/glad.h"
-#include "glm/ext/quaternion_common.hpp"
-#include "glm/ext/quaternion_geometric.hpp"
-#include "glm/fwd.hpp"
-#include "scene/blocks/cobblestone.hpp"
-#include <cmath>
-#include <iostream>
+#include "utils/debug.hpp"
 
 Params getParams(char **argv) {
   return {.seed = std::atoi(argv[1])};
@@ -40,7 +35,7 @@ void Application::loop() {
   double previousTime = glfwGetTime();
 
   // removed frame rate limit
-  // glfwSwapInterval(0);
+  glfwSwapInterval(0);
 
   while (state.running) {
     currentTime = glfwGetTime();
@@ -49,7 +44,7 @@ void Application::loop() {
     state.deltaTime = deltaTime;
     lastFrame = currentTime;
     player->keyboardCallback(deltaTime);
-    this->tick();
+    tick();
 
     if (currentTime - previousTime >= 1.0) {
       DEBUG(fps);
