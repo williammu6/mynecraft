@@ -4,8 +4,8 @@
 #include "chunk.hpp"
 #include "world_generator.hpp"
 
-struct WorldGenerator;
 struct Chunk;
+struct WorldGenerator;
 
 struct World {
 public:
@@ -14,8 +14,6 @@ public:
   }
   ~World() {
   }
-
-  int version = 1;
 
   glm::ivec3 globalPositionToBlockPosition(glm::vec3 gp);
   std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition);
@@ -33,7 +31,7 @@ public:
   void tick();
 
 private:
-  int chunkDistance = 18;
+  int chunkDistance = 16;
 
   std::unordered_map<glm::ivec3, Chunk *> chunks;
 

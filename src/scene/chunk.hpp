@@ -19,16 +19,15 @@ struct Chunk {
     blocks.clear();
   }
 
-  int version = 1;
   glm::vec3 position;
-  struct World *world;
+  World *world;
 
   std::map<Direction, std::optional<Chunk *>> neighborChunk{};
   std::optional<Block *> getBlock(const glm::ivec3 blockPosition);
   std::optional<Block *> getNeighborBlock(Direction direction, glm::ivec3 pos);
   std::unique_ptr<ChunkMesh> chunkmesh;
   std::unordered_map<glm::ivec3, Block *> blocks{};
-  std::vector<std::optional<Chunk *>> neighbors();
+  std::vector<Chunk *> neighbors();
 
   bool inBounds(glm::ivec3 position);
   void prepareRenderBorders();

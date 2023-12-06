@@ -1,7 +1,7 @@
 #include "application.hpp"
-#include "GLFW/glfw3.h"
-#include "gfx/blockOutline.hpp"
+#include "gfx/block_outline.hpp"
 #include "glad/glad.h"
+#include "state.hpp"
 #include "utils/debug.hpp"
 
 Params getParams(char **argv) {

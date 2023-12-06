@@ -13,19 +13,20 @@ void WorldGenerator::generateChunk(Chunk *chunk) {
     for (int z = 0; z < CHUNK_SIZE; z++) {
       int nZ = (z + 1) + chunk->position.z * CHUNK_SIZE;
 
-      const float roughness = 0.01;
+      const float roughness1 = 0.008;
+      const float roughness2 = 0.01;
       const double octave1 =
-          perlin.octave2D_01(nX * roughness, nZ * roughness, 1);
+          perlin.octave2D_01(nX * roughness1, nZ * roughness1, 2);
       const double octave2 =
-          perlin.octave2D_01(nX * roughness, nZ * roughness, 8);
+          perlin.octave2D_01(nX * roughness2, nZ * roughness2, 8);
 
       int height =
-          glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 2));
+          glm::max(1, (int)((octave1 + octave2) * MAX_WORLD_HEIGHT / 3));
 
       block = new Grass();
       if (height < WATER_LEVEL + 2) {
         block = new Sand();
-      } else if (height < MAX_WORLD_HEIGHT * 2 / 3) {
+      } else if (height < SNOW_LEVEL) {
         block = new Grass();
       } else {
         block = new Snow();

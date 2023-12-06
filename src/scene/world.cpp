@@ -21,8 +21,9 @@ glm::ivec3 getCurrentChunkPosition() {
 }
 
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
-  glm::ivec3 cc = getCurrentChunkPosition();
-  auto distance = glm::distance((glm::vec3)cc, (glm::vec3)chunkPosition);
+  auto currentChunk = getCurrentChunkPosition();
+  auto distance = glm::distance(static_cast<glm::vec3>(currentChunk),
+                                static_cast<glm::vec3>(chunkPosition));
   return distance > chunkDistance;
 }
 
@@ -50,10 +51,9 @@ void World::render() {
   glm::vec3 cc = getCurrentChunkPosition();
 
   std::sort(positions.begin(), positions.end(),
-            [&](const glm::ivec3 &a, const glm::ivec3 &b) {
-              float d1 = glm::distance((glm::vec3)a, cc);
-              float d2 = glm::distance((glm::vec3)b, cc);
-              return d1 > d2;
+            [&](const glm::ivec3 &positionA, const glm::ivec3 &positionB) {
+              return glm::distance(static_cast<glm::vec3>(positionA), cc) >
+                     glm::distance(static_cast<glm::vec3>(positionB), cc);
             });
 
   for (const auto position : positions) {
@@ -72,25 +72,23 @@ void World::prepareNewChunks(unsigned int maxChunkReloads) {
     auto chunk = chunksNeedUpdate[i];
     chunk->update();
     for (const auto neighborChunk : chunk->neighbors()) {
-      if (neighborChunk) {
-        // TODO: it might be better to put neighborChunk in chunksNeedUpdate
-        neighborChunk.value()->update();
-      }
+      neighborChunk->update();
     }
     chunksNeedUpdate.erase(chunksNeedUpdate.begin() + i);
-    i--;
   }
 }
 
 void World::loadAndUnloadChunks() {
   auto cc = getCurrentChunkPosition();
-  for (int x = cc.x - chunkDistance / 2; x < cc.x + chunkDistance / 2; x++) {
-    for (int z = cc.z - chunkDistance / 2; z < cc.z + chunkDistance / 2; z++) {
+  glm::ivec3 start(cc.x - chunkDistance / 2, 0, cc.z - chunkDistance / 2);
+  glm::ivec3 end(cc.x + chunkDistance / 2, 0, cc.z + chunkDistance / 2);
+
+  for (int x = start.x; x < end.x; x++) {
+    for (int z = start.z; z < end.z; z++) {
       auto newChunkPosition = glm::ivec3(x, 0, z);
       if (chunks.find(newChunkPosition) == chunks.end()) {
         newChunkAt(newChunkPosition);
-        if (chunks.size() >= chunkDistance * chunkDistance)
-          return;
+        return;
       }
     }
   }
@@ -101,7 +99,6 @@ void World::newChunkAt(glm::vec3 chunkPosition) {
   generator->generateChunk(newChunk);
   chunks[chunkPosition] = newChunk;
   chunksNeedUpdate.push_back(newChunk);
-  version++;
 }
 
 std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {
@@ -120,14 +117,12 @@ std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
   return getChunkAt(chunkPosition);
 }
 
-glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 gp) {
-  float localX = std::fmodf(glm::floor(gp.x), CHUNK_SIZE);
-  float localZ = std::fmodf(glm::floor(gp.z), CHUNK_SIZE);
-
+glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 globalPosition) {
+  float localX = fmodf(glm::floor(globalPosition.x), CHUNK_SIZE);
+  float localZ = fmodf(glm::floor(globalPosition.z), CHUNK_SIZE);
   localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
   localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
-
-  return glm::ivec3(localX, glm::floor(gp.y), localZ);
+  return glm::ivec3(localX, glm::floor(globalPosition.y), localZ);
 }
 
 std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {

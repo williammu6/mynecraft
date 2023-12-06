@@ -1,7 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "gfx/blockOutline.hpp"
+#include "gfx/block_outline.hpp"
 #include "gfx/crosshair.hpp"
 #include "player.hpp"
 #include "scene/world.hpp"

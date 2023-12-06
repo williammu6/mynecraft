@@ -6,8 +6,9 @@
 
 struct Chunk;
 
-constexpr int MAX_WORLD_HEIGHT = 96;
-constexpr int WATER_LEVEL = 48;
+#define MAX_WORLD_HEIGHT 256
+#define WATER_LEVEL 64
+#define SNOW_LEVEL 130
 
 struct WorldGenerator {
   int seed;

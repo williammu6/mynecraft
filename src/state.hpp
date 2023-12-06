@@ -29,7 +29,7 @@ struct State {
 
   State() {
     windowWidth = 1800;
-    windowHeight = 1200;
+    windowHeight = 1300;
 
     aspectRatio =
         static_cast<float>(windowWidth) / static_cast<float>(windowHeight);

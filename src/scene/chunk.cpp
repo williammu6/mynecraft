@@ -98,7 +98,6 @@ void Chunk::set(glm::ivec3 blockPosition, Block *block) {
 void Chunk::update() {
   this->updateNeighbors();
   this->reloadMesh();
-  this->version = this->world->version;
 }
 
 void Chunk::updateNeighbors() {
@@ -110,13 +109,14 @@ void Chunk::updateNeighbors() {
   }
 }
 
-std::vector<std::optional<Chunk *>> Chunk::neighbors() {
-  std::vector<std::optional<Chunk *>> neighborChunks;
+std::vector<Chunk *> Chunk::neighbors() {
+  std::vector<Chunk *> neighborChunks;
 
   for (Direction dir : directions) {
-    neighborChunks.push_back(
-        this->world->getChunkAt({this->position.x + directionOffset[dir].x, 0,
-                                 this->position.z + directionOffset[dir].z}));
+    if (auto maybeChunk =
+            this->world->getChunkAt(position + directionOffset[dir])) {
+      neighborChunks.push_back(maybeChunk.value());
+    }
   }
 
   return neighborChunks;
