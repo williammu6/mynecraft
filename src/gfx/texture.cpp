@@ -1,5 +1,6 @@
 #include "texture.hpp"
 #include "glad/glad.h"
+#include <array>
 
 typedef struct {
   unsigned char *pixels;
@@ -47,4 +48,20 @@ Texture textureFromPath(const char *path) {
   Texture texture = textureFromPixels(&image);
   free(image.pixels);
   return texture;
+}
+
+Texture cubemapTextureFromPath(const std::array<char *, 6> textureFaces) {
+  int width, height, nrChannels;
+  unsigned char *data;
+  for (unsigned int i = 0; i < textureFaces.size(); i++) {
+    data = stbi_load(textureFaces[i], &width, &height, &nrChannels, 0);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height,
+                 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+  }
+
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);  
 }

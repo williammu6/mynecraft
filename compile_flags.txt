@@ -2,3 +2,4 @@
 -Ilib/glad/include
 -Ilib/glm
 -Ilib/PerlinNoise/include
+-Wc++20-designator

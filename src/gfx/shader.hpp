@@ -2,9 +2,9 @@
 #define SHADER_H
 
 #include "gfx.hpp"
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <fstream>
 #include <string>
 #include <unordered_map>
 
@@ -13,8 +13,8 @@ enum class Shaders { BLOCK = 0, CROSSHAIR, RAY, BLOCK_OUTLINE };
 class Shader {
 private:
   unsigned int program;
-  unsigned int vertex_shader, fragment_shader;
-  unsigned int compile(std::string path, GLenum shader_type);
+  unsigned int vertexShader, fragmentShader;
+  unsigned int compile(std::string path, GLenum shaderType);
   std::string read_file(std::string path);
   std::unordered_map<std::string, int> uniformLocationCache;
 
@@ -66,7 +66,7 @@ public:
 class BlockShader : public Shader {
 public:
   BlockShader()
-      : Shader("assets/shaders/block.vert", "assets/shaders/block.frag"){};
+      : Shader("assets/shaders/block.vs", "assets/shaders/block.fs"){};
 
   void setUniforms(glm::vec3) override;
 };
@@ -74,8 +74,7 @@ public:
 class CrosshairShader : public Shader {
 public:
   CrosshairShader()
-      : Shader("assets/shaders/crosshair.vert",
-               "assets/shaders/crosshair.frag") {
+      : Shader("assets/shaders/crosshair.vs", "assets/shaders/crosshair.fs") {
   }
 
   void setUniforms(glm::vec3) override;
@@ -84,8 +83,8 @@ public:
 class BlockOutlineShader : public Shader {
 public:
   BlockOutlineShader()
-      : Shader("assets/shaders/blockOutline.vert",
-               "assets/shaders/blockOutline.frag"){};
+      : Shader("assets/shaders/block_outline.vs",
+               "assets/shaders/block_outline.fs"){};
 
   void setUniforms(glm::vec3) override;
 };

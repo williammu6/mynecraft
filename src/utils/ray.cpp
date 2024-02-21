@@ -1,5 +1,10 @@
 #include "ray.hpp"
 
+struct AxisInfo {
+  glm::vec3 step;
+  glm::ivec3 faceSide;
+};
+
 std::optional<ray::Intersection>
 ray::cast(glm::vec3 origin, glm::vec3 direction,
           std::function<bool(const glm::vec3 &)> collision, float reach) {
@@ -10,38 +15,25 @@ ray::cast(glm::vec3 origin, glm::vec3 direction,
   float halfBlock = 0.5f;
   glm::vec3 stepSize = direction / 5.0f;
 
-  while (glm::distance(origin, rayPosition) <= reach) {
-    rayPosition.z += stepSize.z;
-    if (collision(rayPosition + halfBlock)) {
-      return (ray::Intersection){
-          .position = rayPosition + halfBlock,
-          .faceSide = direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH],
-      };
-    } else {
-      rayPosition.z -= stepSize.z;
-    }
+  std::vector<AxisInfo> stepAxis{
+      {glm::vec3(0, 0, stepSize.z),
+       direction.z < 0 ? DIRECTIONS[SOUTH] : DIRECTIONS[NORTH]},
+      {glm::vec3(stepSize.x, 0, 0),
+       direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST]},
+      {glm::vec3(0, stepSize.y, 0),
+       direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN]}};
 
-    rayPosition.x += stepSize.x;
-    if (collision(rayPosition + halfBlock)) {
-      return (ray::Intersection){
-          .position = rayPosition + halfBlock,
-          .faceSide = direction.x < 0 ? DIRECTIONS[EAST] : DIRECTIONS[WEST],
-      };
-    } else {
-      rayPosition.x -= stepSize.x;
-    }
+  while (glm::abs(glm::distance(origin, rayPosition)) <= reach) {
+    for (const auto &axisInfo : stepAxis) {
+      rayPosition += axisInfo.step;
 
-    rayPosition.y += stepSize.y;
-    if (collision(rayPosition + halfBlock)) {
-      return (ray::Intersection){
-          .position = rayPosition + halfBlock,
-          .faceSide = direction.y < 0 ? DIRECTIONS[TOP] : DIRECTIONS[DOWN],
-      };
-    } else {
-      rayPosition.y -= stepSize.y;
+      if (collision(rayPosition + halfBlock)) {
+        return (ray::Intersection){
+            rayPosition + halfBlock,
+            axisInfo.faceSide,
+        };
+      }
     }
-
-    rayPosition += stepSize;
   }
 
   return std::nullopt;

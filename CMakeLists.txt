@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(Mynecraft)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -11,9 +11,12 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /O2")
 endif()
 
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++20-designator")
+
 file(GLOB_RECURSE src CONFIGURE_DEPENDS "*src/*.hpp" "src/*.cpp")
 
 add_executable(Mynecraft ${src})
+add_compile_options(-Wc++20-designator)
 
 add_subdirectory("lib/glfw")
 add_subdirectory("lib/glad")

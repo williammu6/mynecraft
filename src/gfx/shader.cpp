@@ -1,18 +1,22 @@
 #include "shader.hpp"
 #include "../state.hpp"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 Shader::Shader(std::string vertex_path, std::string fragment_path) {
   char infoLog[512];
 
-  vertex_shader = compile(vertex_path, GL_VERTEX_SHADER);
-  fragment_shader = compile(fragment_path, GL_FRAGMENT_SHADER);
+  vertexShader = compile(vertex_path, GL_VERTEX_SHADER);
+  fragmentShader = compile(fragment_path, GL_FRAGMENT_SHADER);
 
   program = glCreateProgram();
-  glAttachShader(program, vertex_shader);
-  glAttachShader(program, fragment_shader);
+  glAttachShader(program, vertexShader);
+  glAttachShader(program, fragmentShader);
 
-  glDeleteShader(vertex_shader);
-  glDeleteShader(fragment_shader);
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
 
   glLinkProgram(program);
 

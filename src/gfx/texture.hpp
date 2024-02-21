@@ -14,3 +14,4 @@ struct Texture {
 };
 
 Texture textureFromPath(const char *path);
+Texture cubemapTextureFromPath(const char * path);

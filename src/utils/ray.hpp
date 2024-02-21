@@ -10,7 +10,7 @@ namespace ray {
 struct Intersection {
   glm::vec3 position;
   glm::vec3 faceSide;
-  Direction direction;
+  // Direction direction;
 };
 
 std::optional<Intersection>
