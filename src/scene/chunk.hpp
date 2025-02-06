@@ -30,6 +30,7 @@ struct Chunk {
   std::vector<Chunk *> neighbors();
 
   bool inBounds(glm::ivec3 position);
+  float getLocalLight(glm::ivec3 blockPosition);
   void prepareRenderBorders();
   void reloadMesh();
   void render();

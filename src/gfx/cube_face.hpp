@@ -17,6 +17,10 @@ const glm::ivec3 DIRECTIONS[] = {glm::ivec3(0, 1, 0),  glm::ivec3(0, 0, 1),
                                  glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0),
                                  glm::ivec3(0, 0, -1), glm::ivec3(0, -1, 0)};
 
+const glm::vec3 NORMALS[] = {glm::vec3(0, 1, 0),  glm::vec3(0, 0, 1),
+                             glm::vec3(-1, 0, 0), glm::vec3(1, 0, 0),
+                             glm::vec3(0, 0, -1), glm::vec3(0, 0, 0)};
+
 static std::vector<glm::vec3> CUBE_F_B_VERTICES = {
     {-0.5, -0.5, 0.5}, {0.5, -0.5, 0.5}, {-0.5, 0.5, 0.5}, {0.5, 0.5, 0.5}};
 
@@ -54,14 +58,16 @@ struct CubeFace {
    * returns a std::vector<CubeVertex>, containing Position, Normal, and uv
    */
   std::vector<CubeVertex> blockVertex(glm::vec3 blockPosition,
-                                      const std::vector<glm::vec2> uvs) const {
+                                      const std::vector<glm::vec2> uvs,
+                                      const float localLight) const {
     auto vertices = getVerticesByFaceDirection(direction);
     std::vector<CubeVertex> vertexList;
     for (size_t i = 0; i < 4; i++) {
       vertexList.push_back(
           (CubeVertex){.position = vertices[i] * position + blockPosition,
-                       .normal = DIRECTIONS[direction],
-                       .uv = uvs[i]});
+                       .normal = NORMALS[direction],
+                       .uv = uvs[i],
+                       .light = localLight});
     }
     return vertexList;
   }

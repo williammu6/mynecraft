@@ -1,6 +1,6 @@
 # Mynecraft - A C++ Minecraft "Clone"
 
-![mynecraft](screenshots/mynecraft.png)
+![mynecraft](screenshots/mynecraft2.png)
 
 ## Introduction
 
@@ -24,7 +24,7 @@ To build and run Mynecraft, you need the following
 - CMake (version 3.10 or higher)
 - OpenGL
 
-_I don't know if it runs on Windows_
+_I've only tested it on Mac_
 
 ### Building
 

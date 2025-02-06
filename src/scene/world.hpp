@@ -26,6 +26,9 @@ public:
   bool isChunkFar(glm::ivec3 chunkPosition);
   void deleteBlockAt(glm::vec3 globalPosition);
   void newChunkAt(glm::vec3 chunkPosition);
+
+  std::optional<Block *>
+  getBlockAtGlobalPosition(glm::ivec3 globalBlockPosition);
   void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block *block);
   void render();
   void tick();

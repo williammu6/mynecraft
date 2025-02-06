@@ -9,7 +9,7 @@ struct Camera {
 
   std::unique_ptr<Window> window;
 
-  glm::vec3 position = glm::vec3(0, 150, 0);
+  glm::vec3 position = glm::vec3(0, 90, 0);
   glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
   glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);

@@ -13,7 +13,7 @@ void BlockOutline::setup() {
 
   for (const auto &cubeFace : CUBE_FACES) {
     const std::vector<VertexType> vertices =
-        cubeFace.blockVertex(glm::vec3(0), empty);
+        cubeFace.blockVertex(glm::vec3(0), empty, 1.0f);
 
     mesh->push(vertices, QUAD_FACE_INDICES[cubeFace.direction],
                RenderType::NORMAL);

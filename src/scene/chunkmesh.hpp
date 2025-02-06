@@ -17,8 +17,11 @@ public:
     mesh = std::make_unique<Mesh<VertexType>>();
   };
 
-  void addBlockFace(CubeFace cubeFace, glm::ivec3 position,
-                    glm::vec2 textureOffset, RenderType renderType,
+  void addBlockFace(CubeFace cubeFace,
+                    glm::ivec3 position,
+                    glm::vec2 textureOffset,
+                    RenderType renderType,
+                    float localLight,
                     TextureRotation textureRotations);
   void draw(glm::vec3 position, Texture *texture);
   void setup();

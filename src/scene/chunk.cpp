@@ -1,5 +1,6 @@
 #include "chunk.hpp"
 #include "../state.hpp"
+#include "../utils/debug.hpp"
 #include "chunkmesh.hpp"
 #include "world.hpp"
 
@@ -30,7 +31,8 @@ std::optional<Block *> Chunk::getNeighborBlock(Direction direction,
   return std::nullopt;
 }
 
-bool shouldDrawBlockFace(Chunk *chunk, Direction direction,
+bool shouldDrawBlockFace(Chunk *chunk,
+                         Direction direction,
                          glm::vec3 position) {
   auto maybeNeighborBlock = chunk->getNeighborBlock(direction, position);
   if (!maybeNeighborBlock.has_value())
@@ -64,18 +66,44 @@ void Chunk::reloadMesh() {
     RenderType renderType =
         block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
 
+    // float localLight = -1;
     for (const auto &cubeFace : CUBE_FACES) {
       glm::vec2 textureOffset = block->textureOffset(cubeFace.direction);
 
-      if (shouldDrawBlockFace(this, cubeFace.direction, blockPosition))
+      if (shouldDrawBlockFace(this, cubeFace.direction, blockPosition)) {
+        float localLight = this->getLocalLight(blockPosition);
+
         this->chunkmesh->addBlockFace(CUBE_FACES[cubeFace.direction],
-                                      blockPosition, textureOffset, renderType,
+                                      blockPosition,
+                                      textureOffset,
+                                      renderType,
+                                      localLight,
                                       block->rotation);
+      }
       block->rendered = true;
     }
   }
 
   this->chunkmesh->setup();
+}
+
+float Chunk::getLocalLight(glm::ivec3 blockPosition) {
+  float light = 1.0f;
+
+  for (int y = 1; y < 15; y++) {
+    for (int x = 1; x < y + 1; x++) {
+      if (auto maybeBlock = this->getBlock(glm::ivec3(
+              blockPosition.x + x, blockPosition.y + y, blockPosition.z))) {
+        light -= 0.15;
+
+        if (light < 0.0) {
+          return 0.0f;
+        }
+      }
+    }
+  }
+
+  return light > 0.0f ? light : 0.0f;
 }
 
 std::optional<Block *> Chunk::getBlock(const glm::ivec3 blockPosition) {
@@ -104,7 +132,8 @@ void Chunk::updateNeighbors() {
   this->neighborChunk = {};
   for (Direction dir : directions) {
     this->neighborChunk[dir] =
-        this->world->getChunkAt({this->position.x + directionOffset[dir].x, 0,
+        this->world->getChunkAt({this->position.x + directionOffset[dir].x,
+                                 0,
                                  this->position.z + directionOffset[dir].z});
   }
 }

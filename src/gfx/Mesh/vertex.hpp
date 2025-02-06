@@ -30,8 +30,9 @@ constexpr VertexAttrib uvAttrib = {
 
 struct CubeVertex {
   glm::vec3 position;
-  glm::ivec3 normal;
+  glm::vec3 normal;
   glm::vec2 uv;
+  float light;
 };
 
 struct PlainTextureVertex {

@@ -108,6 +108,16 @@ std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {
   return std::nullopt;
 }
 
+std::optional<Block *>
+World::getBlockAtGlobalPosition(glm::ivec3 globalBlockPosition) {
+  auto maybeChunk = this->globalPositionToChunk(globalBlockPosition);
+  if (maybeChunk.has_value())
+    return maybeChunk.value()->getBlock(
+        glm::ivec3(globalBlockPosition.x % CHUNK_SIZE, globalBlockPosition.y,
+                   globalBlockPosition.z % CHUNK_SIZE));
+  return std::nullopt;
+}
+
 std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
   glm::ivec3 chunkPosition = {
       p.x < 0 ? p.x / CHUNK_SIZE - 1 : p.x / CHUNK_SIZE,
