@@ -1,10 +1,43 @@
 #include "player.hpp"
+#include "GLFW/glfw3.h"
 #include "glm/fwd.hpp"
 #include "scene/blocks/glass.hpp"
 #include "scene/chunk.hpp"
 #include "scene/world_utils.hpp"
 #include "state.hpp"
 #include "utils/debug.hpp"
+
+bool collisionCheck(const glm::vec3 &position) {
+  auto maybeBlock = state.world->globalPositionToBlock(position);
+  return maybeBlock.has_value();
+}
+
+void Player::tick() {
+  lookIntersection = ray::cast(
+      state.camera.position, state.camera.direction, collisionCheck, reach);
+
+  if (jumping) {
+    const bool midJump =
+        glm::length(state.camera.position.y - jumpStart.y) <= jumpHeight;
+    if (!(midJump && move(state.camera.up * speed * state.deltaTime * 1.2f))) {
+      jumping = false;
+    }
+  } else {
+    canJump = !applyGravity();
+  }
+
+  if (state.pressed[GLFW_KEY_SPACE]) {
+    state.pressed[GLFW_KEY_SPACE] = false;
+    jumping = true;
+    jumpStart = state.camera.position;
+  } else if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
+    state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
+    tryToDestroyBlock(lookIntersection);
+  } else if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
+    state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
+    tryToPlaceBlock(lookIntersection);
+  }
+}
 
 void Player::keyboardCallback(float deltaTime) {
   handleActionKey(GLFW_KEY_F,
@@ -14,6 +47,10 @@ void Player::keyboardCallback(float deltaTime) {
   handleMovementKey(GLFW_KEY_S, camera->horizontalFront * -1.0f);
   handleMovementKey(GLFW_KEY_A, camera->right * -1.0f);
   handleMovementKey(GLFW_KEY_D, camera->right);
+  for (int i = 1; i <= 9; ++i) {
+    handleActionKey(GLFW_KEY_1 + (i - 1),
+                    [&]() { this->selectedItemInventoryIdx = i; });
+  }
   handleMovementKey(GLFW_KEY_LEFT_SHIFT, glm::vec3(0, -1, 0));
 
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
@@ -55,38 +92,6 @@ void Player::mousePosCallback(GLFWwindow *_window, double xpos, double ypos) {
   state.camera.lookAt(xpos, ypos);
 }
 
-bool collisionCheck(const glm::vec3 &position) {
-  auto maybeBlock = state.world->globalPositionToBlock(position);
-  return maybeBlock.has_value();
-}
-
-void Player::tick() {
-  lookIntersection = ray::cast(
-      state.camera.position, state.camera.direction, collisionCheck, reach);
-
-  if (jumping) {
-    const bool midJump =
-        glm::length(state.camera.position.y - jumpStart.y) <= jumpHeight;
-    if (!(midJump && move(state.camera.up * speed * state.deltaTime * 1.2f))) {
-      jumping = false;
-    }
-  } else {
-    canJump = !applyGravity();
-  }
-
-  if (state.pressed[GLFW_KEY_SPACE]) {
-    state.pressed[GLFW_KEY_SPACE] = false;
-    jumping = true;
-    jumpStart = state.camera.position;
-  } else if (state.pressed[GLFW_MOUSE_BUTTON_LEFT]) {
-    state.pressed[GLFW_MOUSE_BUTTON_LEFT] = false;
-    tryToDestroyBlock(lookIntersection);
-  } else if (state.pressed[GLFW_MOUSE_BUTTON_RIGHT]) {
-    state.pressed[GLFW_MOUSE_BUTTON_RIGHT] = false;
-    tryToPlaceBlock(lookIntersection);
-  }
-}
-
 bool isBlockIntersectingBoundingBox(const glm::ivec3 &blockMin,
                                     const glm::ivec3 &blockMax,
                                     const glm::vec3 &boxMin,
@@ -121,12 +126,17 @@ void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
             realBlockPositionMax,
             this->position + this->boundingBox[0],
             this->position + this->boundingBox[this->boundingBox.size() - 1])) {
+      DEBUG("Can't place a block there");
       return;
     }
   }
 
-  state.world->placeBlockAt(
-      intersection->position, intersection->faceSide, new Glass());
+  auto maybeSelectedBlock = this->inventory[this->selectedItemInventoryIdx];
+  if (maybeSelectedBlock.has_value()) {
+    state.world->placeBlockAt(intersection->position,
+                              intersection->faceSide,
+                              maybeSelectedBlock.value());
+  }
 }
 
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
@@ -168,15 +178,6 @@ bool Player::move(glm::vec3 movement) {
   if (canMove(movement)) {
     camera->position += movement;
     this->position = camera->position;
-
-    /*state.currentBlockPosition =*/
-    /*    state.world->globalPositionToBlockPosition(this->position);*/
-    /*state.currentChunkPosition =*/
-    /*    state.world->globalPositionToChunk(this->position);*/
-    /*state.currentGlobalBlockPosition =*/
-    /*    state.currentChunkPosition * CHUNK_SIZE +
-     * state.currentBlockPosition;*/
-
     return true;
   }
   return false;

@@ -1,6 +1,7 @@
 #include "block.hpp"
 
 #include "air.hpp"
+#include "block_type.hpp"
 #include "cactus.hpp"
 #include "cobblestone.hpp"
 #include "glass.hpp"
