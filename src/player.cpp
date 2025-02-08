@@ -1,6 +1,10 @@
 #include "player.hpp"
+#include "glm/fwd.hpp"
 #include "scene/blocks/glass.hpp"
+#include "scene/chunk.hpp"
+#include "scene/world_utils.hpp"
 #include "state.hpp"
+#include "utils/debug.hpp"
 
 void Player::keyboardCallback(float deltaTime) {
   handleActionKey(GLFW_KEY_F,
@@ -36,7 +40,9 @@ void Player::handleMovementKey(int key, glm::vec3 movement) {
   }
 }
 
-void Player::mouseClickCallback(GLFWwindow *_window, int button, int action,
+void Player::mouseClickCallback(GLFWwindow *_window,
+                                int button,
+                                int action,
                                 int mods) {
   if (action == GLFW_PRESS) {
     state.pressed[button] = true;
@@ -55,8 +61,8 @@ bool collisionCheck(const glm::vec3 &position) {
 }
 
 void Player::tick() {
-  lookIntersection = ray::cast(state.camera.position, state.camera.direction,
-                               collisionCheck, reach);
+  lookIntersection = ray::cast(
+      state.camera.position, state.camera.direction, collisionCheck, reach);
 
   if (jumping) {
     const bool midJump =
@@ -81,12 +87,46 @@ void Player::tick() {
   }
 }
 
+bool isBlockIntersectingBoundingBox(const glm::ivec3 &blockMin,
+                                    const glm::ivec3 &blockMax,
+                                    const glm::vec3 &boxMin,
+                                    const glm::vec3 &boxMax) {
+
+  DEBUG_IVEC3(blockMin);
+  DEBUG_IVEC3(blockMax);
+  DEBUG_VEC3(boxMin);
+  DEBUG_VEC3(boxMax);
+
+  return (blockMax.x > boxMin.x && blockMin.x < boxMax.x) &&
+         (blockMax.y > boxMin.y && blockMin.y < boxMax.y) &&
+         (blockMax.z > boxMin.z && blockMin.z < boxMax.z);
+}
+
 void Player::tryToPlaceBlock(std::optional<ray::Intersection> intersection) {
   if (!intersection)
     return;
 
-  state.world->placeBlockAt(intersection->position, intersection->faceSide,
-                            new Glass());
+  auto blockPosition = globalPositionToBlockPosition(intersection->position +
+                                                     intersection->faceSide);
+
+  if (auto maybeChunk = state.world->getChunkAt(globalPositionToChunkPosition(
+          intersection->position + intersection->faceSide))) {
+    auto &chunk = *maybeChunk;
+    auto realBlockPositionMin =
+        glm::ivec3(chunk->position) * CHUNK_SIZE + blockPosition;
+    auto realBlockPositionMax = realBlockPositionMin + 1;
+
+    if (isBlockIntersectingBoundingBox(
+            realBlockPositionMin,
+            realBlockPositionMax,
+            this->position + this->boundingBox[0],
+            this->position + this->boundingBox[this->boundingBox.size() - 1])) {
+      return;
+    }
+  }
+
+  state.world->placeBlockAt(
+      intersection->position, intersection->faceSide, new Glass());
 }
 
 void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
@@ -100,7 +140,9 @@ bool Player::canMove(glm::vec3 movement) {
   float playerSpeed = speed * state.deltaTime;
   for (const auto point : boundingBox) {
     auto intersection = ray::cast(state.camera.position + point + movement,
-                                  movement, collisionCheck, playerSpeed);
+                                  movement,
+                                  collisionCheck,
+                                  playerSpeed);
     if (!intersection)
       continue;
 
@@ -125,6 +167,16 @@ bool Player::applyGravity() {
 bool Player::move(glm::vec3 movement) {
   if (canMove(movement)) {
     camera->position += movement;
+    this->position = camera->position;
+
+    /*state.currentBlockPosition =*/
+    /*    state.world->globalPositionToBlockPosition(this->position);*/
+    /*state.currentChunkPosition =*/
+    /*    state.world->globalPositionToChunk(this->position);*/
+    /*state.currentGlobalBlockPosition =*/
+    /*    state.currentChunkPosition * CHUNK_SIZE +
+     * state.currentBlockPosition;*/
+
     return true;
   }
   return false;

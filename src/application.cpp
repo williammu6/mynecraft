@@ -47,7 +47,7 @@ void Application::loop() {
     tick();
 
     if (currentTime - previousTime >= 1.0) {
-      DEBUG(fps);
+      // DEBUG(fps);
       previousTime = currentTime;
       fps = 0;
     }
