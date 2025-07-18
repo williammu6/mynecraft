@@ -66,6 +66,7 @@ void Chunk::reloadMesh() {
     RenderType renderType =
         block->liquid ? RenderType::TRANSPARENT : RenderType::NORMAL;
 
+    // float localLight = -1;
     for (const auto &cubeFace : CUBE_FACES) {
       glm::vec2 textureOffset = block->textureOffset(cubeFace.direction);
 
@@ -89,19 +90,13 @@ void Chunk::reloadMesh() {
 float Chunk::getLocalLight(glm::ivec3 blockPosition) {
   float light = 1.0f;
 
-  for (int y = 1; y < 10; y++) {
+  for (int y = 1; y < 15; y++) {
     for (int x = 1; x < y + 1; x++) {
-      auto block = this->getBlock(glm::ivec3(
-          blockPosition.x + x, blockPosition.y + y, blockPosition.z));
+      if (auto maybeBlock = this->getBlock(glm::ivec3(
+              blockPosition.x + x, blockPosition.y + y, blockPosition.z))) {
+        light -= 0.15;
 
-      if (!block.has_value()) {
-        continue;
-      }
-
-      if (block.value()->solid) {
-        light -= 0.1f;
-
-        if (light < 0.0f) {
+        if (light < 0.0) {
           return 0.0f;
         }
       }

@@ -15,8 +15,10 @@ public:
   ~World() {
   }
 
+  glm::ivec3 globalPositionToBlockPosition(glm::vec3 gp);
   std::optional<Block *> globalPositionToBlock(glm::vec3 globalPosition);
   std::optional<Chunk *> getChunkAt(const glm::ivec3 position);
+  std::optional<Chunk *> globalPositionToChunk(glm::vec3 p);
   std::unique_ptr<WorldGenerator> generator;
   std::vector<Chunk *> chunksNeedUpdate;
 
@@ -25,6 +27,8 @@ public:
   void deleteBlockAt(glm::vec3 globalPosition);
   void newChunkAt(glm::vec3 chunkPosition);
 
+  std::optional<Block *>
+  getBlockAtGlobalPosition(glm::ivec3 globalBlockPosition);
   void placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide, Block *block);
   void render();
   void tick();

@@ -2,7 +2,6 @@
 #include "../state.hpp"
 #include "blocks/blocks.hpp"
 #include "chunk.hpp"
-#include "world_utils.hpp"
 
 void World::tick() {
   loadAndUnloadChunks();
@@ -11,8 +10,18 @@ void World::tick() {
   deleteFarChunks();
 }
 
+glm::ivec3 getCurrentChunkPosition() {
+  int currX = state.camera.position.x < 0
+                  ? state.camera.position.x / CHUNK_SIZE - 1
+                  : state.camera.position.x / CHUNK_SIZE;
+  int currZ = state.camera.position.z < 0
+                  ? state.camera.position.z / CHUNK_SIZE - 1
+                  : state.camera.position.z / CHUNK_SIZE;
+  return glm::ivec3(currX, 0, currZ);
+}
+
 bool World::isChunkFar(glm::ivec3 chunkPosition) {
-  auto currentChunk = state.getCurrentChunkPosition();
+  auto currentChunk = getCurrentChunkPosition();
   auto distance = glm::distance(static_cast<glm::vec3>(currentChunk),
                                 static_cast<glm::vec3>(chunkPosition));
   return distance > chunkDistance;
@@ -39,10 +48,9 @@ void World::render() {
   for (const auto &[position, _] : chunks)
     positions.push_back(position);
 
-  glm::vec3 cc = state.getCurrentChunkPosition();
+  glm::vec3 cc = getCurrentChunkPosition();
 
-  std::sort(positions.begin(),
-            positions.end(),
+  std::sort(positions.begin(), positions.end(),
             [&](const glm::ivec3 &positionA, const glm::ivec3 &positionB) {
               return glm::distance(static_cast<glm::vec3>(positionA), cc) >
                      glm::distance(static_cast<glm::vec3>(positionB), cc);
@@ -71,7 +79,7 @@ void World::prepareNewChunks(unsigned int maxChunkReloads) {
 }
 
 void World::loadAndUnloadChunks() {
-  auto cc = state.getCurrentChunkPosition();
+  auto cc = getCurrentChunkPosition();
   glm::ivec3 start(cc.x - chunkDistance / 2, 0, cc.z - chunkDistance / 2);
   glm::ivec3 end(cc.x + chunkDistance / 2, 0, cc.z + chunkDistance / 2);
 
@@ -100,20 +108,45 @@ std::optional<Chunk *> World::getChunkAt(glm::ivec3 position) {
   return std::nullopt;
 }
 
+std::optional<Block *>
+World::getBlockAtGlobalPosition(glm::ivec3 globalBlockPosition) {
+  auto maybeChunk = this->globalPositionToChunk(globalBlockPosition);
+  if (maybeChunk.has_value())
+    return maybeChunk.value()->getBlock(
+        glm::ivec3(globalBlockPosition.x % CHUNK_SIZE, globalBlockPosition.y,
+                   globalBlockPosition.z % CHUNK_SIZE));
+  return std::nullopt;
+}
+
+std::optional<Chunk *> World::globalPositionToChunk(glm::vec3 p) {
+  glm::ivec3 chunkPosition = {
+      p.x < 0 ? p.x / CHUNK_SIZE - 1 : p.x / CHUNK_SIZE,
+      0,
+      p.z < 0 ? p.z / CHUNK_SIZE - 1 : p.z / CHUNK_SIZE,
+  };
+  return getChunkAt(chunkPosition);
+}
+
+glm::ivec3 World::globalPositionToBlockPosition(glm::vec3 globalPosition) {
+  float localX = fmodf(glm::floor(globalPosition.x), CHUNK_SIZE);
+  float localZ = fmodf(glm::floor(globalPosition.z), CHUNK_SIZE);
+  localX = fmodf(localX + CHUNK_SIZE, CHUNK_SIZE);
+  localZ = fmodf(localZ + CHUNK_SIZE, CHUNK_SIZE);
+  return glm::ivec3(localX, glm::floor(globalPosition.y), localZ);
+}
+
 std::optional<Block *> World::globalPositionToBlock(glm::vec3 globalPosition) {
-  if (auto chunk = getChunkAt(globalPositionToChunkPosition(globalPosition))) {
+  if (auto chunk = globalPositionToChunk(globalPosition)) {
     glm::ivec3 blockPosition = globalPositionToBlockPosition(globalPosition);
     return chunk.value()->getBlock(blockPosition);
   }
   return std::nullopt;
 }
 
-void World::placeBlockAt(glm::vec3 globalPosition,
-                         glm::vec3 faceSide,
+void World::placeBlockAt(glm::vec3 globalPosition, glm::vec3 faceSide,
                          Block *block) {
   auto placeBlockAt = globalPosition + faceSide;
-  if (auto maybeChunk =
-          getChunkAt(globalPositionToChunkPosition(globalPosition))) {
+  if (auto maybeChunk = globalPositionToChunk(placeBlockAt)) {
     auto &chunk = *maybeChunk;
     chunk->set(globalPositionToBlockPosition(placeBlockAt), block);
     chunksNeedUpdate.push_back(chunk);
@@ -121,8 +154,7 @@ void World::placeBlockAt(glm::vec3 globalPosition,
 }
 
 void World::deleteBlockAt(glm::vec3 globalPosition) {
-  if (auto maybeChunk =
-          getChunkAt(globalPositionToChunkPosition(globalPosition))) {
+  if (auto maybeChunk = globalPositionToChunk(globalPosition)) {
     auto chunk = *maybeChunk;
     chunk->blocks.erase(globalPositionToBlockPosition(globalPosition));
     chunksNeedUpdate.push_back(chunk);
