@@ -3,14 +3,6 @@
 
 #include "gfx/camera.hpp"
 #include "glm/fwd.hpp"
-#include "scene/blocks/cactus.hpp"
-#include "scene/blocks/cobblestone.hpp"
-#include "scene/blocks/glass.hpp"
-#include "scene/blocks/grass.hpp"
-#include "scene/blocks/leaves.hpp"
-#include "scene/blocks/sand.hpp"
-#include "scene/blocks/stone.hpp"
-#include "scene/blocks/wood.hpp"
 #include "utils/ray.hpp"
 #include <unordered_map>
 
@@ -22,16 +14,6 @@ public:
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetMouseButtonCallback(window, mouseClickCallback);
     glfwSetCursorPosCallback(window, mousePosCallback);
-
-    inventory = std::vector<std::optional<Block *>>(9, std::nullopt);
-
-    inventory[1] = new Glass();
-    inventory[2] = new Grass();
-    inventory[3] = new Cobblestone();
-    inventory[4] = new Wood(TreeType::NORMAL);
-    inventory[5] = new Sand();
-    inventory[6] = new Leaves();
-    inventory[7] = new Cactus();
   };
   ~Player() {};
 
@@ -49,10 +31,6 @@ private:
   float jumpHeight = 1.7f;
   bool jumping = false;
   bool canJump = false;
-
-  std::vector<std::optional<Block *>> inventory;
-
-  int selectedItemInventoryIdx = 0;
   glm::vec3 movement;
   glm::vec3 jumpStart;
 

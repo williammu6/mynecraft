@@ -79,7 +79,6 @@ public:
       if (indices_map[renderType].empty()) {
         continue;
       }
-      if (ib_map[renderType]) continue;
       ib_map[renderType] =
           std::make_unique<IndexBuffer>((void *)indices_map[renderType].data(),
                                         indices_map[renderType].size());
