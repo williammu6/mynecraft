@@ -88,20 +88,35 @@ void Chunk::reloadMesh() {
 }
 
 float Chunk::getLocalLight(glm::ivec3 blockPosition) {
-  int blockers = 0;
-  for (int y = blockPosition.y + 1; y < MAX_WORLD_HEIGHT; y++) {
-    auto maybeBlock =
-        this->getBlock(glm::ivec3(blockPosition.x, y, blockPosition.z));
+  const float maxShadowDistance = 15.0f;
+  const float rayStep = 0.5f;
+  float blockers = 0.0f;
+
+  glm::ivec3 chunkBase = glm::ivec3(this->position) * CHUNK_SIZE;
+  glm::ivec3 globalBlock = chunkBase + blockPosition;
+
+  // Match shader light direction and cast towards the light source.
+  glm::vec3 toLightDir = glm::normalize(glm::vec3(-0.5f, 0.5f, 0.0f));
+  glm::vec3 samplePos = glm::vec3(globalBlock) + glm::vec3(0.5f);
+
+  for (float dist = rayStep; dist <= maxShadowDistance; dist += rayStep) {
+    samplePos += toLightDir * rayStep;
+    glm::ivec3 sampleBlock = glm::ivec3(glm::floor(samplePos));
+
+    auto maybeBlock = world->getBlockAtGlobalPosition(sampleBlock);
     if (!maybeBlock.has_value()) {
       continue;
     }
 
     auto block = maybeBlock.value();
-    if (!block->transparent && !block->liquid) {
-      blockers++;
-      if (blockers >= 10) {
-        break;
-      }
+    if (block->liquid || !block->drawable()) {
+      continue;
+    }
+
+    // Transparent solids should dim the light, but not as much as opaque ones.
+    blockers += block->transparent ? 0.45f : 1.0f;
+    if (blockers >= 10.0f) {
+      break;
     }
   }
 
