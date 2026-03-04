@@ -1,5 +1,4 @@
 #include "ray.hpp"
-#include <limits>
 
 std::optional<ray::Intersection>
 ray::cast(glm::vec3 origin, glm::vec3 direction,
@@ -8,7 +7,7 @@ ray::cast(glm::vec3 origin, glm::vec3 direction,
     return std::nullopt;
 
   glm::vec3 rayDirection = glm::normalize(direction);
-  glm::ivec3 voxel = glm::floor(origin);
+  glm::ivec3 voxel = glm::floor(origin + glm::vec3(0.5f));
   glm::ivec3 step(rayDirection.x > 0 ? 1 : -1, rayDirection.y > 0 ? 1 : -1,
                   rayDirection.z > 0 ? 1 : -1);
   glm::vec3 halfBlock(0.5f);
@@ -23,9 +22,9 @@ ray::cast(glm::vec3 origin, glm::vec3 direction,
   };
 
   glm::vec3 voxelBoundary{
-      rayDirection.x > 0 ? voxel.x + 1.0f : voxel.x,
-      rayDirection.y > 0 ? voxel.y + 1.0f : voxel.y,
-      rayDirection.z > 0 ? voxel.z + 1.0f : voxel.z,
+      rayDirection.x > 0 ? voxel.x + 0.5f : voxel.x - 0.5f,
+      rayDirection.y > 0 ? voxel.y + 0.5f : voxel.y - 0.5f,
+      rayDirection.z > 0 ? voxel.z + 0.5f : voxel.z - 0.5f,
   };
 
   glm::vec3 tMax{
