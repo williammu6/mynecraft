@@ -97,15 +97,10 @@ void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
 }
 
 bool Player::canMove(glm::vec3 movement) {
-  float playerSpeed = speed * state.deltaTime;
   for (const auto point : boundingBox) {
-    auto intersection = ray::cast(state.camera.position + point + movement,
-                                  movement, collisionCheck, playerSpeed);
-    if (!intersection)
-      continue;
-
     auto maybeBlock =
-        state.world->globalPositionToBlock(intersection->position);
+        state.world->globalPositionToBlock(state.camera.position + point +
+                                           movement);
     if (maybeBlock.has_value() && !maybeBlock.value()->liquid) {
       return false;
     }
@@ -127,5 +122,23 @@ bool Player::move(glm::vec3 movement) {
     camera->position += movement;
     return true;
   }
-  return false;
+
+  // Resolve each axis independently so movement can slide on surfaces.
+  glm::vec3 resolvedMovement(0.0f);
+  if (movement.x != 0.0f && canMove(glm::vec3(movement.x, 0.0f, 0.0f))) {
+    resolvedMovement.x = movement.x;
+  }
+  if (movement.y != 0.0f && canMove(glm::vec3(0.0f, movement.y, 0.0f))) {
+    resolvedMovement.y = movement.y;
+  }
+  if (movement.z != 0.0f && canMove(glm::vec3(0.0f, 0.0f, movement.z))) {
+    resolvedMovement.z = movement.z;
+  }
+
+  if (resolvedMovement == glm::vec3(0.0f)) {
+    return false;
+  }
+
+  camera->position += resolvedMovement;
+  return true;
 }
