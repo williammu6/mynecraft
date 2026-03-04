@@ -15,3 +15,5 @@ CMakeDoxygenDefaults.cmake
 CPackConfig.cmake
 Mynecraft
 _deps
+.worktrees
+todo.md
