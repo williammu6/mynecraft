@@ -88,22 +88,25 @@ void Chunk::reloadMesh() {
 }
 
 float Chunk::getLocalLight(glm::ivec3 blockPosition) {
-  float light = 1.0f;
+  int blockers = 0;
+  for (int y = blockPosition.y + 1; y < MAX_WORLD_HEIGHT; y++) {
+    auto maybeBlock =
+        this->getBlock(glm::ivec3(blockPosition.x, y, blockPosition.z));
+    if (!maybeBlock.has_value()) {
+      continue;
+    }
 
-  for (int y = 1; y < 15; y++) {
-    for (int x = 1; x < y + 1; x++) {
-      if (auto maybeBlock = this->getBlock(glm::ivec3(
-              blockPosition.x + x, blockPosition.y + y, blockPosition.z))) {
-        light -= 0.15;
-
-        if (light < 0.0) {
-          return 0.0f;
-        }
+    auto block = maybeBlock.value();
+    if (!block->transparent && !block->liquid) {
+      blockers++;
+      if (blockers >= 10) {
+        break;
       }
     }
   }
 
-  return light > 0.0f ? light : 0.0f;
+  float light = 1.0f - blockers * 0.08f;
+  return glm::clamp(light, 0.2f, 1.0f);
 }
 
 std::optional<Block *> Chunk::getBlock(const glm::ivec3 blockPosition) {
