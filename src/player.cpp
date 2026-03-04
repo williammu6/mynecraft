@@ -97,7 +97,10 @@ void Player::tryToDestroyBlock(std::optional<ray::Intersection> intersection) {
 }
 
 bool Player::canMove(glm::vec3 movement) {
-  float playerSpeed = speed * state.deltaTime;
+  float playerSpeed = glm::length(movement) + 0.001f;
+  if (playerSpeed <= 0.001f)
+    return true;
+
   for (const auto point : boundingBox) {
     auto intersection = ray::cast(state.camera.position + point + movement,
                                   movement, collisionCheck, playerSpeed);
@@ -123,9 +126,26 @@ bool Player::applyGravity() {
 }
 
 bool Player::move(glm::vec3 movement) {
-  if (canMove(movement)) {
-    camera->position += movement;
+  auto tryMove = [&](const glm::vec3 &delta) {
+    if (delta == glm::vec3(0.0f)) {
+      return false;
+    }
+
+    if (canMove(delta)) {
+      camera->position += delta;
+      return true;
+    }
+    return false;
+  };
+
+  if (tryMove(movement)) {
     return true;
   }
-  return false;
+
+  // Resolve per-axis so movement slides along walls instead of getting stuck.
+  bool moved = false;
+  moved = tryMove(glm::vec3(movement.x, 0.0f, 0.0f)) || moved;
+  moved = tryMove(glm::vec3(0.0f, movement.y, 0.0f)) || moved;
+  moved = tryMove(glm::vec3(0.0f, 0.0f, movement.z)) || moved;
+  return moved;
 }
